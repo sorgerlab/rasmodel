@@ -1,0 +1,85 @@
+Barbacid, Ras genes
+===================
+
+Annu Rev Biochem. 1987;56:779-827. PMID 3304147.
+
+ras proteins, independently of their phylogenetic origin, have been shown to
+bind guanine nucleotides (GTP and GDP) (22-25) and possess intrinsic GTPase
+activity (25-29).
+
+=> There is a protein family called Ras.
+=> Ras proteins bind both GTP and GDP.
+=> Ras proteins catalyze GTP -> GDP.
+
+ras mutants that have lost their ability to bind guanine nucleotides do not
+transform NIH3T3 cells (104, 105);
+
+=> Ras:GTP binding is necessary for its tumorigenic activity.
+
+(c) the GTPase activity of ras genes is severely impaired in their
+transforming alleles (25-29).
+
+=> Ras mutants with low tumorigenic activity have low GTPase activity.
+
+X-ray crystallography studies of the GDP binding domain of EF-Tu also support
+the concept that residues around codon 12 form part of the guanine
+nucleotide-binding site (109).
+
+Based on EF-Tu and ras sequence homology, the 12th amino acid residue (Gly)
+of mammalian ras proteins should be located in the phosphoryl binding loop (10
+9, 111)
+
+=> Ras G12 and neighboring residues is involved in the GTP/GDP binding site.
+
+ras deletion mutants within residues 109-120 or 130-145 do not bind detectable
+levels of guanine nucleotides and cannot induce efficient transformation of
+NIH3T3 cells (10 4).
+
+=> Ras mutants with 109-120 deleted do not bind GTP or GDP.
+=> Ras mutants with 109-120 deleted do not have tumorigenic activity.
+=> Ras mutants with 130-145 deleted do not bind GTP or GDP.
+=> Ras mutants with 130-145 deleted do not have tumorigenic activity.
+
+However, miscoding mutations in residues 59, 61, or 63 result in the oncogenic
+activation of ras genes (62, 90-93).
+
+=> Mutations in Ras 59, 61, or 63 increase Ras tumorigenic activity.
+
+Extensive work on deletion mutants of mammalian ras genes has led to the
+definition of five noncontiguous domains (residues 5-63 , 77-92, 109-123,
+139-165, and the carboxyl terminal sequences Cys 186) that are absolutely
+required for ras function (104).
+
+=> Ras mutants with 5-63 deleted do not have tumorigenic activity.
+=> Ras mutants with 77-92 deleted do not have tumorigenic activity.
+=> Ras mutants with 109-123 deleted do not have tumorigenic activity.
+=> Ras mutants with 139-165 deleted do not have tumorigenic activity.
+=> Ras mutants with 5-63 deleted do not have tumorigenic activity.
+
+ras proteins have been localized in the inner side of the plasma membrane
+(30-32). The primary translational product of ras oncogenes is synthesized in
+the cytosol (32, 125). Attachment to the plasma membrane requires a
+post translational modification that involves the acylation of Cys186 by
+palmitic acid (32, 126-128).
+
+=> Ras is synthesized in the cytosol, with Cys186 unmodified.
+=> There is a reaction, Ras-Cys186 --> Ras-Cys186:palmitic acid, catalyzed by
+   an unknown enzyme.
+=> Ras-Cys186:palmitic acid localizes to the plasma membrane.
+=> Ras-Cys186:(no palmitic acid) remains in the cytosol.
+
+Genetic studies have demonstrated that this posttranslational modification is
+necessary for the biological function of ras proteins. Mutants lacking Cys 186 code for proteins that remain in the cytosol and cannot induce morphological transformation of NIH3T3 cells (3 1, 12 9).
+
+=> Ras mutants lacking C186 cannot form Ras-Cys186:palmitic acid.
+=> Ras mutants lacking C186 do not have tumorigenic activity.
+
+At least five noncontiguous domains of ras proteins have been shown to be
+dispensable for their biological function. They include the amino terminal
+end, three internal domains, and the hypervariable region.
+
+=> Mutations/deletions in the Ras N-terminus have no effect on Ras tumorigenic
+   activity.
+=> Mutations/deletions in the Ras hypervariable region have no effect on Ras
+   tumorigenic activity.
+
