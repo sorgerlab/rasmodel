@@ -1,0 +1,106 @@
+Karnoub and Weinberg: Ras oncogenes: split personalities
+========================================================
+
+* Title: Ras oncogenes: split personalities
+* PMID: 18568040
+* Link: http://www.ncbi.nlm.nih.gov/pmc/articles/PMC3915522/
+
+Activated mutants and the GTPase cycle
+--------------------------------------
+
+In 1984, three groups reported that mutated Ras oncoproteins differ
+functionally from their normal counterparts [41]_ [42]_ [43]_. The oncogenic
+forms of Ras exhibited impaired GTPase activity, which suggested that the
+hydrolysis of GTP somehow terminates the activated state of the protein, which
+is consistent with the presumed analogy to the behaviour of G proteins::
+
+STL::
+
+    Ras has GTPase activity (catalyzes GTP->GDP).
+    Loss of Ras GTPase activity correlates with oncogenic activity.
+
+BEL::
+
+    # Note the leap to causal statement, for simplicity
+    # Note also the transition from loss-of-function observation to positive
+    # statement about causality
+
+Furthermore, the link between the much-studied Gly-to-Val substitution of
+residue 12 of H-Ras and GTP hydrolysis was made the following year by Frank
+McCormick’s group, which noted that antibodies that are specific to that region
+blocked GTP binding [44]_.
+
+STL::
+
+    Antibodies to Ras G12 region and GTP compete for the same site.
+
+Mechanism::
+
+    Ras binds GTP at G12 region.
+
+Other oncogenic mutations (such as Gln61leu in H-Ras) were also shown to impair
+GTP hydrolysis [45]_::
+
+STL::
+
+    Ras Q61L is tumorigenic.
+    Ras Q61L has diminished GTP->GDP conversion activity.
+
+and other oncogenic forms of Ras were later determined to
+be impaired in GTP hydrolysis (for example, REF. [46]_).
+
+STL::
+
+    # Get identities of other mutants from reference 46.
+
+However, the extent of such impairment did not always correlate with
+transformation, suggesting that compromised intrinsic GTP hydrolysis was
+necessary but not sufficient for aberrant Ras activation.
+
+STL::
+
+    # How to indicate necessity vs. sufficiency?
+
+An initial study in this area, published in 1982, showed that the mature form
+of viral H-Ras localized to the cell membrane47. Several months later it was
+demonstrated that viral H-Ras is palmitoylated at the C terminus; the resulting
+attached lipid moiety facilitated its association with the membrane48. The
+functional connection between this lipid modification and Ras function was made
+by Douglas Lowy’s group in 1984, which showed that lipid binding and membrane
+association were actually required for the transforming activity of the viral
+H-Ras oncoprotein49,50.
+
+working with cellular H-Ras, Stuart Aaronson’s group proceeded to demonstrate that this C-terminal processing and membrane recruitment of Ras is a prerequisite to its biochemical activation51.
+
+The molecular mechanisms of Ras lipid processing were laid out over the subsequent 5 years through a series of observations using yeast genetics, protein biochemistry and in vitro cellular systems52–57 (FIGS 2,3).3).
+
+Indeed, the C-terminal CAAX motif, previously found to be important for Ras
+function, was found to be the target of a post-translational modification that
+involved the addition of a farnesyl isoprenoid lipid, catalysed by the enzyme
+farnesyl transferase (FTase).
+
+Subsequent studies determined that this prenylation reaction is followed by the
+proteolytic cleavage of the AAX sequence, catalysed by Ras-converting enzyme-1
+(RCE1) and the carboxymethylation of the now terminal Cys residue by the
+isoprenylcysteine carboxymethyltransferase-1 (ICMT1) enzyme.
+
+Although these CAAX-signal modifications appeared to be essential for the
+association of Ras with the plasma membrane, other studies identified the
+requirement for a second C-terminal signal that facilitates full membrane
+recruitment and hence full Ras function (for example, see REF. 57). For
+K-Ras-4B, this second signal is a string of positively-charged lys residues
+upstream of the C terminus that are sufficient to anchor the protein to the
+membrane. However, prenylated H-Ras, N-Ras and K-Ras-4A require a further
+palmitoylation step in which a palmitoyl moiety is attached to upstream
+C-terminal Cys residues before their anchoring in the membrane is stabilized.
+
+References
+----------
+
+.. [41] McGrath JP, Capon DJ, Goeddel DV, Levinson AD. Comparative biochemical properties of normal and activated human ras p21 protein. Nature. 1984;310:644–649. :pmid:`6147754`.
+
+.. [42] Gibbs JB, Sigal IS, Poe M, Scolnick EM. Intrinsic GTPase activity distinguishes normal and oncogenic ras p21 molecules. Proc Natl Acad Sci USA. 1984;81:5704–5708. :pmid:`6148751`.
+
+.. [43] Sweet RW, et al. The product of ras is a GTPase and the T24 oncogenic mutant is deficient in this activity. Nature. 1984;311:273–275. :pmid:`6148703`.
+
+

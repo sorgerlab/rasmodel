@@ -1,3 +1,7 @@
+# Ignore Sphinx build files
+doc/_build
+doc/_static
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
