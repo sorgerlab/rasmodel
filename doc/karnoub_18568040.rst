@@ -11,9 +11,10 @@ Activated mutants and the GTPase cycle
 Structure of Ras (see
 http://www.ncbi.nlm.nih.gov/pmc/articles/PMC3915522/figure/F1/)::
 
-    Monomer('KRAS', ['gtp', 'p_loop', 'switch1', 'switch2', 'CAAX'])
-    Monomer('NRAS', ['gtp', 'p_loop', 'switch1', 'switch2', 'CAAX'])
-    Monomer('HRAS', ['gtp', 'p_loop', 'switch1', 'switch2', 'CAAX'])
+    for ras_name in ['KRAS', 'NRAS', 'HRAS']:
+        Monomer(ras_name,
+                ['gtp', 'p_loop', 'switch1', 'switch2', 'CAAX', 'oncogenic'],
+                {'oncogenic': ['y', 'n']})
     Monomer('GTP', ['p'])
     Monomer('GDP', ['p'])
 
@@ -33,30 +34,57 @@ antibodies that are specific to that region blocked GTP binding [18568040_44]_::
     Parameter('k_gdp_unbind', 1.)
     Parameter('k_gtpase', 1.)
     for ras in [KRAS, HRAS, NRAS]:
+        ras_wt = ras(oncogenic='n')
         Rule('{0.name}_binds_GTP'.format(ras),
-             ras(gtp=None) + GTP(p=None) <> ras(gtp=1) % GTP(p=1),
+             ras_wt(gtp=None) + GTP(p=None) <>
+             ras_wt(gtp=1) % GTP(p=1),
              k_gtp_bind, k_gtp_unbind)
         Rule('{0.name}_converts_GTP_GDP'.format(ras),
-             ras(gtp=1) % GTP(p=1) >> ras(gtp=1) % GDP(p=1),
+             ras_wt(gtp=1) % GTP(p=1) >>
+             ras_wt(gtp=1) % GDP(p=1),
              k_gtpase)
         Rule('{0.name}_binds_GDP'.format(ras),
-             ras(gtp=None) + GDP(p=None) <> ras(gtp=1) % GDP(p=1),
+             ras_wt(gtp=None) + GDP(p=None) <>
+             ras_wt(gtp=1) % GDP(p=1),
              k_gdp_bind, k_gdp_unbind)
 
-Other oncogenic mutations (such as Gln61leu in H-Ras) were also shown to impair
-GTP hydrolysis [45]_::
+:pmid:`18568040`: Other oncogenic mutations (such as Gln61leu in H-Ras) were
+also shown to impair GTP hydrolysis [18568040_45]_ and other oncogenic forms of
+Ras were later determined to be impaired in GTP hydrolysis (for example, REF.
+[18568040_46]_).
 
-STL::
+:pmid:`18568040`: The overall Ras structure was shown to consist of a
+hydrophobic core of six stranded β-sheets and five α-helices that are
+interconnected by a series of ten loops (FIG4a_). Five of these loops are
+situated on one facet of the protein and have crucial roles in determining the
+high affinity nucleotide interactions of Ras and in regulating GTP hydrolysis.
+In particular, the GTP γ-phosphate is stabilized by interactions that are
+established with the residues of loops 1, 2 and 4 (for example, lys16, Tyr32,
+Thr35, Gly60 and Gln61; see FIG4b_). A prominent role is attributed to Gln61,
+which stabilizes the transition state of GTP hydrolysis to GDP, in addition to
+participating in the orientation of the nucleophilic attack that is necessary
+for this reaction. As such, oncogenic mutations of Gln61 reduce the intrinsic
+GTP hydrolysis rate, thereby placing the Ras protein in a constitutively active
+state.
 
-    Ras Q61L is tumorigenic.
-    Ras Q61L has diminished GTP->GDP conversion activity.
+.. _FIG4a: http://www.ncbi.nlm.nih.gov/pmc/articles/PMC3915522/figure/F4/
+.. _FIG4b: http://www.ncbi.nlm.nih.gov/pmc/articles/PMC3915522/figure/F4/
 
-and other oncogenic forms of Ras were later determined to
-be impaired in GTP hydrolysis (for example, REF. [46]_).
+::
 
-STL::
+    # Note that the mutant rate should be constrained to be less than
+    # the wild type rate through the use of an Expression incorporating a
+    # scaling parameter between [0, 1].
+    Parameter('k_mut_gtpase', 0.1)
 
-    # Get identities of other mutants from reference 46.
+    # Mutant Ras has diminished GTPase activity:
+    for ras in [KRAS, HRAS, NRAS]:
+        ras_mut = ras(oncogenic='y')
+
+        Rule('{0.name}_mut_converts_GTP_GDP'.format(ras),
+             ras_mut(gtp=1) % GTP(p=1) >>
+             ras_mut(gtp=1) % GDP(p=1),
+             k_mut_gtpase)
 
 However, the extent of such impairment did not always correlate with
 transformation, suggesting that compromised intrinsic GTP hydrolysis was
@@ -65,6 +93,21 @@ necessary but not sufficient for aberrant Ras activation.
 STL::
 
     # How to indicate necessity vs. sufficiency?
+Anatomy of Ras regulation
+-------------------------
+
+:pmid:`18568040`: The structural differences between the RasGDP and the RasGTP
+conformations reside mainly in two highly dynamic regions, termed switch i
+(residues 30–40) and switch ii (residues 60–76). Both regions are required for
+the interactions of Ras with upstream as well as downstream partners (see also
+FIG. 2a). The binding of GTP alters the conformation of switch i, primarily
+through the inward reorientation of the side chain of Thr35, thereby enabling
+its interactions with the GTP γ-phosphate as well as the Mg2+ ion. Similarly,
+the γ-phosphate induces significant changes in the orientation of the switch ii
+region through interactions it establishes with Gly60 (FIG. 4b).
+
+Post-translational modifications
+--------------------------------
 
 An initial study in this area, published in 1982, showed that the mature form
 of viral H-Ras localized to the cell membrane47. Several months later it was
@@ -108,4 +151,8 @@ References
 
 .. [18568040_43] Sweet RW, et al. The product of ras is a GTPase and the T24 oncogenic mutant is deficient in this activity. Nature. 1984;311:273–275. :pmid:`6148703`.
 
+.. [18568040_44] Clark R, Wong G, Arnheim N, Nitecki D, McCormick F. Antibodies specific for amino acid 12 of the ras oncogene product inhibit GTP binding. Proc Natl Acad Sci USA. 1985;82:5280–5284.:pmid:`3927300`.
 
+.. [18568040_45] Der CJ, Finkel T, Cooper GM. Biological and biochemical properties of human rasH genes mutated at codon 61. Cell. 1986;44:167–176. :pmid:`3510078`.
+
+.. [18568040_46] Trahey M, McCormick F. A cytoplasmic protein stimulates normal N-ras p21 GTPase, but does not affect oncogenic mutants. Science.  1987;238:542–545. References 41–46 established that oncogenic mutation of ras affects its nucleotide cycle. :pmid:`2821624`.
