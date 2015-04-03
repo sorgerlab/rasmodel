@@ -1,3 +1,6 @@
+# Ignore vim temp files
+*.swp
+
 # Ignore Sphinx build files
 doc/_build
 doc/_static

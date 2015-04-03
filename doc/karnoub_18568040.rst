@@ -8,35 +8,40 @@ Karnoub and Weinberg: Ras oncogenes: split personalities
 Activated mutants and the GTPase cycle
 --------------------------------------
 
-In 1984, three groups reported that mutated Ras oncoproteins differ
-functionally from their normal counterparts [41]_ [42]_ [43]_. The oncogenic
-forms of Ras exhibited impaired GTPase activity, which suggested that the
-hydrolysis of GTP somehow terminates the activated state of the protein, which
-is consistent with the presumed analogy to the behaviour of G proteins::
+Structure of Ras (see
+http://www.ncbi.nlm.nih.gov/pmc/articles/PMC3915522/figure/F1/)::
 
-STL::
+    Monomer('KRAS', ['gtp', 'p_loop', 'switch1', 'switch2', 'CAAX'])
+    Monomer('NRAS', ['gtp', 'p_loop', 'switch1', 'switch2', 'CAAX'])
+    Monomer('HRAS', ['gtp', 'p_loop', 'switch1', 'switch2', 'CAAX'])
+    Monomer('GTP', ['p'])
+    Monomer('GDP', ['p'])
 
-    Ras has GTPase activity (catalyzes GTP->GDP).
-    Loss of Ras GTPase activity correlates with oncogenic activity.
+:pmid:`18568040`: In 1984, three groups reported that mutated Ras oncoproteins
+differ functionally from their normal counterparts [18568040_41]_
+[18568040_42]_ [18568040_43]_. The oncogenic forms of Ras exhibited impaired
+GTPase activity, which suggested that the hydrolysis of GTP somehow terminates
+the activated state of the protein, which is consistent with the presumed
+analogy to the behaviour of G proteins...Furthermore, the link between the
+much-studied Gly-to-Val substitution of residue 12 of H-Ras and GTP hydrolysis
+was made the following year by Frank McCormick’s group, which noted that
+antibodies that are specific to that region blocked GTP binding [18568040_44]_::
 
-BEL::
-
-    # Note the leap to causal statement, for simplicity
-    # Note also the transition from loss-of-function observation to positive
-    # statement about causality
-
-Furthermore, the link between the much-studied Gly-to-Val substitution of
-residue 12 of H-Ras and GTP hydrolysis was made the following year by Frank
-McCormick’s group, which noted that antibodies that are specific to that region
-blocked GTP binding [44]_.
-
-STL::
-
-    Antibodies to Ras G12 region and GTP compete for the same site.
-
-Mechanism::
-
-    Ras binds GTP at G12 region.
+    Parameter('k_gtp_bind', 1.)
+    Parameter('k_gtp_unbind', 1.)
+    Parameter('k_gdp_bind', 1.)
+    Parameter('k_gdp_unbind', 1.)
+    Parameter('k_gtpase', 1.)
+    for ras in [KRAS, HRAS, NRAS]:
+        Rule('{0.name}_binds_GTP'.format(ras),
+             ras(gtp=None) + GTP(p=None) <> ras(gtp=1) % GTP(p=1),
+             k_gtp_bind, k_gtp_unbind)
+        Rule('{0.name}_converts_GTP_GDP'.format(ras),
+             ras(gtp=1) % GTP(p=1) >> ras(gtp=1) % GDP(p=1),
+             k_gtpase)
+        Rule('{0.name}_binds_GDP'.format(ras),
+             ras(gtp=None) + GDP(p=None) <> ras(gtp=1) % GDP(p=1),
+             k_gdp_bind, k_gdp_unbind)
 
 Other oncogenic mutations (such as Gln61leu in H-Ras) were also shown to impair
 GTP hydrolysis [45]_::
@@ -97,10 +102,10 @@ C-terminal Cys residues before their anchoring in the membrane is stabilized.
 References
 ----------
 
-.. [41] McGrath JP, Capon DJ, Goeddel DV, Levinson AD. Comparative biochemical properties of normal and activated human ras p21 protein. Nature. 1984;310:644–649. :pmid:`6147754`.
+.. [18568040_41] McGrath JP, Capon DJ, Goeddel DV, Levinson AD. Comparative biochemical properties of normal and activated human ras p21 protein. Nature. 1984;310:644–649. :pmid:`6147754`.
 
-.. [42] Gibbs JB, Sigal IS, Poe M, Scolnick EM. Intrinsic GTPase activity distinguishes normal and oncogenic ras p21 molecules. Proc Natl Acad Sci USA. 1984;81:5704–5708. :pmid:`6148751`.
+.. [18568040_42] Gibbs JB, Sigal IS, Poe M, Scolnick EM. Intrinsic GTPase activity distinguishes normal and oncogenic ras p21 molecules. Proc Natl Acad Sci USA. 1984;81:5704–5708. :pmid:`6148751`.
 
-.. [43] Sweet RW, et al. The product of ras is a GTPase and the T24 oncogenic mutant is deficient in this activity. Nature. 1984;311:273–275. :pmid:`6148703`.
+.. [18568040_43] Sweet RW, et al. The product of ras is a GTPase and the T24 oncogenic mutant is deficient in this activity. Nature. 1984;311:273–275. :pmid:`6148703`.
 
 

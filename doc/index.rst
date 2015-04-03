@@ -11,7 +11,8 @@ Contents:
 .. toctree::
     :maxdepth: 2
 
-    braf_map2k1
+    braf_map2k1_pcdetailed
+    braf_map2k1_nci
     karnoub_18568040
     barbacid_3304147
 
