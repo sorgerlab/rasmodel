@@ -8,6 +8,8 @@ def extract_literals(node):
         text = ''
         for child in node.children:
             text += extract_literals(child)
+    if text:
+        text += '\n\n'
     return text
 
 with open(sys.argv[1]) as f:
