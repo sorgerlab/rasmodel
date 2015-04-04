@@ -11,10 +11,10 @@ Contents:
 .. toctree::
     :maxdepth: 2
 
+    ras_regulation
+    barbacid_3304147
     braf_map2k1_pcdetailed
     braf_map2k1_nci
-    karnoub_18568040
-    barbacid_3304147
 
 Indices and tables
 ==================
