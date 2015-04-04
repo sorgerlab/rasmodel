@@ -1,5 +1,5 @@
-Karnoub and Weinberg: Ras oncogenes: split personalities
-========================================================
+Ras activity and regulation
+===========================
 
 Anatomy of Ras
 --------------
