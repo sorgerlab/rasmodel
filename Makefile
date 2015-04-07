@@ -15,5 +15,6 @@ doc:
 	cd $(DOCDIR); make html
 
 model: $(DOCDIR)/ras_regulation.rst $(CODEDIR)/extract_model.py
+	mkdir -p $(OUTPUTDIR)
 	python $(CODEDIR)/extract_model.py $(DOCDIR)/ras_regulation.rst > $(OUTPUTFILE)
 
