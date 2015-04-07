@@ -563,9 +563,9 @@ References
 
 .. [18568040_46] Trahey M, McCormick F. **A cytoplasmic protein stimulates normal N-ras p21 GTPase, but does not affect oncogenic mutants.** Science.  1987;238:542–545. References 41–46 established that oncogenic mutation of ras affects its nucleotide cycle. :pmid:`2821624`.
 
-.. [9690470] Boriack-Sjodin PA, Margarit SM, Bar-Sagi D, Kuriyan J. **The structural basis of the activation of Ras by Sos.** Nature. 1998 Jul 23;394(6691):337-43. :pmid:`9690470`. :download: `PDF </pdf/9690470.pdf>`.
+.. [9690470] Boriack-Sjodin PA, Margarit SM, Bar-Sagi D, Kuriyan J. **The structural basis of the activation of Ras by Sos.** Nature. 1998 Jul 23;394(6691):337-43. :pmid:`9690470`. :download:`PDF </pdf/9690470.pdf>`.
 
-.. [9585556] Lenzen C, Cool RH, Prinz H, Kuhlmann J, Wittinghofer A. **Kinetic analysis by fluorescence of the interaction between Ras and the catalytic domain of the guanine nucleotide exchange factor Cdc25Mm.** Biochemistry. 1998 May 19;37(20):7420-30. :pmid:`9585556`. :download: `PDF </pdf/9585556.pdf>`.
+.. [9585556] Lenzen C, Cool RH, Prinz H, Kuhlmann J, Wittinghofer A. **Kinetic analysis by fluorescence of the interaction between Ras and the catalytic domain of the guanine nucleotide exchange factor Cdc25Mm.** Biochemistry. 1998 May 19;37(20):7420-30. :pmid:`9585556`. :download:`PDF </pdf/9585556.pdf>`.
 
 .. [9690470_17] Lai CC, Boguski M, Broek D, Powers S. **Influence of guanine nucleotides on complex formation between Ras and CDC25 proteins.** Mol Cell Biol. 1993 Mar;13(3):1345-52. :pmid:`8441380`.
 
@@ -604,4 +604,6 @@ References
 .. [7548002] Klebe C, Prinz H, Wittinghofer A, Goody RS. **The kinetic mechanism of Ran--nucleotide exchange catalyzed by RCC1.** Biochemistry. 1995 Oct 3;34(39):12543-52. :pmid:`7548002`.
 
 .. [2502546] John J, Schlichting I, Schiltz E, Rösch P, Wittinghofer A.  **C-terminal truncation of p21H preserves crucial kinetic and structural properties.** J Biol Chem. 1989 Aug 5;264(22):13086-92. :pmid:`2502546`. :download:`PDF </pdf/2502546.pdf>`.
+
+.. [9219684] Scheffzek K, Ahmadian MR, Kabsch W, Wiesmüller L, Lautwein A, Schmitz F, Wittinghofer A. **The Ras-RasGAP complex: structural basis for GTPase activation and its loss in oncogenic Ras mutants.** Science. 1997 Jul 18;277(5324):333-8. :pmid:`9219684`. :download:`PDF </pdf/9219684.pdf>`.
 
