@@ -1,5 +1,4 @@
-# Ignore vim temp files
-*.swp
+output/
 
 # Ignore Sphinx build files
 doc/_build
