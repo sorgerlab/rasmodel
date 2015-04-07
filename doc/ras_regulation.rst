@@ -62,15 +62,27 @@ nucleotide interactions. All rates were measured at 20C.
     been determined independently as 9 pM from nucleotide association and
     dissociation experiments (Tables 2 and 3).
 
+
+
 ::
 
     # Make the same assumptions about fast association rate constants as 9585556,
     # and use their measured values for dissociation rates in the absence of GEFs.
     # (association rates are in units of nM^-1 s^-1).
-    def ras_binds_gtp_and_gdp(ras):
+    def ras_binds_gtp_and_gdp(ras, k_gtp_diss, k_gdp_diss):
         kf = 1e-2
-        bind_table([[             GTP,         GDP],
-                    [ras,  (kf, 1e-5),  (kf, 2e-5)]], 'gtp', 'p')
+        bind_table([[                   GTP,               GDP],
+                    [ras,  (kf, k_gtp_diss),  (kf, k_gdp_diss)]], 'gtp', 'p')
+
+    # The data in Table 1 gives a value of 1.2e-5 for the dissociation rate with
+    # GDP, whereas the text gives rates of 1e-5 and 2e-5 for GTP/GDP, respectively.
+    ras_binds_gtp_and_gdp(HRAS, 1e-5, 2e-5)
+    # The rate for KRAS/GDP association is given in Table 1 as 1.6e-5, but the
+    # KRAS/GTP rate is not measured.
+    ras_binds_gtp_and_gdp(KRAS, 8e-6, 1.6e-5)
+    # The rate for NRAS/GDP association is given in Table 1 as 1.0e-5, but the
+    # NRAS/GTP rate is not measured.
+    ras_binds_gtp_and_gdp(KRAS, 5e-6, 1.0e-5)
 
 Ras converts GTP to GDP
 ~~~~~~~~~~~~~~~~~~~~~~~
