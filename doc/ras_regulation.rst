@@ -535,7 +535,7 @@ C-terminal Cys residues before their anchoring in the membrane is stabilized.
 References
 ----------
 
-.. [3304147] Barbacid M. **ras genes.** Annu Rev Biochem. 1987;56:779-827. Review. :pmid:`3304147`.
+.. [3304147] Barbacid M. **ras genes.** Annu Rev Biochem. 1987;56:779-827. Review. :pmid:`3304147`. :download:`PDF </pdf/3304147.pdf>`.
 
 .. [3304147_22] Scolnick EM, Papageorge AG, Shih TY. **Guanine nucleotide-binding activity as an assay for src protein of rat-derived murine sarcoma viruses.** Proceedings of the National Academy of Sciences of the United States of America. 1979;76(10):5355-5359. :pmid:`228288`.
 
@@ -563,9 +563,9 @@ References
 
 .. [18568040_46] Trahey M, McCormick F. **A cytoplasmic protein stimulates normal N-ras p21 GTPase, but does not affect oncogenic mutants.** Science.  1987;238:542–545. References 41–46 established that oncogenic mutation of ras affects its nucleotide cycle. :pmid:`2821624`.
 
-.. [9690470] Boriack-Sjodin PA, Margarit SM, Bar-Sagi D, Kuriyan J. **The structural basis of the activation of Ras by Sos.** Nature. 1998 Jul 23;394(6691):337-43. :pmid:`9690470`.
+.. [9690470] Boriack-Sjodin PA, Margarit SM, Bar-Sagi D, Kuriyan J. **The structural basis of the activation of Ras by Sos.** Nature. 1998 Jul 23;394(6691):337-43. :pmid:`9690470`. :download: `PDF </pdf/9690470.pdf>`.
 
-.. [9585556] Lenzen C, Cool RH, Prinz H, Kuhlmann J, Wittinghofer A. **Kinetic analysis by fluorescence of the interaction between Ras and the catalytic domain of the guanine nucleotide exchange factor Cdc25Mm.** Biochemistry. 1998 May 19;37(20):7420-30. :pmid:`9585556`.
+.. [9585556] Lenzen C, Cool RH, Prinz H, Kuhlmann J, Wittinghofer A. **Kinetic analysis by fluorescence of the interaction between Ras and the catalytic domain of the guanine nucleotide exchange factor Cdc25Mm.** Biochemistry. 1998 May 19;37(20):7420-30. :pmid:`9585556`. :download: `PDF </pdf/9585556.pdf>`.
 
 .. [9690470_17] Lai CC, Boguski M, Broek D, Powers S. **Influence of guanine nucleotides on complex formation between Ras and CDC25 proteins.** Mol Cell Biol. 1993 Mar;13(3):1345-52. :pmid:`8441380`.
 
@@ -597,11 +597,11 @@ References
 
 .. [9247124] Wittinghofer A, Scheffzek K, Ahmadian MR. **The interaction of Ras with GTPase-activating proteins.** FEBS Lett. 1997 Jun 23;410(1):63-7. Review. :pmid:`9247124`.
 
-.. [1569940] Gideon P, John J, Frech M, Lautwein A, Clark R, Scheffler JE, Wittinghofer A. **Mutational and kinetic analyses of the GTPase-activating protein (GAP)-p21 interaction: the C-terminal domain of GAP is not sufficient for full activity.** Mol Cell Biol. 1992 May;12(5):2050-6. :pmid:`1569940`.
+.. [1569940] Gideon P, John J, Frech M, Lautwein A, Clark R, Scheffler JE, Wittinghofer A. **Mutational and kinetic analyses of the GTPase-activating protein (GAP)-p21 interaction: the C-terminal domain of GAP is not sufficient for full activity.** Mol Cell Biol. 1992 May;12(5):2050-6. :pmid:`1569940`. :download:`PDF </pdf/1569940.pdf>`.
 
 .. [8262937] Eccleston JF, Moore KJ, Morgan L, Skinner RH, Lowe PN. **Kinetics of interaction between normal and proline 12 Ras and the GTPase-activating proteins, p120-GAP and neurofibromin. The significance of the intrinsic GTPase rate in determining the transforming ability of ras.** J Biol Chem. 1993 Dec 25;268(36):27012-9. :pmid:`8262937`.
 
 .. [7548002] Klebe C, Prinz H, Wittinghofer A, Goody RS. **The kinetic mechanism of Ran--nucleotide exchange catalyzed by RCC1.** Biochemistry. 1995 Oct 3;34(39):12543-52. :pmid:`7548002`.
 
-.. [2502546] John J, Schlichting I, Schiltz E, Rösch P, Wittinghofer A.  **C-terminal truncation of p21H preserves crucial kinetic and structural properties.** J Biol Chem. 1989 Aug 5;264(22):13086-92. :pmid:`2502546`.
+.. [2502546] John J, Schlichting I, Schiltz E, Rösch P, Wittinghofer A.  **C-terminal truncation of p21H preserves crucial kinetic and structural properties.** J Biol Chem. 1989 Aug 5;264(22):13086-92. :pmid:`2502546`. :download:`PDF </pdf/2502546.pdf>`.
 
