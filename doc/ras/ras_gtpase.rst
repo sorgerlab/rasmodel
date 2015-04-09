@@ -31,7 +31,7 @@ http://www.ncbi.nlm.nih.gov/pmc/articles/PMC3915522/figure/F1/).
 
 Anatomy of Ras regulation:
 
-    [18568040]_: The structural differences between the RasGDP and the RasGTP
+    [PMID18568040]_: The structural differences between the RasGDP and the RasGTP
     conformations reside mainly in two highly dynamic regions, termed switch i
     (residues 30–40) and switch ii (residues 60–76). Both regions are required
     for the interactions of Ras with upstream as well as downstream partners
@@ -44,7 +44,7 @@ Anatomy of Ras regulation:
 
 A side note on alternative splice variants:
 
-    [3304147]_: The three functional ras genes code for highly related proteins
+    [PMID3304147]_: The three functional ras genes code for highly related proteins
     generically known as p21 (71). The p21 coding sequences of each of these
     genes are equally distributed in four exons except for the K-ras-2 gene,
     which possesses two alternative fourth coding exons (exons IVA and IVB)
@@ -56,23 +56,23 @@ Ras binds GTP and GDP
 
 Mechanism and rates associated with GTP/GDP binding by Ras.
 
-    [3304147]_: ras proteins, independently of their phylogenetic origin, have
-    been shown to bind guanine nucleotides (GTP and GDP) ([3304147_22]_
-    [3304147_23]_ [3304147_24]_ [3304147_25]_) and possess intrinsic GTPase
-    activity ([3304147_25]_ [3304147_26]_ [6147754]_ [6148703]_ [3304147_29]_)
+    [PMID3304147]_: ras proteins, independently of their phylogenetic origin, have
+    been shown to bind guanine nucleotides (GTP and GDP) ([PMID3304147_22]_
+    [PMID3304147_23]_ [PMID3304147_24]_ [PMID3304147_25]_) and possess intrinsic GTPase
+    activity ([PMID3304147_25]_ [PMID3304147_26]_ [PMID6147754]_ [PMID6148703]_ [PMID3304147_29]_)
 
 The following statements were taken from a kinetic analysis of Ras and
 nucleotide interactions. All rates were measured at 20C.
 
-    [9585556]_: the intrinsic dissociation rate of Ras for GTP (1 × 10-5 s-1) is
+    [PMID9585556]_: the intrinsic dissociation rate of Ras for GTP (1 × 10-5 s-1) is
     2-fold lower than that for GDP (2 × 10-5 s-1)...
 
-    [9585556]_: Numerically, it was more convenient to use the corresponding
+    [PMID9585556]_: Numerically, it was more convenient to use the corresponding
     differential equations with the program FACSIMILE and to calculate for 1000
     s with the assumption of fast association rate constants (in all cases:
     10^7 M-1 s-1).
 
-    [9585556]_: The equilibrium dissociation constant for Ras-3′mdGDP (KD1) had
+    [PMID9585556]_: The equilibrium dissociation constant for Ras-3′mdGDP (KD1) had
     been determined independently as 9 pM from nucleotide association and
     dissociation experiments (Tables 2 and 3).
 
@@ -104,9 +104,9 @@ Ras converts GTP to GDP
 
 GTP hydrolysis by wild-type Ras is very slow in the absence of RasGAPs.
 
-    [1569940]_: It has been reported that the in vitro GTPase activity of
+    [PMID1569940]_: It has been reported that the in vitro GTPase activity of
     wild-type p21, which proceeds at a rate of 0.028 min^-1 at 37°C
-    ([2502546]_), is accelerated 100- to 200-fold by GAP, as measured under
+    ([PMID2502546]_), is accelerated 100- to 200-fold by GAP, as measured under
     nonsaturating conditions.
 
 ::
@@ -124,17 +124,17 @@ GTP hydrolysis by wild-type Ras is very slow in the absence of RasGAPs.
 Oncogenic Ras mutants have reduced GTP binding and GTPase activity
 -------------------------------------------------------------------
 
-[18568040]_: In 1984, three groups reported that mutated Ras oncoproteins
-differ functionally from their normal counterparts [6147754]_
-[18568040_42]_ [6148703]_. The oncogenic forms of Ras exhibited impaired
+[PMID18568040]_: In 1984, three groups reported that mutated Ras oncoproteins
+differ functionally from their normal counterparts [PMID6147754]_
+[PMID18568040_42]_ [PMID6148703]_. The oncogenic forms of Ras exhibited impaired
 GTPase activity, which suggested that the hydrolysis of GTP somehow terminates
 the activated state of the protein, which is consistent with the presumed
 analogy to the behaviour of G proteins...Furthermore, the link between the
 much-studied Gly-to-Val substitution of residue 12 of H-Ras and GTP hydrolysis
 was made the following year by Frank McCormick’s group, which noted that
-antibodies that are specific to that region blocked GTP binding [18568040_44]_.
+antibodies that are specific to that region blocked GTP binding [PMID18568040_44]_.
 
-[3304147]_: Early studies have predicted that replacement of Gly12 by any other
+[PMID3304147]_: Early studies have predicted that replacement of Gly12 by any other
 amino acid residue (except proline) would disrupt the a-helical structure of
 the amino terminal domain of ras proteins, causing a conformational change that
 would prevent its proper folding (112-114). Thus, replacement or elimination of
@@ -149,18 +149,18 @@ also part of the phosphoryl group (95)::
     # A key thing to note here is that the mutations in G12, G15, and K16 appear
     # to affect the affinity of Ras for GTP and GDP, not the catalytic rate.
 
-[18568040]_: Other oncogenic mutations (such as Gln61leu in H-Ras) were
-also shown to impair GTP hydrolysis [18568040_45]_ and other oncogenic forms of
+[PMID18568040]_: Other oncogenic mutations (such as Gln61leu in H-Ras) were
+also shown to impair GTP hydrolysis [PMID18568040_45]_ and other oncogenic forms of
 Ras were later determined to be impaired in GTP hydrolysis (for example, REF.
-[18568040_46]_).
+[PMID18568040_46]_).
 
-[3304147]_: Substitution of Gln61 by 17 different amino acid residues
-invariably results in decreased GTPase activity ([3304147_25]_, 117).
+[PMID3304147]_: Substitution of Gln61 by 17 different amino acid residues
+invariably results in decreased GTPase activity ([PMID3304147_25]_, 117).
 
 .. _FIG4a: http://www.ncbi.nlm.nih.gov/pmc/articles/PMC3915522/figure/F4/
 .. _FIG4b: http://www.ncbi.nlm.nih.gov/pmc/articles/PMC3915522/figure/F4/
 
-[18568040]_: The overall Ras structure was shown to consist of a
+[PMID18568040]_: The overall Ras structure was shown to consist of a
 hydrophobic core of six stranded β-sheets and five α-helices that are
 interconnected by a series of ten loops (FIG4a_). Five of these loops are
 situated on one facet of the protein and have crucial roles in determining the
@@ -197,9 +197,9 @@ state.::
 Autophosphorylation of Ras A59T
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-[3304147]_: In addition to GTP/GDP binding and GTPase activity, ras proteins
+[PMID3304147]_: In addition to GTP/GDP binding and GTPase activity, ras proteins
 carrying an Ala59 -> Thr59 mutation exhibit an autophosphorylating activity of
-an, as yet, unknown biological significance [3304147_23]_. In all cases, Thr59
+an, as yet, unknown biological significance [PMID3304147_23]_. In all cases, Thr59
 has been found to be the phosphate receptor site (106). No transphosphorylating
 activity has been detected with any ras protein, including those carrying Thr59
 mutations::
