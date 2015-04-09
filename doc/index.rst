@@ -9,12 +9,12 @@ Welcome to Ras model's documentation!
 Contents:
 
 .. toctree::
-    :maxdepth: 2
+    :maxdepth: 3
 
-    ras_regulation
-    barbacid_3304147
-    braf_map2k1_pcdetailed
-    braf_map2k1_nci
+    ras/index
+    raf/index
+    references
+    model
 
 Indices and tables
 ==================
