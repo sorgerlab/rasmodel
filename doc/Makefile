@@ -7,6 +7,12 @@ SPHINXBUILD   = sphinx-build
 PAPER         =
 BUILDDIR      = _build
 
+# Added these in for building of the model file
+CODEDIR = ../src
+DOCDIR = .
+OUTPUTDIR = output
+OUTPUTFILE = $(OUTPUTDIR)/ras_model.py
+
 # Internal variables.
 PAPEROPT_a4     = -D latex_paper_size=a4
 PAPEROPT_letter = -D latex_paper_size=letter
@@ -41,7 +47,19 @@ help:
 clean:
 	-rm -rf $(BUILDDIR)/*
 
-html:
+# Added this in to build the extracted model
+model: $(CODEDIR)/extract_model.py \
+       $(DOCDIR)/ras/ras_gtpase.rst \
+       $(DOCDIR)/ras/ras_gefs.rst \
+       $(DOCDIR)/ras/ras_gaps.rst \
+       $(DOCDIR)/raf/raf_activation_by_ras.rst
+	mkdir -p $(OUTPUTDIR)
+	python $(CODEDIR)/extract_model.py $(DOCDIR)/ras/ras_gtpase.rst > $(OUTPUTFILE)
+	python $(CODEDIR)/extract_model.py $(DOCDIR)/ras/ras_gefs.rst >> $(OUTPUTFILE)
+	python $(CODEDIR)/extract_model.py $(DOCDIR)/ras/ras_gaps.rst >> $(OUTPUTFILE)
+	python $(CODEDIR)/extract_model.py $(DOCDIR)/raf/raf_activation_by_ras.rst >> $(OUTPUTFILE)
+
+html: model
 	$(SPHINXBUILD) -b html $(ALLSPHINXOPTS) $(BUILDDIR)/html
 	@echo
 	@echo "Build finished. The HTML pages are in $(BUILDDIR)/html."
