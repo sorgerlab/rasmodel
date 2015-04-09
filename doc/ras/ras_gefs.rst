@@ -94,16 +94,15 @@ The RasGEF exchange cycle
 The following reaction scheme for the GEF exchange cycle, along with the
 associated rates, are drawn from [PMID9585556]_.
 
-.. highlight:: python
-
 .. image:: /images/9585556_rasgef_cycle.png
     :width: 600px
 
 ::
 
-    def ras_gef_exchange_cycle(ras, rasgef, gxp):
-        # An alias for Ras bound to GXP
-        rasgxp = ras(gef=None, gtp=99) % gxp(p=99)
+    def ras_gef_exchange_cycle(ras, rasgef, gtp, gdp):
+        # Aliases for Ras bound to GXP
+        rasgtp = ras(gef=None, gtp=99) % gtp(p=99)
+        rasgdp = ras(gef=None, gtp=98) % gdp(p=98)
 
 Nucleotide-free Ras binds GTP/GDP KD1a is given as 11.8 uM; we calculate the
 off-rate assuming a fast on rate of 1e7 M^-1 s^-1.
@@ -113,16 +112,20 @@ off-rate assuming a fast on rate of 1e7 M^-1 s^-1.
         KD1a = 11.8e-6
         kf1a = 1e7
         kr1a = KD1a * kf1a
-        bind(ras(gtp=None, s1s2='closed'), 'gtp', gxp(), 'p', [kf1a, kr1a])
+        for gxp in [gtp, gdp]:
+            bind(ras(gtp=None, s1s2='closed'), 'gtp', gxp(), 'p', [kf1a, kr1a])
     #
 
 Isomerization/conformational change of Ras resulting from nucleotide
 binding; also described as the conversion of the nucleotide from
-loosely bound to tightly bound::
+loosely bound to tightly bound:
+
+.. code-block:: python
 
         kf1b = 26.8
         kr1b = 20e-6
-        equilibrate(rasgxp(s1s2='closed'), rasgxp(s1s2='open'), [kf1b, kr1b])
+        for rasgxp in [rasgtp, rasgdp]:
+            equilibrate(rasgxp(s1s2='closed'), rasgxp(s1s2='open'), [kf1b, kr1b])
 
         # Binding of RasGEF to nucleotide-free Ras
         kf2 = 0.33e6
@@ -134,27 +137,28 @@ loosely bound to tightly bound::
         KD3 = 0.6e-3
         kf3 = 3.4e4 # Lower limit
         kr3 = KD3 * kf3
-        bind(rasgxp(s1s2='open'), 'gef', rasgef(), 'rasgef', [kf3, kr3])
+        for rasgxp in [rasgtp, rasgdp]:
+            bind(rasgxp(s1s2='open'), 'gef', rasgef(), 'rasgef', [kf3, kr3])
 
         # Binding of GXP to Ras/RasGEF complex
         KD4a = 8.6e-6
         kf4a = kf1a # on rate is insensitive to presence of GEF
         kr4a = KD4a * kf4a
-        bind(ras(s1s2='closed', gef=50) % rasgef(rasgef=50), 'gtp',
-             gxp(), 'p', [kf4a, kr4a])
+        for gxp in [gtp, gdp]:
+            bind(ras(s1s2='closed', gef=50) % rasgef(rasgef=50), 'gtp',
+                 gxp(), 'p', [kf4a, kr4a])
 
         # Isomerization of Ras-RasGEF-GXP from loose to tight
         kf4b = 20.4
         kr4b = 3.9
-        equilibrate(rasgxp(gef=1, s1s2='closed') % rasgef(rasgef=1),
-                    rasgxp(gef=1, s1s2='open') % rasgef(rasgef=1), [kf4b, kr4b])
-
+        for rasgxp in [rasgtp, rasgdp]:
+            equilibrate(rasgxp(gef=1, s1s2='closed') % rasgef(rasgef=1),
+                        rasgxp(gef=1, s1s2='open') % rasgef(rasgef=1), [kf4b, kr4b])
     #
 
 Instantiate the RasGEF cycle for HRAS and RASGRF1::
 
-    ras_gef_exchange_cycle(HRAS, RASGRF1, GTP)
-    ras_gef_exchange_cycle(HRAS, RASGRF1, GDP)
+    ras_gef_exchange_cycle(HRAS, RASGRF1, GTP, GDP)
 
 .. warning:: How does GTP hydrolysis fit into the cycle?
 
@@ -251,4 +255,19 @@ leukemias (25). To see whether Cdc25Mm285 acts differently on the three
 isoforms, we tested the GEF activity of Cdc25Mm285 on these proteins. As
 summarized in Table 1, Cdc25Mm285 is active on all isoforms, being somewhat
 more active on N-Ras, in accordance with the results of Leonardsen et al. (26).
+
+.. raw:: html
+
+    <script>
+        window.setTimeout(function() {
+        $('div.highlight-python pre > span.c:last-child').each(
+            function () {
+                if ($(this).text() == '#') {
+                    $(this.nextSibling).detach();
+                    $(this).detach();
+                }
+            }
+        );
+        }, 1000);
+    </script>
 

@@ -9,12 +9,12 @@ Welcome to the Ras executable model!
 Contents:
 
 .. toctree::
-    :maxdepth: 3
+    :maxdepth: 2
 
     ras/index
     raf/index
     references
-    model
+    model/index
 
 Indices and tables
 ==================
