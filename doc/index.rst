@@ -11,10 +11,7 @@ Contents:
 .. toctree::
     :maxdepth: 2
 
-    ras/index
-    raf/index
-    initial_conditions
-    references
+    full_model/index
     assembled/index
     outputs/index
 
