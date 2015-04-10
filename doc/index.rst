@@ -14,7 +14,8 @@ Contents:
     ras/index
     raf/index
     references
-    model/index
+    assembled/index
+    outputs/index
 
 Indices and tables
 ==================
