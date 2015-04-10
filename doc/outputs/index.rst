@@ -6,3 +6,4 @@ Model outputs
 
     rxn_net
     contact_map
+    simulation
