@@ -13,6 +13,7 @@ Contents:
 
     ras/index
     raf/index
+    initial_conditions
     references
     assembled/index
     outputs/index
