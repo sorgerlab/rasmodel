@@ -1,6 +1,7 @@
 # Added these in for building of the model file
 CODEDIR = src
 DOCDIR = doc
+DOCMODEL = $(DOCDIR)/full_model
 OUTPUTDIR = output
 MODEL = $(OUTPUTDIR)/ras_model
 PYSB_MODEL = $(MODEL).py
@@ -8,7 +9,7 @@ BNG_MODEL = $(MODEL).bngl
 KAPPA_MODEL = $(MODEL).ka
 RXN_NET = $(MODEL)_rxns
 
-all: model bngl kappa doc
+all: model bngl kappa rxn_net contact_map simulation doc
 
 doc: model
 	cd doc; make html
@@ -23,17 +24,19 @@ bngl: $(BNG_MODEL)
 kappa: $(KAPPA_MODEL)
 
 $(PYSB_MODEL): $(CODEDIR)/extract_model.py \
-       $(DOCDIR)/ras/ras_gtpase.rst \
-       $(DOCDIR)/ras/ras_gefs.rst \
-       $(DOCDIR)/ras/ras_gaps.rst \
-       $(DOCDIR)/raf/raf_activation_by_ras.rst \
-       $(DOCDIR)/initial_conditions.rst
+       $(DOCMODEL)/ras/ras_gtpase.rst \
+       $(DOCMODEL)/ras/ras_gefs.rst \
+       $(DOCMODEL)/ras/ras_gaps.rst \
+       $(DOCMODEL)/raf/raf_activation_by_ras.rst \
+       $(DOCMODEL)/initial_conditions.rst \
+       $(DOCMODEL)/observables.rst
 	mkdir -p $(OUTPUTDIR)
-	python $(CODEDIR)/extract_model.py $(DOCDIR)/ras/ras_gtpase.rst > $(PYSB_MODEL)
-	python $(CODEDIR)/extract_model.py $(DOCDIR)/ras/ras_gefs.rst >> $(PYSB_MODEL)
-	python $(CODEDIR)/extract_model.py $(DOCDIR)/ras/ras_gaps.rst >> $(PYSB_MODEL)
-	python $(CODEDIR)/extract_model.py $(DOCDIR)/raf/raf_activation_by_ras.rst >> $(PYSB_MODEL)
-	python $(CODEDIR)/extract_model.py $(DOCDIR)/initial_conditions.rst >> $(PYSB_MODEL)
+	python $(CODEDIR)/extract_model.py $(DOCMODEL)/ras/ras_gtpase.rst > $(PYSB_MODEL)
+	python $(CODEDIR)/extract_model.py $(DOCMODEL)/ras/ras_gefs.rst >> $(PYSB_MODEL)
+	python $(CODEDIR)/extract_model.py $(DOCMODEL)/ras/ras_gaps.rst >> $(PYSB_MODEL)
+	python $(CODEDIR)/extract_model.py $(DOCMODEL)/raf/raf_activation_by_ras.rst >> $(PYSB_MODEL)
+	python $(CODEDIR)/extract_model.py $(DOCMODEL)/initial_conditions.rst >> $(PYSB_MODEL)
+	python $(CODEDIR)/extract_model.py $(DOCMODEL)/observables.rst >> $(PYSB_MODEL)
 
 %.bngl: %.py
 	python -m pysb.export $< bngl > $(BNG_MODEL)
@@ -50,3 +53,8 @@ contact_map: $(PYSB_MODEL) $(CODEDIR)/contact_map.py
 	python $(CODEDIR)/contact_map.py $(PYSB_MODEL) $(MODEL)
 	dot $(MODEL)_cm.dot -T pdf -o $(MODEL)_cm.pdf
 	dot $(MODEL)_cm.dot -T png -o $(MODEL)_cm.png
+
+simulation: $(PYSB_MODEL)
+	python $(CODEDIR)/extract_model.py $(DOCDIR)/results/simulation.rst > $(OUTPUTDIR)/simulation.py
+	python $(OUTPUTDIR)/simulation.py
+

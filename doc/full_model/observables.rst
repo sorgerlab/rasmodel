@@ -11,4 +11,4 @@ denote the Observable component for HRAS.
 
     Observable('HRAS_GTP_', HRAS(gtp=1) % GTP(p=1))
     Observable('HRAS_GDP_', HRAS(gtp=1) % GDP(p=1))
-
+    Observable('HRAS_nf_', HRAS(gtp=None))

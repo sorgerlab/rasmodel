@@ -13,7 +13,7 @@ Contents:
 
     full_model/index
     assembled/index
-    outputs/index
+    results/index
 
 Indices and tables
 ==================

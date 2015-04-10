@@ -31,15 +31,15 @@ http://www.ncbi.nlm.nih.gov/pmc/articles/PMC3915522/figure/F1/).
 
 Anatomy of Ras regulation:
 
-    [PMID18568040]_: The structural differences between the RasGDP and the RasGTP
-    conformations reside mainly in two highly dynamic regions, termed switch i
-    (residues 30–40) and switch ii (residues 60–76). Both regions are required
-    for the interactions of Ras with upstream as well as downstream partners
-    (see also FIG. 2a). The binding of GTP alters the conformation of switch i,
-    primarily through the inward reorientation of the side chain of Thr35,
-    thereby enabling its interactions with the GTP γ-phosphate as well as the
-    Mg2+ ion. Similarly, the γ-phosphate induces significant changes in the
-    orientation of the switch ii region through interactions it establishes
+    [PMID18568040]_: The structural differences between the RasGDP and the
+    RasGTP conformations reside mainly in two highly dynamic regions, termed
+    switch i (residues 30–40) and switch ii (residues 60–76). Both regions are
+    required for the interactions of Ras with upstream as well as downstream
+    partners (see also FIG. 2a). The binding of GTP alters the conformation of
+    switch i, primarily through the inward reorientation of the side chain of
+    Thr35, thereby enabling its interactions with the GTP γ-phosphate as well
+    as the Mg2+ ion. Similarly, the γ-phosphate induces significant changes in
+    the orientation of the switch ii region through interactions it establishes
     with Gly60 (FIG. 4b).
 
 A side note on alternative splice variants:
@@ -56,24 +56,25 @@ Ras binds GTP and GDP
 
 Mechanism and rates associated with GTP/GDP binding by Ras.
 
-    [PMID3304147]_: ras proteins, independently of their phylogenetic origin, have
-    been shown to bind guanine nucleotides (GTP and GDP) ([PMID3304147_22]_
-    [PMID3304147_23]_ [PMID3304147_24]_ [PMID3304147_25]_) and possess intrinsic GTPase
-    activity ([PMID3304147_25]_ [PMID3304147_26]_ [PMID6147754]_ [PMID6148703]_ [PMID3304147_29]_)
+    [PMID3304147]_: ras proteins, independently of their phylogenetic origin,
+    have been shown to bind guanine nucleotides (GTP and GDP)
+    ([PMID3304147_22]_ [PMID3304147_23]_ [PMID3304147_24]_ [PMID3304147_25]_)
+    and possess intrinsic GTPase activity ([PMID3304147_25]_ [PMID3304147_26]_
+    [PMID6147754]_ [PMID6148703]_ [PMID3304147_29]_)
 
 The following statements were taken from a kinetic analysis of Ras and
 nucleotide interactions. All rates were measured at 20C.
 
-    [PMID9585556]_: the intrinsic dissociation rate of Ras for GTP (1 × 10-5 s-1) is
-    2-fold lower than that for GDP (2 × 10-5 s-1)...
+    [PMID9585556]_: the intrinsic dissociation rate of Ras for GTP (1 × 10-5
+    s-1) is 2-fold lower than that for GDP (2 × 10-5 s-1)...
 
-    [PMID9585556]_: Numerically, it was more convenient to use the corresponding
-    differential equations with the program FACSIMILE and to calculate for 1000
-    s with the assumption of fast association rate constants (in all cases:
-    10^7 M-1 s-1).
+    [PMID9585556]_: Numerically, it was more convenient to use the
+    corresponding differential equations with the program FACSIMILE and to
+    calculate for 1000 s with the assumption of fast association rate constants
+    (in all cases: 10^7 M-1 s-1).
 
-    [PMID9585556]_: The equilibrium dissociation constant for Ras-3′mdGDP (KD1) had
-    been determined independently as 9 pM from nucleotide association and
+    [PMID9585556]_: The equilibrium dissociation constant for Ras-3′mdGDP (KD1)
+    had been determined independently as 9 pM from nucleotide association and
     dissociation experiments (Tables 2 and 3).
 
 ::
@@ -114,12 +115,14 @@ GTP hydrolysis by wild-type Ras is very slow in the absence of RasGAPs.
     # Convert 2.8e-2 min^-1 to units of s^-1
     wt_ras_hydrolysis_rate = 2.8e-2 * 60
 
-    def ras_converts_gtp_to_gdp(ras):
+    def ras_converts_gtp_to_gdp(ras, kcat):
         k = Parameter('k_{0}_gtpase'.format(ras.name), 1.)
         Rule('{0}_converts_GTP_GDP'.format(ras.name),
              ras(gtp=1) % GTP(p=1) >>
              ras(gtp=1) % GDP(p=1),
              k)
+
+    ras_converts_gtp_to_gdp(HRAS, wt_ras_hydrolysis_rate)
 
 Oncogenic Ras mutants have reduced GTP binding and GTPase activity
 -------------------------------------------------------------------
@@ -182,17 +185,6 @@ state.::
     # As an implementation detail, note that the mutant rate should be
     # constrained to be less than the wild type rate through the use of an
     # Expression incorporating a scaling parameter between [0, 1].
-
-    Parameter('k_mut_gtpase', 0.1)
-
-    # Mutant Ras has diminished GTPase activity:
-    for ras in [KRAS, HRAS, NRAS]:
-        ras_mut = ras(oncogenic='y')
-
-        Rule('{0.name}_mut_converts_GTP_GDP'.format(ras),
-             ras_mut(gtp=1) % GTP(p=1) >>
-             ras_mut(gtp=1) % GDP(p=1),
-             k_mut_gtpase)
 
 Autophosphorylation of Ras A59T
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
