@@ -23,11 +23,12 @@ http://www.ncbi.nlm.nih.gov/pmc/articles/PMC3915522/figure/F1/).
         Monomer(ras_name,
                 ['gtp', 'gef', 'p_loop', 's1s2', 'CAAX', 'oncogenic'],
                 {'s1s2': ['closed', 'open'],
-                 'oncogenic': ['y', 'n']})
+                 'oncogenic': ['n', 'y']})
 
     # Guanine nucleotides
-    Monomer('GTP', ['p'])
-    Monomer('GDP', ['p'])
+    Monomer('GTP', ['p', 'label'], {'label': ['n', 'y']})
+    Monomer('GDP', ['p', 'label'], {'label': ['n', 'y']})
+    Monomer('Pi', []) # inorganic phosphate, used for GDP/GTP recycling
 
 Anatomy of Ras regulation:
 
@@ -44,23 +45,131 @@ Anatomy of Ras regulation:
 
 A side note on alternative splice variants:
 
-    [PMID3304147]_: The three functional ras genes code for highly related proteins
-    generically known as p21 (71). The p21 coding sequences of each of these
-    genes are equally distributed in four exons except for the K-ras-2 gene,
-    which possesses two alternative fourth coding exons (exons IVA and IVB)
-    that allow the synthesis of two isomorphic p21 proteins of 188 and 189
+    [PMID3304147]_: The three functional ras genes code for highly related
+    proteins generically known as p21 (71). The p21 coding sequences of each of
+    these genes are equally distributed in four exons except for the K-ras-2
+    gene, which possesses two alternative fourth coding exons (exons IVA and
+    IVB) that allow the synthesis of two isomorphic p21 proteins of 188 and 189
     residues that differ in their carboxy terminal domains (54, 60, 72).
 
 Ras binds GTP and GDP
 ---------------------
 
-Mechanism and rates associated with GTP/GDP binding by Ras.
+A general statement of Ras GTP binding and catalytic activity, found in a
+review:
 
     [PMID3304147]_: ras proteins, independently of their phylogenetic origin,
     have been shown to bind guanine nucleotides (GTP and GDP)
     ([PMID3304147_22]_ [PMID3304147_23]_ [PMID3304147_24]_ [PMID3304147_25]_)
     and possess intrinsic GTPase activity ([PMID3304147_25]_ [PMID3304147_26]_
     [PMID6147754]_ [PMID6148703]_ [PMID3304147_29]_)
+
+Mechanism of Ras binding to GTP and GDP
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The binding of Ras to GTP and GDP goes through an intermediate state, in which
+the nucleotide is at first loosely and then tightly bound:
+
+    [PMID9585556]_: It has been shown before that guanine nucleotide binding to
+    Ras involves (at least) two steps, with a fast initial binding reaction
+    where nucleotide is bound loosely and a slow isomerization reaction to a
+    tight-binding conformation (Scheme 2). In our reaction schemes, we have
+    indicated the loosely and tightly bound complexes by Ras-GXP_L and
+    Ras-GXP_T, respectively. The change of fluorescence signal occurs during
+    the second step ([PMID2200519]_, [PMID8552403]_, [PMID8702787]_).
+
+As background, these types of two-step binding equilibria are common in enzyme
+kinetics:
+
+    [PMID2200519]_: There are numerous examples of two-step binding mecha-
+    nisms in enzyme kinetics. A well-documented case is that of myosin ATPase,
+    which displays a relatively weak but rapid initial binding of nucleotides
+    followed by a quasi-irreversible isomerization step, which has been
+    interpreted as a protein conformational change (Bagshaw et al., 1974).
+
+Using fluorescent nucleotides incubated with HRAS, the two steps in the binding reaction were measured and interpreted according to the following
+reaction scheme, from [PMID2200519]_:
+
+.. image:: /images/2200519_scheme2.png
+
+We formulate a binding mechanism based on this two-step scheme. We denote the
+change in conformation that Ras undergoes by changing the state of the
+switch1/switch2 domains (s1s2) from 'closed' to 'open'.
+
+::
+
+    def ras_binds_gxp(ras, gxp, klist):
+        # Alias for Ras bound to GXP. Note that these equilibria are for
+        # Ras that is NOT bound to a Ras-GEF.
+        rasgxp = ras(gef=None, gtp=99) % gxp(p=99)
+        # Get the rates from the list:
+        (kf1, kr1, kf2, kr2) = klist
+
+The initial binding step:
+
+.. code-block:: python
+
+        bind(ras(gtp=None, s1s2='closed'), 'gtp', gxp(), 'p', [kf1, kr1])
+    #
+
+Isomerization/conformational change of Ras resulting from nucleotide binding;
+also described as the conversion of the nucleotide from loosely bound to
+tightly bound:
+
+.. code-block:: python
+
+        equilibrate(rasgxp(s1s2='closed'), rasgxp(s1s2='open'), [kf2, kr2])
+    #
+
+Rates for Ras/nucleotide binding
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The rates for HRAS + GDP binding were measured at 25C (Table 1,
+[PMID2200519]_). Since only the equilibrium constant K1 was given for the first
+step, we assume a diffusion-limited on-rate of :math:`10^7\ M^-1\ s^-1` for
+kf1::
+
+    ras_gdp_kf1 = 1e7   # M^-1 s^-1
+    ras_gdp_K1 = 5.7e4  # M^-1
+    ras_gdp_kr1 = ras_gdp_kf1 / ras_gdp_K1  # s^-1
+
+For the second step, the rates were given explicitly as (Table 1,
+[PMID2200519]_)::
+
+    ras_gdp_kf2 = 14.8   # s^-1
+    ras_gdp_kr2 = 1.8e-5 # s^-1
+
+The rates given for HRAS + GTP at 25C were similar, though the off-rate for the
+second state was for some reason not given. As before, we choose a
+diffusion-limited on-rate of :math:`10^7\ M^-1\ s^-1` for kf1::
+
+    ras_gtp_kf1 = 1e7    # M^-1 s^-1
+    ras_gtp_K1 = 1.25e5  # M^-1
+    ras_gtp_kr1 = ras_gtp_kf1 / ras_gtp_K1  # s^-1
+
+    ras_gtp_kf2 = 16.7   # s^-1
+
+We specify the binding of HRAS to GDP according to the measured rates::
+
+    ras_gdp_klist = [ras_gdp_kf1, ras_gdp_kr1, ras_gdp_kf2, ras_gdp_kr2]
+    ras_binds_gxp(HRAS, GDP, ras_gdp_klist)
+
+We specify the binding of HRAS to GTP, using the kr2 rate for HRAS/GDP (since
+the rate was not reported for GTP)::
+
+    ras_gtp_klist = [ras_gtp_kf1, ras_gtp_kr1, ras_gtp_kf2, ras_gdp_kr2]
+    ras_binds_gxp(HRAS, GTP, ras_gtp_klist)
+
+Until we get new information, we will simply use the same rates for KRAS and
+NRAS::
+
+    ras_binds_gxp(KRAS, GDP, ras_gdp_klist)
+    ras_binds_gxp(KRAS, GTP, ras_gtp_klist)
+    ras_binds_gxp(NRAS, GDP, ras_gdp_klist)
+    ras_binds_gxp(NRAS, GTP, ras_gtp_klist)
+
+Orphans
+~~~~~~~
 
 The following statements were taken from a kinetic analysis of Ras and
 nucleotide interactions. All rates were measured at 20C.
@@ -79,31 +188,23 @@ nucleotide interactions. All rates were measured at 20C.
 
 ::
 
-    # Make the same assumptions about fast association rate constants as
-    # 9585556, and use their measured values for dissociation rates in the
-    # absence of GEFs (association rates are in units of nM^-1 s^-1).
-    def ras_binds_gtp_and_gdp(ras, k_gtp_diss, k_gdp_diss):
-        kf = 1e-2
-        bind_table([[                   GTP,               GDP],
-                    [ras,  (kf, k_gtp_diss),  (kf, k_gdp_diss)]], 'gtp', 'p')
-
     # The data in Table 1 gives a value of 1.2e-5 for the dissociation rate with
     # GDP, whereas the text gives rates of 1e-5 and 2e-5 for GTP/GDP,
     # respectively.
-    ras_binds_gtp_and_gdp(HRAS, 1e-5, 2e-5)
+    #ras_binds_gtp_and_gdp(HRAS, GTP, GDP)
 
     # The rate for KRAS/GDP association is given in Table 1 as 1.6e-5, but the
     # KRAS/GTP rate is not measured.
-    ras_binds_gtp_and_gdp(KRAS, 8e-6, 1.6e-5)
+    #ras_binds_gtp_and_gdp(KRAS, 8e-6, 1.6e-5)
 
     # The rate for NRAS/GDP association is given in Table 1 as 1.0e-5, but the
     # NRAS/GTP rate is not measured.
-    ras_binds_gtp_and_gdp(NRAS, 5e-6, 1.0e-5)
+    #ras_binds_gtp_and_gdp(NRAS, 5e-6, 1.0e-5)
 
 Ras converts GTP to GDP
 -----------------------
 
-GTP hydrolysis by wild-type Ras is very slow in the absence of RasGAPs.
+GTP hydrolysis by wild-type Ras is slow in the absence of RasGAPs.
 
     [PMID1569940]_: It has been reported that the in vitro GTPase activity of
     wild-type p21, which proceeds at a rate of 0.028 min^-1 at 37°C
@@ -119,33 +220,52 @@ GTP hydrolysis by wild-type Ras is very slow in the absence of RasGAPs.
         k = Parameter('k_{0}_gtpase'.format(ras.name), 1.)
         Rule('{0}_converts_GTP_GDP'.format(ras.name),
              ras(gtp=1) % GTP(p=1) >>
-             ras(gtp=1) % GDP(p=1),
+             ras(gtp=1) % GDP(p=1) + Pi(),
              k)
 
-    ras_converts_gtp_to_gdp(HRAS, wt_ras_hydrolysis_rate)
+    #ras_converts_gtp_to_gdp(HRAS, wt_ras_hydrolysis_rate)
+
+In the cell, GTP levels are buffered to remain fairly constant. To prevent GTP
+levels from being depleted by GTPase activity in the simulation, we
+reconstitute GTP from unbound GDP and inorganic phosphate at a very high rate.
+Since we only create inorganic phosphate (Pi) from the GTP hydrolysis step,
+ensures that GTP/GDP levels and ratios will be held constant over time.
+
+::
+
+    def recycle_gtp_from_gdp():
+        k = Parameter('k_recycle_gtp_from_gdp', 1e7)
+        # Note that only unbound GDP can be recycled!
+        Rule('recycle_gtp_from_gdp_rule',
+             GDP(p=None, label='n') + Pi() >> GTP(p=None, label='n'), k)
+        Rule('recycle_mgtp_from_mgdp_rule',
+             GDP(p=None, label='y') + Pi() >> GTP(p=None, label='y'), k)
+
+    recycle_gtp_from_gdp()
 
 Oncogenic Ras mutants have reduced GTP binding and GTPase activity
 -------------------------------------------------------------------
 
 [PMID18568040]_: In 1984, three groups reported that mutated Ras oncoproteins
 differ functionally from their normal counterparts [PMID6147754]_
-[PMID18568040_42]_ [PMID6148703]_. The oncogenic forms of Ras exhibited impaired
-GTPase activity, which suggested that the hydrolysis of GTP somehow terminates
-the activated state of the protein, which is consistent with the presumed
-analogy to the behaviour of G proteins...Furthermore, the link between the
-much-studied Gly-to-Val substitution of residue 12 of H-Ras and GTP hydrolysis
-was made the following year by Frank McCormick’s group, which noted that
-antibodies that are specific to that region blocked GTP binding [PMID18568040_44]_.
+[PMID18568040_42]_ [PMID6148703]_. The oncogenic forms of Ras exhibited
+impaired GTPase activity, which suggested that the hydrolysis of GTP somehow
+terminates the activated state of the protein, which is consistent with the
+presumed analogy to the behaviour of G proteins...Furthermore, the link between
+the much-studied Gly-to-Val substitution of residue 12 of H-Ras and GTP
+hydrolysis was made the following year by Frank McCormick’s group, which noted
+that antibodies that are specific to that region blocked GTP binding
+[PMID18568040_44]_.
 
-[PMID3304147]_: Early studies have predicted that replacement of Gly12 by any other
-amino acid residue (except proline) would disrupt the a-helical structure of
-the amino terminal domain of ras proteins, causing a conformational change that
-would prevent its proper folding (112-114). Thus, replacement or elimination of
-Gly12 may create a rigid domain that cannot efficiently interact with the
-phosphoryl region of the GTP molecule, reducing the GTPase activity of ras
-proteins. Two additional residues in this domain, Glyl5 and Lysl6, are present
-in other guanine nucleotide-bindingproteins(109, 111). Substitution of Lys16 by
-Asn16 significantly reduces GTP/GDP affinity without affecting base
+[PMID3304147]_: Early studies have predicted that replacement of Gly12 by any
+other amino acid residue (except proline) would disrupt the a-helical structure
+of the amino terminal domain of ras proteins, causing a conformational change
+that would prevent its proper folding (112-114). Thus, replacement or
+elimination of Gly12 may create a rigid domain that cannot efficiently interact
+with the phosphoryl region of the GTP molecule, reducing the GTPase activity of
+ras proteins. Two additional residues in this domain, Glyl5 and Lysl6, are
+present in other guanine nucleotide-bindingproteins(109, 111). Substitution of
+Lys16 by Asn16 significantly reduces GTP/GDP affinity without affecting base
 specificity, an observation consistent with the idea that these residues are
 also part of the phosphoryl group (95)::
 
@@ -153,9 +273,9 @@ also part of the phosphoryl group (95)::
     # to affect the affinity of Ras for GTP and GDP, not the catalytic rate.
 
 [PMID18568040]_: Other oncogenic mutations (such as Gln61leu in H-Ras) were
-also shown to impair GTP hydrolysis [PMID18568040_45]_ and other oncogenic forms of
-Ras were later determined to be impaired in GTP hydrolysis (for example, REF.
-[PMID18568040_46]_).
+also shown to impair GTP hydrolysis [PMID18568040_45]_ and other oncogenic
+forms of Ras were later determined to be impaired in GTP hydrolysis (for
+example, REF.  [PMID18568040_46]_).
 
 [PMID3304147]_: Substitution of Gln61 by 17 different amino acid residues
 invariably results in decreased GTPase activity ([PMID3304147_25]_, 117).
@@ -189,14 +309,15 @@ state.::
 Autophosphorylation of Ras A59T
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-[PMID3304147]_: In addition to GTP/GDP binding and GTPase activity, ras proteins
-carrying an Ala59 -> Thr59 mutation exhibit an autophosphorylating activity of
-an, as yet, unknown biological significance [PMID3304147_23]_. In all cases, Thr59
-has been found to be the phosphate receptor site (106). No transphosphorylating
-activity has been detected with any ras protein, including those carrying Thr59
-mutations::
+[PMID3304147]_: In addition to GTP/GDP binding and GTPase activity, ras
+proteins carrying an Ala59 -> Thr59 mutation exhibit an autophosphorylating
+activity of an, as yet, unknown biological significance [PMID3304147_23]_. In
+all cases, Thr59 has been found to be the phosphate receptor site (106). No
+transphosphorylating activity has been detected with any ras protein, including
+those carrying Thr59 mutations::
 
-    # Add autophosphorylation of Ras A59T if it later turns out to be significant.
+    # Add autophosphorylation of Ras A59T if it later turns out to be
+    # significant.
 
 
 Post-translational modifications of the C-terminus
@@ -238,4 +359,21 @@ upstream of the C terminus that are sufficient to anchor the protein to the
 membrane. However, prenylated H-Ras, N-Ras and K-Ras-4A require a further
 palmitoylation step in which a palmitoyl moiety is attached to upstream
 C-terminal Cys residues before their anchoring in the membrane is stabilized.
+
+
+.. raw:: html
+
+    <script>
+        window.setTimeout(function() {
+        $('div.highlight-python pre > span.c:last-child').each(
+            function () {
+                if ($(this).text() == '#') {
+                    $(this.nextSibling).detach();
+                    $(this).detach();
+                }
+            }
+        );
+        }, 1000);
+    </script>
+
 
