@@ -73,4 +73,9 @@ References
 
 .. [PMID9219684] Scheffzek K, Ahmadian MR, Kabsch W, Wiesmüller L, Lautwein A, Schmitz F, Wittinghofer A. **The Ras-RasGAP complex: structural basis for GTPase activation and its loss in oncogenic Ras mutants.** Science. 1997 Jul 18;277(5324):333-8. :pmid:`9219684`. :download:`PDF </pdf/9219684.pdf>`.
 
+.. [PMID2200519] John J, Sohmen R, Feuerstein J, Linke R, Wittinghofer A, Goody RS. **Kinetics of interaction of nucleotides with nucleotide-free H-ras p21.** Biochemistry. 1990 Jun 26;29(25):6058-65. :pmid:`2200519` :download:`PDF </pdf/2200519.pdf>`
+
+.. [PMID8552403] Schmidt G, Lenzen C, Simon I, Deuter R, Cool RH, Goody RS, Wittinghofer A. **Biochemical and biological consequences of changing the specificity of p21ras from guanosine to xanthosine nucleotides.** Oncogene. 1996 Jan 4;12(1):87-96.
+
+.. [PMID8702787] Simon I, Zerial M, Goody RS.  **Kinetics of interaction of Rab5 and Rab7 with nucleotides and magnesium ions.** J Biol Chem. 1996 Aug 23;271(34):20470-8. :pmid:`8702787` :download:`PDF </pdf/8702787.pdf>`
 
