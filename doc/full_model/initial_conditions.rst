@@ -57,8 +57,8 @@ For the time being, we assume a ten-fold lower value for GDP::
     GDP_0.value = GTP_0.value / 10.
 
 For simulations involving a labeled nucleotide (as in the experiments of
-Wittinghofer in [2200519]_ and [9585556]_), we explicitly declare these here as
-having an initial condition of 0 so that they can be set for specific
+Wittinghofer in [PMID2200519]_ and [PMID9585556]_), we explicitly declare these
+here as having an initial condition of 0 so that they can be set for specific
 simulations later::
 
     Parameter('mGTP_0', 0.)
