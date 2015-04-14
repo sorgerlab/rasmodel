@@ -16,8 +16,7 @@ doc: model
 
 clean:
 	cd $(DOCDIR); make clean
-	rm -f $(PYSB_MODEL)
-	rm -f $(BNG_MODEL)
+	cd $(OUTPUTDIR); rm -f *.pdf *.png *.dot *.py *.ka *.bngl
 
 model: $(PYSB_MODEL)
 bngl: $(BNG_MODEL)
