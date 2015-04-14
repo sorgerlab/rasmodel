@@ -163,10 +163,10 @@ the rate was not reported for GTP)::
 Until we get new information, we will simply use the same rates for KRAS and
 NRAS::
 
-    ras_binds_gxp(KRAS, GDP, ras_gdp_klist)
-    ras_binds_gxp(KRAS, GTP, ras_gtp_klist)
-    ras_binds_gxp(NRAS, GDP, ras_gdp_klist)
-    ras_binds_gxp(NRAS, GTP, ras_gtp_klist)
+    #ras_binds_gxp(KRAS, GDP, ras_gdp_klist)
+    #ras_binds_gxp(KRAS, GTP, ras_gtp_klist)
+    #ras_binds_gxp(NRAS, GDP, ras_gdp_klist)
+    #ras_binds_gxp(NRAS, GTP, ras_gtp_klist)
 
 Ras converts GTP to GDP
 -----------------------
@@ -194,12 +194,12 @@ not bound to a GEF::
         k = Parameter('k_{0}_gtpase'.format(ras.name), 1.)
         # Instantiate the rule for both labeled and unlabeled GTP/GDP
         Rule('{0}_converts_GTP_GDP'.format(ras.name),
-             ras(gef=None, gtp=1) % GTP(p=1, label='n') >>
-             ras(gef=None, gtp=1) % GDP(p=1, label='n') + Pi(),
+             ras(gef=None, gtp=1, s1s2='open') % GTP(p=1, label='n') >>
+             ras(gef=None, gtp=1, s1s2='open') % GDP(p=1, label='n') + Pi(),
              k)
         Rule('{0}_converts_mGTP_mGDP'.format(ras.name),
-             ras(gef=None, gtp=1) % GTP(p=1, label='y') >>
-             ras(gef=None, gtp=1) % GDP(p=1, label='y') + Pi(),
+             ras(gef=None, gtp=1, s1s2='open') % GTP(p=1, label='y') >>
+             ras(gef=None, gtp=1, s1s2='open') % GDP(p=1, label='y') + Pi(),
              k)
 
 Rates
