@@ -9,7 +9,7 @@ BNG_MODEL = $(MODEL).bngl
 KAPPA_MODEL = $(MODEL).ka
 RXN_NET = $(MODEL)_rxns
 
-all: model bngl kappa rxn_net contact_map simulation doc
+all: model bngl kappa rxn_net contact_map influence_map simulation doc
 
 doc: model
 	cd doc; make html
@@ -53,6 +53,11 @@ contact_map: $(PYSB_MODEL) $(CODEDIR)/contact_map.py
 	python $(CODEDIR)/contact_map.py $(PYSB_MODEL) $(MODEL)
 	dot $(MODEL)_cm.dot -T pdf -o $(MODEL)_cm.pdf
 	dot $(MODEL)_cm.dot -T png -o $(MODEL)_cm.png
+
+influence_map: $(PYSB_MODEL) $(CODEDIR)/influence_map.py
+	python $(CODEDIR)/influence_map.py $(PYSB_MODEL) $(MODEL)
+	dot $(MODEL)_im_fixed.dot -T pdf -o $(MODEL)_im.pdf
+	dot $(MODEL)_im_fixed.dot -T png -o $(MODEL)_im.png
 
 simulation: $(PYSB_MODEL)
 	python $(CODEDIR)/extract_model.py $(DOCDIR)/results/simulation.rst > $(OUTPUTDIR)/simulation.py

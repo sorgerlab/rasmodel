@@ -81,9 +81,9 @@ the nucleotide is at first loosely and then tightly bound:
 As background, these types of two-step binding equilibria are common in enzyme
 kinetics:
 
-    [PMID2200519]_: There are numerous examples of two-step binding mecha-
-    nisms in enzyme kinetics. A well-documented case is that of myosin ATPase,
-    which displays a relatively weak but rapid initial binding of nucleotides
+    [PMID2200519]_: There are numerous examples of two-step binding mechanisms
+    in enzyme kinetics. A well-documented case is that of myosin ATPase, which
+    displays a relatively weak but rapid initial binding of nucleotides
     followed by a quasi-irreversible isomerization step, which has been
     interpreted as a protein conformational change (Bagshaw et al., 1974).
 

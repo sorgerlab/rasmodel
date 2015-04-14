@@ -6,4 +6,5 @@ Model outputs
 
     rxn_net
     contact_map
+    influence_map
     simulation
