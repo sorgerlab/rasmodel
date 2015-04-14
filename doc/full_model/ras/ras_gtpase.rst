@@ -182,13 +182,13 @@ GDP and Pi (inorganic phosphate).
 
 One additional consideration is whether this reaction can take place while a
 Ras-GEF, e.g., Sos, is bound. Though there is a short-lived intermediate in
-which a GEF and a tightly-bound nucleotide are both bound to Ras, it seems
-sensible to assume that this state cannot hydrolyze GTP due to the
-conformational instability of the protein in this state. More to the point, the
-hydrolysis reaction is relatively slow compared to the lifetime of this
-intermediate, thus there is likely to be very little flux occurring via this
-intermediate. Thus we specify that the reaction occurs only when Ras is not
-bound to a GEF::
+which a GEF and a tightly-bound nucleotide are both bound to Ras (see
+:ref:`ras_gefs`), it seems sensible to assume that this state cannot hydrolyze
+GTP due to the conformational instability of the protein in this state. More to
+the point, the hydrolysis reaction is relatively slow compared to the lifetime
+of this intermediate, thus there is likely to be very little flux occurring via
+this intermediate. Thus we specify that the reaction occurs only when Ras is
+not bound to a GEF::
 
     def ras_converts_gtp_to_gdp(ras, kcat):
         k = Parameter('k_{0}_gtpase'.format(ras.name), 1.)
