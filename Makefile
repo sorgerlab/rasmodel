@@ -55,7 +55,7 @@ contact_map: $(PYSB_MODEL) $(CODEDIR)/contact_map.py
 	dot $(MODEL)_cm.dot -T png -o $(MODEL)_cm.png
 
 influence_map: $(PYSB_MODEL) $(CODEDIR)/influence_map.py
-	python $(CODEDIR)/influence_map.py $(PYSB_MODEL) $(MODEL)
+	python $(CODEDIR)/influence_map.py $(PYSB_MODEL) $(MODEL)_im
 	dot $(MODEL)_im_fixed.dot -T pdf -o $(MODEL)_im.pdf
 	dot $(MODEL)_im_fixed.dot -T png -o $(MODEL)_im.png
 

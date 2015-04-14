@@ -38,7 +38,7 @@ def main(argv):
 
     # Process the influence map file to fix the extra newlines
     im_output_file = open(im_output_filename)
-    im_output_file_fixed = open('%s_im_fixed.dot' % im_filename, 'w')
+    im_output_file_fixed = open('%s_fixed.dot' % im_filename, 'w')
     for line in im_output_file.readlines():
         fixed_line = re.sub('label="\n', 'label="', line)
         im_output_file_fixed.write(fixed_line)
