@@ -64,8 +64,8 @@ review:
     and possess intrinsic GTPase activity ([PMID3304147_25]_ [PMID3304147_26]_
     [PMID6147754]_ [PMID6148703]_ [PMID3304147_29]_)
 
-Mechanism of Ras binding to GTP and GDP
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Mechanism
+~~~~~~~~~
 
 The binding of Ras to GTP and GDP goes through an intermediate state, in which
 the nucleotide is at first loosely and then tightly bound:
@@ -121,8 +121,8 @@ tightly bound:
         equilibrate(rasgxp(s1s2='closed'), rasgxp(s1s2='open'), [kf2, kr2])
     #
 
-Rates for Ras/nucleotide binding
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Rates
+~~~~~
 
 The rates for HRAS + GDP binding were measured at 25C (Table 1,
 [PMID2200519]_). Since only the equilibrium constant K1 was given for the first
@@ -168,41 +168,42 @@ NRAS::
     ras_binds_gxp(NRAS, GDP, ras_gdp_klist)
     ras_binds_gxp(NRAS, GTP, ras_gtp_klist)
 
-Orphans
-~~~~~~~
-
-The following statements were taken from a kinetic analysis of Ras and
-nucleotide interactions. All rates were measured at 20C.
-
-    [PMID9585556]_: the intrinsic dissociation rate of Ras for GTP (1 × 10-5
-    s-1) is 2-fold lower than that for GDP (2 × 10-5 s-1)...
-
-    [PMID9585556]_: Numerically, it was more convenient to use the
-    corresponding differential equations with the program FACSIMILE and to
-    calculate for 1000 s with the assumption of fast association rate constants
-    (in all cases: 10^7 M-1 s-1).
-
-    [PMID9585556]_: The equilibrium dissociation constant for Ras-3′mdGDP (KD1)
-    had been determined independently as 9 pM from nucleotide association and
-    dissociation experiments (Tables 2 and 3).
-
-::
-
-    # The data in Table 1 gives a value of 1.2e-5 for the dissociation rate with
-    # GDP, whereas the text gives rates of 1e-5 and 2e-5 for GTP/GDP,
-    # respectively.
-    #ras_binds_gtp_and_gdp(HRAS, GTP, GDP)
-
-    # The rate for KRAS/GDP association is given in Table 1 as 1.6e-5, but the
-    # KRAS/GTP rate is not measured.
-    #ras_binds_gtp_and_gdp(KRAS, 8e-6, 1.6e-5)
-
-    # The rate for NRAS/GDP association is given in Table 1 as 1.0e-5, but the
-    # NRAS/GTP rate is not measured.
-    #ras_binds_gtp_and_gdp(NRAS, 5e-6, 1.0e-5)
-
 Ras converts GTP to GDP
 -----------------------
+
+Mechanism
+~~~~~~~~~
+
+The mechanism for hydrolysis of GTP to GDP by Ras is fairly straightforward to
+implement, but we note that we model this reaction as only taking place once
+the nucleotide has been established in the "tightly bound" state. We also note
+that the conversion involves replacing one molecule of GTP for a molecule of
+GDP and Pi (inorganic phosphate).
+
+One additional consideration is whether this reaction can take place while a
+Ras-GEF, e.g., Sos, is bound. Though there is a short-lived intermediate in
+which a GEF and a tightly-bound nucleotide are both bound to Ras, it seems
+sensible to assume that this state cannot hydrolyze GTP due to the
+conformational instability of the protein in this state. More to the point, the
+hydrolysis reaction is relatively slow compared to the lifetime of this
+intermediate, thus there is likely to be very little flux occurring via this
+intermediate. Thus we specify that the reaction occurs only when Ras is not
+bound to a GEF::
+
+    def ras_converts_gtp_to_gdp(ras, kcat):
+        k = Parameter('k_{0}_gtpase'.format(ras.name), 1.)
+        # Instantiate the rule for both labeled and unlabeled GTP/GDP
+        Rule('{0}_converts_GTP_GDP'.format(ras.name),
+             ras(gef=None, gtp=1) % GTP(p=1, label='n') >>
+             ras(gef=None, gtp=1) % GDP(p=1, label='n') + Pi(),
+             k)
+        Rule('{0}_converts_mGTP_mGDP'.format(ras.name),
+             ras(gef=None, gtp=1) % GTP(p=1, label='y') >>
+             ras(gef=None, gtp=1) % GDP(p=1, label='y') + Pi(),
+             k)
+
+Rates
+~~~~~
 
 GTP hydrolysis by wild-type Ras is slow in the absence of RasGAPs.
 
@@ -216,20 +217,17 @@ GTP hydrolysis by wild-type Ras is slow in the absence of RasGAPs.
     # Convert 2.8e-2 min^-1 to units of s^-1
     wt_ras_hydrolysis_rate = 2.8e-2 * 60
 
-    def ras_converts_gtp_to_gdp(ras, kcat):
-        k = Parameter('k_{0}_gtpase'.format(ras.name), 1.)
-        Rule('{0}_converts_GTP_GDP'.format(ras.name),
-             ras(gtp=1) % GTP(p=1) >>
-             ras(gtp=1) % GDP(p=1) + Pi(),
-             k)
+    ras_converts_gtp_to_gdp(HRAS, wt_ras_hydrolysis_rate)
 
-    #ras_converts_gtp_to_gdp(HRAS, wt_ras_hydrolysis_rate)
+
+Recycling of GTP from GDP
+~~~~~~~~~~~~~~~~~~~~~~~~~
 
 In the cell, GTP levels are buffered to remain fairly constant. To prevent GTP
-levels from being depleted by GTPase activity in the simulation, we
+levels from being depleted by GTPase activity in our simulations, we
 reconstitute GTP from unbound GDP and inorganic phosphate at a very high rate.
 Since we only create inorganic phosphate (Pi) from the GTP hydrolysis step,
-ensures that GTP/GDP levels and ratios will be held constant over time.
+this ensures that GTP/GDP levels and ratios will be held constant over time.
 
 ::
 
