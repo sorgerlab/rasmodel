@@ -40,17 +40,117 @@ RasGEFs contain a specific domain responsible for activating Ras proteins.
 Mechanism of GEFs
 -----------------
 
-Ras binds RasGEFs in the absence of nucleotides.
+Some key features of the mechanism:
+
+1. Ras binds GEFs in the absence of nucleotides
+2. GEF binding causes Ras to release GTP/GDP.
+3. Rebinding of nucleotides causes Ras to release the GEF.
+4. Reloading of Ras with GTP vs. GDP is not determined by the GEF, but rather
+   by the relative cellular concentrations of the nucleotides.
 
     [PMID9690470]_: Biochemical studies of Ras exchange factors have shown that
     the complex of Ras with these proteins is stable in the absence of
     nucleotides and is dissociated by the rebinding of either GDP or GTP
     ([PMID9585556]_ [PMID9690470_17]_ [PMID9690470_18]_ [PMID9690470_21]_
-    [PMID9690470_22]_) The principal role for the exchange factor is to
+    [PMID9690470_22]_). The principal role for the exchange factor is to
     facilitate nucleotide release, and it does not seem to control
     significantly the preferential rebinding of GTP over GDP ([PMID9585556]_,
     [PMID9690470_22]_, [PMID9690470_23]_).  Cellular concentrations of GTP are
     10-fold higher than GDP, which results in the loading of GTP onto Ras.
+
+The fact that GTP/GDP can displace GEFs, while GEFs can also displace GTP/GDP,
+leads to a paradox that is resolved by the fact that Ras undergoes a
+conformational change that retains the necessary "state". The structural basis
+of this conformational change is described as follows:
+
+    [PMID9690470]_: As a nucleotide-exchange factor, Sos functions under two
+    apparently conflicting imperatives. The interaction between Sos and Ras
+    must be strong enough to dislodge the tightly bound nucleotide, but the Ras
+    – Sos complex must also be poised for subsequent displacement by incoming
+    nucleotides. The structure of the Ras – Sos complex shows that Ras and Sos
+    meet these demands by forming a tight complex that is anchored at one end
+    of the nucleotide- binding site, where phosphate and magnesium are normally
+    bound. The interface between Sos and Ras is mainly hydrophilic, suggesting
+    a ready unzippering through water-mediated displacements of the
+    coordinating side chains. The main interacting elements of Sos avoid direct
+    occlusion of the nucleotide-binding site, except the region where the
+    terminal phosphate groups and the magnesium ion are bound. This feature
+    allows incoming nucleotides to reverse the process by competing for the
+    groups that ligate the phosphate and metal ion.
+
+This conformational state change has been analyzed kinetically and identified
+as the process of the nucleotide being first loosely and then tightly bound,
+(see also :ref:`ras_gtpase`):
+
+    [PMID9690470]_: Kinetic analysis of nucleotide association shows that the
+    reaction proceeds by the formation of a ternary complex of a loosely bound
+    nucleotide and Ras – Cdc25Mm followed by conversion to a form in which the
+    nucleotide is tightly bound to Ras [PMID9585556]_. In light of the
+    structure of the Ras–Sos complex, the first step can be interpreted as the
+    interaction of the base and the ribose of the nucleotide with the part of
+    the Ras binding site that is not occluded by Sos. The second step would
+    involve a conformational change in the Switch 2 segment and release of
+    Switch 1, resulting in the restructuring of a competent binding site for
+    phosphate and magnesium, and the subsequent dissociation of Sos.
+
+The kinetic analysis described in [PMID9585556]_ resulted in the following reaction scheme for the interactions between Ras, GTP/GDP, and GEFs:
+
+.. image:: /images/9585556_rasgef_cycle.png
+    :width: 600px
+
+Note that the upper equilibria for Ras-nucleotide binding, K1a and K1b, were
+implemented in the section :ref:`ras_gtpase`, along with corresponding rates.
+Here we implement only the equilibria involving GEFs: K2, K3, K4a and K4b.
+
+::
+
+    def ras_gef_exchange_cycle(ras, rasgef, gxp,
+                               k2_list, k3_list, k4a_list, k4b_list):
+        # Alias for Ras bound to GXP
+        rasgxp = ras(gef=None, gtp=99) % gxp(p=99)
+
+        # Binding of RasGEF to nucleotide-free Ras (K2)
+        bind(ras(gtp=None, s1s2='closed'), 'gef', rasgef(), 'rasgef', k2_list)
+
+        # Binding of RasGEF to RasGXP (K3)
+        bind(rasgxp(s1s2='open'), 'gef', rasgef(), 'rasgef', k3_list)
+
+        # Binding of GXP to Ras/RasGEF complex
+        bind(ras(s1s2='closed', gef=1) % rasgef(rasgef=1), 'gtp',
+             gxp(), 'p', k4a_list)
+
+        # Isomerization of Ras-RasGEF-GXP from loose to tight
+        equilibrate(rasgxp(gef=1, s1s2='closed') % rasgef(rasgef=1),
+                    rasgxp(gef=1, s1s2='open') % rasgef(rasgef=1), k4b_list)
+
+Rates of GEF activation
+-----------------------
+
+::
+
+    # Binding of RasGEF to nucleotide-free Ras
+    kf2 = 0.33e6        # M^-1 s^-1
+    kr2 = 1e-3          # s^-1
+
+    # Binding of RasGEF to RasGXP
+    KD3 = 0.6e-3        # M
+    kf3 = 3.4e4         # M^-1 s^-1 (lower limit)
+    kr3 = KD3 * kf3     # s^-1
+
+    # Binding of GXP to Ras/RasGEF complex
+    KD4a = 8.6e-6       # M
+    kf4a = 1e7          # M^-1 s^-1
+    kr4a = KD4a * kf4a  # s^-1
+
+# = kf1a, i.e., on rate is insensitive to presence of GEF
+
+::
+
+    # Isomerization of Ras-RasGEF-GXP from loose to tight
+    kf4b = 20.4         # s^-1
+    kr4b = 3.9          # s^-1
+
+
 
 The following study used purified HRAS and mouse RASGRF1:
 
@@ -80,9 +180,10 @@ The activity of GEF (RASGRF1 in this case) does not depend on whether Ras
     3′mdGDP release from Ras of 3.9 s-1 and an apparent Km value of 386 μM.
     Since the intrinsic dissociation rate of 3′mdGDP is 2 × 10-5 s-1 (Table 1),
     the acceleration of GDP dissociation from Ras by this GEF is approximately
-    2 × 105-fold. An apparent Km of approximately 300 μM was obtained for the
-    triphosphate-bound form of Ras, confirming that there is no pronounced
-    specificity toward the nature of the Ras-bound nucleotide (data not shown).
+    2 × 10^5-fold. An apparent Km of approximately 300 μM was obtained
+    for the triphosphate-bound form of Ras, confirming that there is no
+    pronounced specificity toward the nature of the Ras-bound nucleotide (data
+    not shown).
 
 .. warning:: GEF binding to GTP bound Ras?
 
@@ -90,61 +191,9 @@ The activity of GEF (RASGRF1 in this case) does not depend on whether Ras
     conversion is complete? Moreover, if GEF binds to Ras-GTP, can the
     hydrolysis to GDP proceed while GEF is bound?
 
-The RasGEF exchange cycle
--------------------------
-
-The following reaction scheme for the GEF exchange cycle, along with the
-associated rates, are drawn from [PMID9585556]_.
-
-.. image:: /images/9585556_rasgef_cycle.png
-    :width: 600px
-
-::
-
-    def ras_gef_exchange_cycle(ras, rasgef, gtp, gdp):
-        # Aliases for Ras bound to GXP
-        rasgtp = ras(gef=None, gtp=99) % gtp(p=99)
-        rasgdp = ras(gef=None, gtp=98) % gdp(p=98)
-
-        # Binding of RasGEF to nucleotide-free Ras
-        kf2 = 0.33e6
-        kr2 = 1e-3
-        bind(ras(gtp=None, s1s2='closed'), 'gef', rasgef(), 'rasgef',
-             [kf2, kr2])
-
-        # Binding of RasGEF to RasGXP
-        KD3 = 0.6e-3
-        kf3 = 3.4e4 # Lower limit
-        kr3 = KD3 * kf3
-        for rasgxp in [rasgtp, rasgdp]:
-            bind(rasgxp(s1s2='open'), 'gef', rasgef(), 'rasgef', [kf3, kr3])
-
-        # Binding of GXP to Ras/RasGEF complex
-        KD4a = 8.6e-6
-        kf4a = 1e7 # = kf1a, i.e., on rate is insensitive to presence of GEF
-        kr4a = KD4a * kf4a
-        for gxp in [gtp, gdp]:
-            bind(ras(s1s2='closed', gef=50) % rasgef(rasgef=50), 'gtp',
-                 gxp(), 'p', [kf4a, kr4a])
-
-        # Isomerization of Ras-RasGEF-GXP from loose to tight
-        kf4b = 20.4
-        kr4b = 3.9
-        for rasgxp in [rasgtp, rasgdp]:
-            equilibrate(rasgxp(gef=1, s1s2='closed') % rasgef(rasgef=1),
-                        rasgxp(gef=1, s1s2='open') % rasgef(rasgef=1),
-                        [kf4b, kr4b])
-    #
-
 Instantiate the RasGEF cycle for HRAS and RASGRF1::
 
     #ras_gef_exchange_cycle(HRAS, RASGRF1, GTP, GDP)
-
-.. warning:: How does GTP hydrolysis fit into the cycle?
-
-    Can Ras hydrolyze GTP to GDP at any point in this cycle? Or can this only
-    happen when Ras is bound to GDP and GEF is not bound? Does it only happen
-    when nucleotide is in the tightly bound conformation?
 
 [PMID9585556]_: Therefore, we tested the nucleotide specificity of the
 interaction of Cdc25Mm285 (CdcMm285 is the fragment of CdcMm/RasGRF1 containing
@@ -159,32 +208,6 @@ nature of the bound nucleotide. The difference in stimulated dissociation rates
 is somewhat smaller than the results of Jacquet et al. (16) but is similar to
 the results with the yeast proteins CDC25 and RAS2 obtained by Haney and Broach
 (28).
-
-[PMID9690470]_: Kinetic analysis of nucleotide association shows that the
-reaction proceeds by the formation of a ternary complex of a loosely bound
-nucleotide and Ras – Cdc25Mm followed by conversion to a form in which the
-nucleotide is tightly bound to Ras [PMID9585556]_. In light of the structure of
-the Ras–Sos complex, the first step can be interpreted as the interaction of
-the base and the ribose of the nucleotide with the part of the Ras binding site
-that is not occluded by Sos. The second step would involve a conformational
-change in the Switch 2 segment and release of Switch 1, resulting in the
-restructuring of a competent binding site for phosphate and magnesium, and the
-subsequent dissociation of Sos.
-
-[PMID9690470]_: As a nucleotide-exchange factor, Sos functions under two
-apparently conflicting imperatives. The interaction between Sos and Ras must be
-strong enough to dislodge the tightly bound nucleotide, but the Ras – Sos
-complex must also be poised for subsequent displacement by incoming
-nucleotides. The structure of the Ras – Sos complex shows that Ras and Sos meet
-these demands by forming a tight complex that is anchored at one end of the
-nucleotide- binding site, where phosphate and magnesium are normally bound. The
-interface between Sos and Ras is mainly hydrophilic, suggesting a ready
-unzippering through water-mediated displacements of the coordinating side
-chains. The main interacting elements of Sos avoid direct occlusion of the
-nucleotide-binding site, except the region where the terminal phosphate groups
-and the magnesium ion are bound. This feature allows incoming nucleotides to
-reverse the process by competing for the groups that ligate the phosphate and
-metal ion.
 
 [PMID9690470]_: The overall shape of the catalytic domain of Sos is that of an
 oblong bowl (Fig. 2), with Ras bound at the centre of the bowl. The regions of

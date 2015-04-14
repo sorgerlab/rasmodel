@@ -1,3 +1,5 @@
+.. _ras_gtpase:
+
 Ras proteins are GTPases
 ========================
 
