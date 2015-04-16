@@ -7,3 +7,4 @@ Assembled model
     pysb
     bngl
     kappa
+    sbml

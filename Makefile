@@ -7,9 +7,10 @@ MODEL = $(OUTPUTDIR)/ras_model
 PYSB_MODEL = $(MODEL).py
 BNG_MODEL = $(MODEL).bngl
 KAPPA_MODEL = $(MODEL).ka
+SBML_MODEL = $(MODEL).sbml
 RXN_NET = $(MODEL)_rxns
 
-all: model bngl kappa rxn_net contact_map influence_map simulation doc
+all: model bngl kappa sbml rxn_net contact_map influence_map simulation doc
 
 doc: model
 	cd doc; make html
@@ -21,6 +22,7 @@ clean:
 model: $(PYSB_MODEL)
 bngl: $(BNG_MODEL)
 kappa: $(KAPPA_MODEL)
+sbml: $(SBML_MODEL)
 
 $(PYSB_MODEL): $(CODEDIR)/extract_model.py \
        $(DOCMODEL)/ras/ras_gtpase.rst \
@@ -42,6 +44,9 @@ $(PYSB_MODEL): $(CODEDIR)/extract_model.py \
 
 %.ka: %.py
 	python -m pysb.export $< kappa > $(KAPPA_MODEL)
+
+%.sbml: %.py
+	python -m pysb.export $< sbml > $(SBML_MODEL)
 
 rxn_net: $(PYSB_MODEL)
 	python -m pysb.tools.render_reactions $(PYSB_MODEL) > $(RXN_NET).dot
