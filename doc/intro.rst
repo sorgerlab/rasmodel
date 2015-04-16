@@ -59,7 +59,7 @@ Installation
 ------------
 
 To generate the text of the documentation, `Sphinx <http://sphinx-doc.org>`_ is
-the only dependency, which can be installed via Pip with:
+the only dependency, which can be installed via Pip with::
 
     pip install -U Sphinx
 
