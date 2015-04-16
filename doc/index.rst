@@ -11,6 +11,7 @@ Contents:
 .. toctree::
     :maxdepth: 2
 
+    intro
     full_model/index
     assembled/index
     results/index
