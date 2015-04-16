@@ -55,7 +55,7 @@ Some key features of the mechanism:
     [PMID9690470_22]_). The principal role for the exchange factor is to
     facilitate nucleotide release, and it does not seem to control
     significantly the preferential rebinding of GTP over GDP ([PMID9585556]_,
-    [PMID9690470_22]_, [PMID9690470_23]_).  Cellular concentrations of GTP are
+    [PMID9690470_22]_, [PMID7548002]_).  Cellular concentrations of GTP are
     10-fold higher than GDP, which results in the loading of GTP onto Ras.
 
 The fact that GTP/GDP can displace GEFs, while GEFs can also displace GTP/GDP,

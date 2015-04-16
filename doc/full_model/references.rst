@@ -41,8 +41,6 @@ References
 
 .. [PMID9690470_22] Haney SA, Broach JR. **Cdc25p, the guanine nucleotide exchange factor for the Ras proteins of Saccharomyces cerevisiae, promotes exchange by stabilizing Ras in a nucleotide-free state.** J Biol Chem. 1994 Jun 17;269(24):16541-8. :pmid:`8206969`.
 
-.. [PMID9690470_23] Klebe C, Prinz H, Wittinghofer A, Goody RS. **The kinetic mechanism of Ran--nucleotide exchange catalyzed by RCC1. Biochemistry.** 1995 Oct 3;34(39):12543-52.:pmid:`7548002`.
-
 .. [PMID9585556_1] Rogge RD, Karlovich CA, Banerjee U. **Genetic dissection of a neurodevelopmental pathway: Son of sevenless functions downstream of the sevenless and EGF receptor tyrosine kinases.** Cell. 1991 Jan 11;64(1):39-48. :pmid:`1846090`.
 
 .. [PMID9585556_2] Bonfini L, Karlovich CA, Dasgupta C, Banerjee U. **The Son of sevenless gene product: a putative activator of Ras.** Science. 1992 Jan 31;255(5044):603-6. :pmid:`1736363`.
@@ -59,23 +57,23 @@ References
 
 .. [PMID9585556_8] Fam NP, Fan WT, Wang Z, Zhang LJ, Chen H, Moran MF. **Cloning and characterization of Ras-GRF2, a novel guanine nucleotide exchange factor for Ras.** Mol Cell Biol. 1997 Mar;17(3):1396-406. :pmid:`9032266`.
 
-.. [PMID11438727] Allin C, Ahmadian MR, Wittinghofer A, Gerwert K. **Monitoring the GAP catalyzed H-Ras GTPase reaction at atomic resolution in real time.** Proc Natl Acad Sci U S A. 2001 Jul 3;98(14):7754-9. :pmid:`11438727`.
+.. [PMID11438727] Allin C, Ahmadian MR, Wittinghofer A, Gerwert K. **Monitoring the GAP catalyzed H-Ras GTPase reaction at atomic resolution in real time.** Proc Natl Acad Sci U S A. 2001 Jul 3;98(14):7754-9. :pmid:`11438727` :download:`PDF </pdf/11438727.pdf>`
 
-.. [PMID9247124] Wittinghofer A, Scheffzek K, Ahmadian MR. **The interaction of Ras with GTPase-activating proteins.** FEBS Lett. 1997 Jun 23;410(1):63-7. Review. :pmid:`9247124`.
+.. [PMID9247124] Wittinghofer A, Scheffzek K, Ahmadian MR. **The interaction of Ras with GTPase-activating proteins.** FEBS Lett. 1997 Jun 23;410(1):63-7. Review. :pmid:`9247124` :download:`PDF </pdf/9247124.pdf>`
 
-.. [PMID1569940] Gideon P, John J, Frech M, Lautwein A, Clark R, Scheffler JE, Wittinghofer A. **Mutational and kinetic analyses of the GTPase-activating protein (GAP)-p21 interaction: the C-terminal domain of GAP is not sufficient for full activity.** Mol Cell Biol. 1992 May;12(5):2050-6. :pmid:`1569940`. :download:`PDF </pdf/1569940.pdf>`.
+.. [PMID1569940] Gideon P, John J, Frech M, Lautwein A, Clark R, Scheffler JE, Wittinghofer A. **Mutational and kinetic analyses of the GTPase-activating protein (GAP)-p21 interaction: the C-terminal domain of GAP is not sufficient for full activity.** Mol Cell Biol. 1992 May;12(5):2050-6. :pmid:`1569940` :download:`PDF </pdf/1569940.pdf>`
 
 .. [PMID8262937] Eccleston JF, Moore KJ, Morgan L, Skinner RH, Lowe PN. **Kinetics of interaction between normal and proline 12 Ras and the GTPase-activating proteins, p120-GAP and neurofibromin. The significance of the intrinsic GTPase rate in determining the transforming ability of ras.** J Biol Chem. 1993 Dec 25;268(36):27012-9. :pmid:`8262937`.
 
 .. [PMID7548002] Klebe C, Prinz H, Wittinghofer A, Goody RS. **The kinetic mechanism of Ran--nucleotide exchange catalyzed by RCC1.** Biochemistry. 1995 Oct 3;34(39):12543-52. :pmid:`7548002`.
 
-.. [PMID2502546] John J, Schlichting I, Schiltz E, Rösch P, Wittinghofer A.  **C-terminal truncation of p21H preserves crucial kinetic and structural properties.** J Biol Chem. 1989 Aug 5;264(22):13086-92. :pmid:`2502546`. :download:`PDF </pdf/2502546.pdf>`.
+.. [PMID2502546] John J, Schlichting I, Schiltz E, Rösch P, Wittinghofer A.  **C-terminal truncation of p21H preserves crucial kinetic and structural properties.** J Biol Chem. 1989 Aug 5;264(22):13086-92. :pmid:`2502546` :download:`PDF </pdf/2502546.pdf>`
 
-.. [PMID9219684] Scheffzek K, Ahmadian MR, Kabsch W, Wiesmüller L, Lautwein A, Schmitz F, Wittinghofer A. **The Ras-RasGAP complex: structural basis for GTPase activation and its loss in oncogenic Ras mutants.** Science. 1997 Jul 18;277(5324):333-8. :pmid:`9219684`. :download:`PDF </pdf/9219684.pdf>`.
+.. [PMID9219684] Scheffzek K, Ahmadian MR, Kabsch W, Wiesmüller L, Lautwein A, Schmitz F, Wittinghofer A. **The Ras-RasGAP complex: structural basis for GTPase activation and its loss in oncogenic Ras mutants.** Science. 1997 Jul 18;277(5324):333-8. :pmid:`9219684` :download:`PDF </pdf/9219684.pdf>`
 
 .. [PMID2200519] John J, Sohmen R, Feuerstein J, Linke R, Wittinghofer A, Goody RS. **Kinetics of interaction of nucleotides with nucleotide-free H-ras p21.** Biochemistry. 1990 Jun 26;29(25):6058-65. :pmid:`2200519` :download:`PDF </pdf/2200519.pdf>`
 
-.. [PMID8552403] Schmidt G, Lenzen C, Simon I, Deuter R, Cool RH, Goody RS, Wittinghofer A. **Biochemical and biological consequences of changing the specificity of p21ras from guanosine to xanthosine nucleotides.** Oncogene. 1996 Jan 4;12(1):87-96.
+.. [PMID8552403] Schmidt G, Lenzen C, Simon I, Deuter R, Cool RH, Goody RS, Wittinghofer A. **Biochemical and biological consequences of changing the specificity of p21ras from guanosine to xanthosine nucleotides.** Oncogene. 1996 Jan 4;12(1):87-96. :pmid:`8552403`.
 
 .. [PMID8702787] Simon I, Zerial M, Goody RS.  **Kinetics of interaction of Rab5 and Rab7 with nucleotides and magnesium ions.** J Biol Chem. 1996 Aug 23;271(34):20470-8. :pmid:`8702787` :download:`PDF </pdf/8702787.pdf>`
 
