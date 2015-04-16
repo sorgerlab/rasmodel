@@ -1,7 +1,7 @@
 # Added these in for building of the model file
 CODEDIR = src
 DOCDIR = doc
-DOCMODEL = $(DOCDIR)/full_model
+DOCMODEL = $(DOCDIR)/doc_model
 OUTPUTDIR = output
 MODEL = $(OUTPUTDIR)/ras_model
 PYSB_MODEL = $(MODEL).py

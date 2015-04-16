@@ -12,7 +12,7 @@ Contents:
     :maxdepth: 2
 
     intro
-    full_model/index
+    doc_model/index
     assembled/index
     results/index
 
