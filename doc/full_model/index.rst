@@ -1,5 +1,5 @@
-Full model
-==========
+Documented model
+================
 
 .. toctree::
     :maxdepth: 3
