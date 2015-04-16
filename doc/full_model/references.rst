@@ -35,7 +35,7 @@ References
 
 .. [PMID9690470_17] Lai CC, Boguski M, Broek D, Powers S. **Influence of guanine nucleotides on complex formation between Ras and CDC25 proteins.** Mol Cell Biol. 1993 Mar;13(3):1345-52. :pmid:`8441380`.
 
-.. [PMID9690470_18] Mistou MY, Jacquet E, Poullet P, Rensland H, Gideon P, Schlichting I, Wittinghofer A, Parmeggiani A. **Mutations of Ha-ras p21 that define important regions for the molecular mechanism of the SDC25 C-domain, a guanine nucleotide dissociation stimulator.** EMBO J. 1992 Jul;11(7):2391-7. :pmid:`16286121`.
+.. [PMID9690470_18] Mistou MY, Jacquet E, Poullet P, Rensland H, Gideon P, Schlichting I, Wittinghofer A, Parmeggiani A. **Mutations of Ha-ras p21 that define important regions for the molecular mechanism of the SDC25 C-domain, a guanine nucleotide dissociation stimulator.** EMBO J. 1992 Jul;11(7):2391-7. :pmid:`1628612` :download:`PDF </pdf/1628612.pdf>`
 
 .. [PMID9690470_21] Powers S, O'Neill K, Wigler M. **Dominant yeast and mammalian RAS mutants that interfere with the CDC25-dependent activation of wild-type RAS in Saccharomyces cerevisiae.** Mol Cell Biol. 1989 Feb;9(2):390-5. :pmid:`2651897`.
 
