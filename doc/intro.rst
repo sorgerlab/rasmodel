@@ -76,5 +76,7 @@ If you have questions or would like to contribute, please contact
 Acknowledgments
 ---------------
 
-This work was supported by DARPA under Contract No. W911NF-14-1-0397.
+This work was supported by the DARPA Big Mechanism Program under Contract No.
+W911NF-14-1-0397 "Programmatic modelling for reasoning across complex
+mechanisms," Peter Sorger, William Chen and Dexter Pratt PIs.
 
