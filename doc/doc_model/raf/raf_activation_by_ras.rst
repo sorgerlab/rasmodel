@@ -8,3 +8,5 @@ References
 
 .. [PMID21862573] Hibino K, Shibata T, Yanagida T, Sako Y. **Activation kinetics of RAF protein in the ternary complex of RAF, RAS-GTP, and kinase on the plasma membrane of living cells: single-molecule imaging analysis.** J Biol Chem. 2011 Oct 21;286(42):36460-8. :doi:`10.1074/jbc.M111.262675.` :pmid:`21862573` :download:`PDF </pdf/21862573.pdf>`
 
+.. [PMID11447113] Chong H, Lee J, Guan KL. **Positive and negative regulation of Raf kinase activity and function by phosphorylation.** EMBO J. 2001 Jul 16;20(14):3716-27. :pmid:`11447113` :download:`PDF </pdf/11447113.pdf>`
+
