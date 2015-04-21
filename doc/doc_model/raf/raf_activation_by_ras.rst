@@ -10,3 +10,7 @@ References
 
 .. [PMID11447113] Chong H, Lee J, Guan KL. **Positive and negative regulation of Raf kinase activity and function by phosphorylation.** EMBO J. 2001 Jul 16;20(14):3716-27. :pmid:`11447113` :download:`PDF </pdf/11447113.pdf>`
 
+.. [PMID15664184] Dumaz N, Marais R. **Raf phosphorylation: one step forward and two steps back.** Mol Cell. 2005 Jan 21;17(2):164-6. :pmid:`15664184` :download:`PDF </pdf/15664184.pdf>`
+
+.. [PMID15664191] Dougherty MK1, Müller J, Ritt DA, Zhou M, Zhou XZ, Copeland TD, Conrads TP, Veenstra TD, Lu KP, Morrison DK. **Regulation of Raf-1 by direct feedback phosphorylation.** Mol Cell. 2005 Jan 21;17(2):215-24. :pmid:`15664191` :download:`PDF </pdf/15664191.pdf>`
+
