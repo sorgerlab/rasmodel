@@ -3,6 +3,7 @@ import collections
 import re
 import itertools
 import lxml.etree
+import pygraphviz
 
 Species = collections.namedtuple('Species',
                                  'id name label compartment')
@@ -89,3 +90,14 @@ rs = [x
 # (e.g. A + B -> A:B)
 mismatch_rxns = [r for r in all_reactions
                  if r.products[0].label != ':'.join([s.label for s in r.reactants])]
+
+graph = pygraphviz.AGraph(directed=True)
+for s in all_species:
+    graph.add_node(s.id, label=s.name)
+for r in all_reactions:
+    graph.add_node(r.id, label=r.name)
+    for reactant in r.reactants:
+        graph.add_edge(reactant.id, r.id)
+    for product in r.products:
+        graph.add_edge(r.id, product.id)
+graph.write('chen_2009.dot')
