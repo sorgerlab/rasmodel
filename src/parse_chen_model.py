@@ -46,8 +46,8 @@ qnames = dict((tag, lxml.etree.QName(ns, tag).text)
 
 sbml_file = open(sys.argv[1])
 
-all_species = []
-all_reactions = []
+species = []
+reactions = []
 species_id_map = {}
 for event, element in lxml.etree.iterparse(sbml_file, tag=qnames['species']):
     species_id = element.get('id')
@@ -60,7 +60,7 @@ for event, element in lxml.etree.iterparse(sbml_file, tag=qnames['species']):
     if compartment is not None:
         compartment = compartment.strip().lower()
     s = Species(species_id, name, label, compartment)
-    all_species.append(s)
+    species.append(s)
     species_id_map[s.id] = s
     if s.name in globals():
         raise RuntimeError('duplicate component name: {}'.format(s.name))
@@ -74,13 +74,13 @@ for event, element in lxml.etree.iterparse(sbml_file, tag=qnames['reaction']):
     reactants = tuple(map(species_id_map.get, reactionSpecies(element, 'reactant')))
     products = tuple(map(species_id_map.get, reactionSpecies(element, 'product')))
     r = Reaction(rxn_id, name, label, reactants, products, kf, kr)
-    all_reactions.append(r)
+    reactions.append(r)
     if r.name in globals():
         raise RuntimeError('duplicate component name: {}'.format(r.name))
     globals()[r.name] = r
 
 # determine truly redundant species -- same name, same compartment
-sa = sorted(all_species, key=lambda s: (s.label, s.compartment))
+sa = sorted(species, key=lambda s: (s.label, s.compartment))
 rs = [x
       for x in ((n, map(lambda s: s.compartment, it))
           for n, it in itertools.groupby(sa, lambda s: s.label))
@@ -88,16 +88,17 @@ rs = [x
 
 # find reactions where product is not a trivial concatenation of reactants
 # (e.g. A + B -> A:B)
-mismatch_rxns = [r for r in all_reactions
+mismatch_rxns = [r for r in reactions
                  if r.products[0].label != ':'.join([s.label for s in r.reactants])]
 
 graph = pygraphviz.AGraph(directed=True)
-for s in all_species:
-    graph.add_node(s.id, label=s.name)
-for r in all_reactions:
+for s in species:
+    graph.add_node(s.id, label=s.label, shape='none')
+for r in reactions:
     graph.add_node(r.id, label=r.name)
     for reactant in r.reactants:
         graph.add_edge(reactant.id, r.id)
     for product in r.products:
         graph.add_edge(r.id, product.id)
+graph.add_subgraph([c141.id, c140.id, c143.id, c531.id, c288.id, c117.id], name='cluster_1')
 graph.write('chen_2009.dot')
