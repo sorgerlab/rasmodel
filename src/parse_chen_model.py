@@ -9,7 +9,7 @@ Species = collections.namedtuple('Species',
 
 class Reaction(collections.namedtuple(
         'ReactionBase',
-        'id name label reactants products')):
+        'id name label reactants products kf kr')):
     def __repr__(self):
         simple_attrs = ('id', 'name', 'label')
         simple_attr_repr = ', '.join('{0}={1!r}'.format(a, getattr(self, a))
@@ -17,8 +17,11 @@ class Reaction(collections.namedtuple(
         species_repr = ', '.join(
             ['{0}=({1})'.format(et, ', '.join(s.name for s in getattr(self, et)))
              for et in 'reactants', 'products'])
-        return '{0}({1}, {2})'.format(type(self).__name__,
-                                      simple_attr_repr, species_repr)
+        param_repr = ', '.join(['{0}={1!r}'.format(pt, getattr(self, pt))
+                                for pt in 'kf', 'kr'])
+        return '{0}({1}, {2}, {3})'.format(type(self).__name__,
+                                           simple_attr_repr, species_repr,
+                                           param_repr)
 
 def xpath(obj, path, single=True):
     result = map(unicode, obj.xpath(path, namespaces={'s': ns}))
@@ -66,9 +69,10 @@ for event, element in lxml.etree.iterparse(sbml_file, tag=qnames['reaction']):
     rxn_id = element.get('id')
     label = re.sub(r' +', ' ', element.get('name'))
     name, label = label.split(' ', 1)
+    label, kf, kr = label.rsplit(' ', 2)
     reactants = tuple(map(species_id_map.get, reactionSpecies(element, 'reactant')))
     products = tuple(map(species_id_map.get, reactionSpecies(element, 'product')))
-    r = Reaction(rxn_id, name, label, reactants, products)
+    r = Reaction(rxn_id, name, label, reactants, products, kf, kr)
     all_reactions.append(r)
     if r.name in globals():
         raise RuntimeError('duplicate component name: {}'.format(r.name))
