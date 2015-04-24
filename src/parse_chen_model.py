@@ -47,6 +47,9 @@ def species_by_label(pattern, multi=False):
     gen = (s for s in species if re.search(pattern, s.label))
     return list(gen) if multi else next(gen)
 
+def neighbor_set(nodes):
+    return set(itertools.chain.from_iterable(graph.neighbors(n) for n in nodes))
+
 ns = 'http://www.sbml.org/sbml/level2'
 qnames = dict((tag, lxml.etree.QName(ns, tag).text)
               for tag in ('species', 'reaction'))
@@ -102,14 +105,17 @@ cluster_seq = itertools.count()
 def add_cluster(*species_list):
     nodes = [s.id for s in species_list]
     name = 'cluster_{}'.format(next(cluster_seq))
-    graph.add_subgraph(nodes, name, color='none', bgcolor='gray97')
+    graph.add_subgraph(nodes, name, color='none', bgcolor='gray94')
 
 graph = pygraphviz.AGraph(directed=True, rankdir='LR')
 graph.node_attr.update(fontname='Helvetica')
 for s in species:
-    graph.add_node(s.id, _type='species', label=s.label, shape='none', bgcolor='white', margin=0)
+    label = '<{0.label} <sup>{0.name}</sup>>'.format(s)
+    graph.add_node(s.id, _type='species', label=label, shape='none',
+                   bgcolor='white', margin=0)
 for r in reactions:
-    graph.add_node(r.id, _type='reaction', label=r.name, shape='none', fontcolor='#13ac4a')
+    graph.add_node(r.id, _type='reaction', label=r.name, shape='none',
+                   fontcolor='#13ac4a')
     for reactant in r.reactants:
         graph.add_edge(reactant.id, r.id)
     for product in r.products:
@@ -127,16 +133,15 @@ add_cluster(c4, c145, c146, c147, c355, c345, c516, c517)
 add_cluster(c116, c122, c127, c128, c168, c139, c137, c138)
 
 # delete some "nuisance" nodes from the graph
-#for nuisance in ('ATP', 'R_degraded', 'Inh'):
-#   graph.remove_node(species_by_label(nuisance).id)
+for nuisance in ('ATP', 'R_degraded', 'Inh'):
+   graph.remove_node(species_by_label(nuisance).id)
 
-clustered_species = [n for g in graph.subgraphs() for n in g.nodes()]
-cs_edges = graph.edges(clustered_species)
-nodes_keep = set(reduce(operator.add, map(list, cs_edges), []))
+clustered_nodes = [n for g in graph.subgraphs() for n in g.nodes()]
+nodes_keep = set(clustered_nodes).union(neighbor_set(clustered_nodes))
 nodes_drop = set(graph.nodes()) - nodes_keep
-nd_edges = graph.edges(nodes_drop)
-nodes_drop.update(set(reduce(operator.add, map(list, nd_edges), [])))
-for n in list(nodes_drop):
+dropped_species_nodes = set(n for n in nodes_drop if n.attr['_type'] == 'species')
+drop2 = neighbor_set(dropped_species_nodes)
+for n in list(nodes_drop.union(drop2)):
     graph.remove_node(n)
 
 graph.write('chen_2009.dot')
