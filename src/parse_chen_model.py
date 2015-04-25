@@ -50,6 +50,20 @@ def species_by_label(pattern, multi=False):
 def neighbor_set(nodes):
     return set(itertools.chain.from_iterable(graph.neighbors(n) for n in nodes))
 
+def reverse_edge(u, v):
+    e = graph.get_edge(u, v)
+    graph.add_edge(v, u, **e.attr)
+    graph.remove_edge(u, v)
+
+cluster_seq = itertools.count()
+def add_box(*species_list):
+    nodes = [s.id for s in species_list]
+    # failed attempt to force ordering within clusters
+    # for n1, n2 in zip(nodes[:-1], nodes[1:]):
+    #     graph.add_edge(n1, n2, color='red')
+    name = 'cluster_{}'.format(next(cluster_seq))
+    return graph.add_subgraph(nodes, name, color='none', bgcolor='gray94')
+
 ns = 'http://www.sbml.org/sbml/level2'
 qnames = dict((tag, lxml.etree.QName(ns, tag).text)
               for tag in ('species', 'reaction'))
@@ -101,43 +115,52 @@ rs = [x
 mismatch_rxns = [r for r in reactions
                  if r.products[0].label != ':'.join([s.label for s in r.reactants])]
 
-cluster_seq = itertools.count()
-def add_cluster(*species_list):
-    nodes = [s.id for s in species_list]
-    name = 'cluster_{}'.format(next(cluster_seq))
-    graph.add_subgraph(nodes, name, color='none', bgcolor='gray94')
-
 graph = pygraphviz.AGraph(directed=True, rankdir='LR')
 graph.node_attr.update(fontname='Helvetica')
 for s in species:
     label = '<{0.label} <sup>{0.name}</sup>>'.format(s)
     graph.add_node(s.id, _type='species', label=label, shape='none',
-                   bgcolor='white', margin=0)
+                   bgcolor='white', margin=0.1)
 for r in reactions:
     graph.add_node(r.id, _type='reaction', label=r.name, shape='none',
-                   fontcolor='#13ac4a')
+                   fontcolor='#13ac4a', width=0, height=0, margin=0.05)
     for reactant in r.reactants:
-        graph.add_edge(reactant.id, r.id)
+        graph.add_edge(reactant.id, r.id, arrowsize=0.7)
     for product in r.products:
-        graph.add_edge(r.id, product.id)
-
-# single receptors and 2:3 / 2:4 dimers
-add_cluster(c141, c140, c143, c531, c288, c117)
-# ligands
-add_cluster(c1, c514)
-# ligand-bound single receptors
-add_cluster(c3, c142, c144)
-# ligand-bound receptor dimers
-add_cluster(c4, c145, c146, c147, c355, c345, c516, c517)
-# ATP-and-ligand-bound receptor dimers
-add_cluster(c116, c122, c127, c128, c168, c139, c137, c138)
+        graph.add_edge(r.id, product.id, arrowsize=0.7)
 
 # delete some "nuisance" nodes from the graph
-for nuisance in ('ATP', 'R_degraded', 'Inh'):
-   graph.remove_node(species_by_label(nuisance).id)
+for label in 'ATP', 'R_degraded', 'Inh':
+   graph.remove_node(species_by_label(label).id)
 
-clustered_nodes = [n for g in graph.subgraphs() for n in g.nodes()]
-nodes_keep = set(clustered_nodes).union(neighbor_set(clustered_nodes))
+# reverse edges for some reactions which were specified "backwards"
+for r in v804, v807, v812, v813, v822, v823, v824, v825:
+    for s in r.reactants:
+        if s.id in graph:
+            reverse_edge(s.id, r.id)
+    for s in r.products:
+        if s.id in graph:
+            reverse_edge(r.id, s.id)
+
+# single receptors
+add_box(c531, c141, c140, c143)
+# 2:3 / 2:4 dimers
+add_box(c288, c117)
+# ligands
+add_box(c1, c514)
+# ligand-bound single receptors
+add_box(c3, c142, c144)
+# ligand-bound receptor dimers
+add_box(c4, c145, c146, c147, c355, c345, c516, c517)
+# ErbB1:ATP (?)
+add_box(c2)
+# ATP-and-ligand-bound receptor dimers
+add_box(c116, c122, c127, c128, c168, c139, c137, c138)
+# Phosphorylated dimers
+add_box(c5, c148, c149, c150, c335, c336)
+
+box_nodes = [n for g in graph.subgraphs() for n in g.nodes()]
+nodes_keep = set(box_nodes).union(neighbor_set(box_nodes))
 nodes_drop = set(graph.nodes()) - nodes_keep
 dropped_species_nodes = set(n for n in nodes_drop if n.attr['_type'] == 'species')
 drop2 = neighbor_set(dropped_species_nodes)
