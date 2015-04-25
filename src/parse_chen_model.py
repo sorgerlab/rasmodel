@@ -142,8 +142,10 @@ for r in v804, v807, v812, v813, v822, v823, v824, v825:
         if s.id in graph:
             reverse_edge(r.id, s.id)
 
+# single ErbB1
+add_box(c531)
 # single receptors
-add_box(c531, c141, c140, c143)
+add_box(c2, c141, c140, c143)
 # 2:3 / 2:4 dimers
 add_box(c288, c117)
 # ligands
@@ -152,12 +154,12 @@ add_box(c1, c514)
 add_box(c3, c142, c144)
 # ligand-bound receptor dimers
 add_box(c4, c145, c146, c147, c355, c345, c516, c517)
-# ErbB1:ATP (?)
-add_box(c2)
 # ATP-and-ligand-bound receptor dimers
 add_box(c116, c122, c127, c128, c168, c139, c137, c138)
 # Phosphorylated dimers
-add_box(c5, c148, c149, c150, c335, c336)
+add_box(c5, c148, c149, c150, c335, c336, c289)
+# Phosphorylated monomers
+add_box(c330, c87, c331, c332)
 
 box_nodes = [n for g in graph.subgraphs() for n in g.nodes()]
 nodes_keep = set(box_nodes).union(neighbor_set(box_nodes))
