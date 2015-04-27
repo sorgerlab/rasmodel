@@ -156,10 +156,40 @@ add_box(c3, c142, c144)
 add_box(c4, c145, c146, c147, c355, c345, c516, c517)
 # ATP-and-ligand-bound receptor dimers
 add_box(c116, c122, c127, c128, c168, c139, c137, c138)
-# Phosphorylated dimers
+# Phosphorylated dimers (dimer#P)
 add_box(c5, c148, c149, c150, c335, c336, c289)
 # Phosphorylated monomers
 add_box(c330, c87, c331, c332)
+# GAP
+add_box(c14)
+# dimer#P:GAP
+add_box(c341, c344, c291, c15, c151, c152, c153)
+# Shc
+add_box(c31)
+# Grb2
+add_box(c22)
+# Sos
+add_box(c24)
+# Shc#P
+add_box(c40)
+# (Shc#P):Grb2
+add_box(c39)
+# (Shc#P):Grb2:Sos
+add_box(c38)
+# Grb2:SOS
+add_box(c30)
+# dimer#P:GAP:Shc
+add_box(c347, c348, c294, c171, c172, c173, c32)
+# dimer#P:GAP:(Shc#P)
+add_box(c351, c354, c297, c180, c181, c182, c33)
+# dimer#P:GAP:(Shc#P):Grb2
+add_box(c357, c360, c300, c189, c190, c191, c34)
+# dimer#P:GAP:(Shc#P):Grb2:Sos
+add_box(c363, c366, c303, c198, c199, c200, c35)
+# dimer#P:GAP:Grb2
+add_box(c381, c384, c312, c225, c226, c227, c23)
+# dimer:P:GAP:Grb2:Sos
+add_box(c387, c390, c315, c234, c235, c236, c25)
 
 box_nodes = [n for g in graph.subgraphs() for n in g.nodes()]
 nodes_keep = set(box_nodes).union(neighbor_set(box_nodes))
