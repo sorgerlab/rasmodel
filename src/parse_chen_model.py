@@ -131,7 +131,7 @@ for r in reactions:
 
 # delete some "nuisance" nodes from the graph
 for label in 'ATP', 'R_degraded', 'Inh':
-   graph.remove_node(species_by_label(label).id)
+    graph.remove_node(species_by_label(label).id)
 
 # reverse edges for some reactions which were specified "backwards"
 for r in v804, v807, v812, v813, v822, v823, v824, v825:
