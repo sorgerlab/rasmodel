@@ -58,11 +58,12 @@ def reverse_edge(u, v):
 cluster_seq = itertools.count()
 def add_box(*species_list):
     nodes = [s.id for s in species_list]
-    # failed attempt to force ordering within clusters
-    # for n1, n2 in zip(nodes[:-1], nodes[1:]):
-    #     graph.add_edge(n1, n2, color='red')
     name = 'cluster_{}'.format(next(cluster_seq))
-    return graph.add_subgraph(nodes, name, color='none', bgcolor='gray94')
+    cluster = graph.add_subgraph(nodes, name, color='none', bgcolor='gray94')
+    sg = cluster.add_subgraph(rank='same')
+    for n1, n2 in zip(nodes[:-1], nodes[1:]):
+        sg.add_edge(n2, n1, color='red', weight=1, constraint='false')
+    return cluster
 
 ns = 'http://www.sbml.org/sbml/level2'
 qnames = dict((tag, lxml.etree.QName(ns, tag).text)
@@ -217,15 +218,12 @@ for subgraphs, node_iter in itertools.groupby(rxn_nodes, rxn_to_cn.get):
         label = r'\n'.join(sorted(n.attr['label'] for n in nodes))
         graph.add_node(node_id, label=label, fontcolor='#13ac4a', shape='none',
                        width=0, height=0, margin=0.05)
-        for sg in subgraphs:
-            if sg.name not in graph:
-                sg.add_node(sg.name, shape='none', label='')
         for r_node in graph.predecessors(nodes[0]):
-            sg_name = node_to_subgraph[r_node].name
-            graph.add_edge(sg_name, node_id, arrowsize=1.4, ltail=sg_name)
+            sg = node_to_subgraph[r_node]
+            graph.add_edge(sg.nodes_iter().next(), node_id, arrowsize=1.4, ltail=sg.name)
         for p_node in graph.successors(nodes[0]):
-            sg_name = node_to_subgraph[p_node].name
-            graph.add_edge(node_id, sg_name, arrowsize=1.4, lhead=sg_name)
+            sg = node_to_subgraph[p_node]
+            graph.add_edge(node_id, sg.nodes_iter().next(), arrowsize=1.4, lhead=sg.name)
         for n in nodes:
             graph.remove_node(n)
 
