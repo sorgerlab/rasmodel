@@ -115,7 +115,7 @@ rs = [x
 mismatch_rxns = [r for r in reactions
                  if r.products[0].label != ':'.join([s.label for s in r.reactants])]
 
-graph = pygraphviz.AGraph(directed=True, rankdir='LR')
+graph = pygraphviz.AGraph(directed=True, rankdir='LR', compound=True)
 graph.node_attr.update(fontname='Helvetica')
 for s in species:
     label = '<{0.label} <sup>{0.name}</sup>>'.format(s)
@@ -191,6 +191,7 @@ add_box(c381, c384, c312, c225, c226, c227, c23)
 # dimer:P:GAP:Grb2:Sos
 add_box(c387, c390, c315, c234, c235, c236, c25)
 
+# Delete stuff we haven't explicitly enumerated through add_box calls above.
 box_nodes = [n for g in graph.subgraphs() for n in g.nodes()]
 nodes_keep = set(box_nodes).union(neighbor_set(box_nodes))
 nodes_drop = set(graph.nodes()) - nodes_keep
@@ -198,5 +199,39 @@ dropped_species_nodes = set(n for n in nodes_drop if n.attr['_type'] == 'species
 drop2 = neighbor_set(dropped_species_nodes)
 for n in list(nodes_drop.union(drop2)):
     graph.remove_node(n)
+
+# Collapse sets of parallel reaction nodes.
+node_to_subgraph = {n: g for g in graph.subgraphs() for n in g.nodes()}
+rxn_nodes = [n for n in graph.nodes() if n.attr['_type'] == 'reaction']
+rxn_cluster_neighbors = [
+    tuple(sorted(node_to_subgraph[sn] for sn in graph.neighbors(rn)))
+    for rn in rxn_nodes]
+rxn_to_cn = dict(zip(rxn_nodes, rxn_cluster_neighbors))
+rno = list(rxn_nodes)
+rxn_nodes.sort(key=rxn_to_cn.get)
+for subgraphs, node_iter in itertools.groupby(rxn_nodes, rxn_to_cn.get):
+    nodes = list(node_iter)
+    if (all(sum(n.attr['_type'] == 'species' for n in sg) in (1, len(nodes)) for sg in subgraphs) and
+        len(nodes) > 1):
+        node_id = 'reaction_' + '_'.join(sg.name for sg in subgraphs)
+        label = r'\n'.join(sorted(n.attr['label'] for n in nodes))
+        graph.add_node(node_id, label=label, fontcolor='#13ac4a', shape='none',
+                       width=0, height=0, margin=0.05)
+        for sg in subgraphs:
+            if sg.name not in graph:
+                sg.add_node(sg.name, shape='none', label='')
+        for r_node in graph.predecessors(nodes[0]):
+            sg_name = node_to_subgraph[r_node].name
+            graph.add_edge(sg_name, node_id, arrowsize=1.4, ltail=sg_name)
+        for p_node in graph.successors(nodes[0]):
+            sg_name = node_to_subgraph[p_node].name
+            graph.add_edge(node_id, sg_name, arrowsize=1.4, lhead=sg_name)
+        for n in nodes:
+            graph.remove_node(n)
+
+# TEMP
+# for sg in graph.subgraphs():
+#     sg.graph_attr['label'] = sg.name
+#     globals()[sg.name] = sg
 
 graph.write('chen_2009.dot')
