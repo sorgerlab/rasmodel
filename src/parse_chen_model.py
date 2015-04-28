@@ -50,9 +50,20 @@ def species_by_label(pattern, multi=False):
 def neighbor_set(nodes):
     return set(itertools.chain.from_iterable(graph.neighbors(n) for n in nodes))
 
-def reverse_edge(u, v):
+def reverse_reaction(reaction, keep_appearance=False):
+    for s in reaction.reactants:
+        if s.id in graph:
+            reverse_edge(s.id, reaction.id, keep_appearance)
+    for s in reaction.products:
+        if s.id in graph:
+            reverse_edge(reaction.id, s.id, keep_appearance)
+
+def reverse_edge(u, v, keep_appearance):
     e = graph.get_edge(u, v)
-    graph.add_edge(v, u, **e.attr)
+    attrs = dict(e.attr)
+    if keep_appearance:
+        attrs['dir'] = 'back'
+    graph.add_edge(v, u, **attrs)
     graph.remove_edge(u, v)
 
 cluster_seq = itertools.count()
@@ -119,14 +130,16 @@ for r in reactions:
 for label in 'ATP', 'R_degraded', 'Inh':
     graph.remove_node(species_by_label(label).id)
 
-# reverse edges for some reactions which were specified "backwards"
+# Fix reactions that were specified "backwards" in the original model. This
+# swaps the direction of all edges on these reaction nodes.
 for r in v804, v807, v812, v813, v822, v823, v824, v825:
-    for s in r.reactants:
-        if s.id in graph:
-            reverse_edge(s.id, r.id)
-    for s in r.products:
-        if s.id in graph:
-            reverse_edge(r.id, s.id)
+    reverse_reaction(r)
+# Fix "retrograde" reactions -- those whose forward direction is logically
+# "backward" in the signaling network. This switches the logical edge direction
+# without changing the visual appearance (i.e. which end has the arrowhead),
+# leading to improved graph layout.
+for r in v443,:
+    reverse_reaction(r, keep_appearance=True)
 
 # single ErbB1
 add_box(c531)
