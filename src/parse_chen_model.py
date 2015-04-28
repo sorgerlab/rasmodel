@@ -217,20 +217,23 @@ for subgraphs, node_iter in itertools.groupby(rxn_nodes, rxn_to_cn.get):
         label = r'\n'.join(sorted(n.attr['label'] for n in nodes))
         graph.add_node(node_id, label=label, fontcolor='#13ac4a', shape='none',
                        width=0, height=0, margin=0.05)
-        for r_node in graph.predecessors(nodes[0]):
-            sg = node_to_subgraph[r_node]
-            u, v = sg.nodes_iter().next(), node_id
-            graph.add_edge(u, v)
-            if len(sg) > 1:
-                graph.get_edge(u, v).attr.update(
-                    arrowsize=1.4, arrowhead='empty', ltail=sg.name)
-        for p_node in graph.successors(nodes[0]):
-            sg = node_to_subgraph[p_node]
-            u, v = node_id, sg.nodes_iter().next()
-            graph.add_edge(u, v)
-            if len(sg) > 1:
-                graph.get_edge(u, v).attr.update(
-                    arrowsize=1.4, arrowhead='empty', lhead=sg.name)
+        r_nodes = graph.predecessors(nodes[0])
+        p_nodes = graph.successors(nodes[0])
+        for ntype, species_nodes in ('reactant', r_nodes), ('product', p_nodes):
+            for species_node in species_nodes:
+                sg = node_to_subgraph[species_node]
+                u, v = sg.nodes_iter().next(), node_id
+                if ntype == 'reactant':
+                    lheadtail = 'ltail'
+                else:
+                    lheadtail = 'lhead'
+                    u, v = v, u
+                if len(sg) == 1:
+                    attrs = {}
+                else:
+                    attrs = {'arrowsize': 1.4, 'arrowhead': 'empty',
+                             lheadtail: sg.name}
+                graph.add_edge(u, v, **attrs)
         for n in nodes:
             graph.remove_node(n)
 
