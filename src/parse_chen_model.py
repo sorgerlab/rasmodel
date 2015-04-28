@@ -73,6 +73,25 @@ def add_box(*species_list):
     cluster = graph.add_subgraph(nodes, name, color='none', bgcolor='gray94')
     return cluster
 
+# All the dark ("4") colors from the graphviz color set.
+color_cycle = itertools.cycle((
+        'antiquewhite4', 'aquamarine4', 'azure4', 'bisque4', 'blue4', 'brown4',
+        'burlywood4', 'cadetblue4', 'chartreuse4', 'chocolate4', 'coral4',
+        'cornsilk4', 'cyan4', 'darkgoldenrod4', 'darkolivegreen4',
+        'darkorange4', 'darkorchid4', 'darkseagreen4', 'deeppink4',
+        'deepskyblue4', 'dodgerblue4', 'firebrick4', 'gold4', 'goldenrod4',
+        'green4', 'honeydew4', 'hotpink4', 'indianred4', 'ivory4', 'khaki4',
+        'lavenderblush4', 'lemonchiffon4', 'magenta4', 'maroon4',
+        'mediumorchid4', 'mediumpurple4', 'mistyrose4', 'navajowhite4',
+        'olivedrab4', 'orange4', 'orangered4', 'orchid4', 'peachpuff4', 'pink4',
+        'plum4', 'purple4', 'red4', 'rosybrown4', 'royalblue4', 'salmon4',
+        'seagreen4', 'seashell4', 'sienna4', 'skyblue4', 'slateblue4', 'snow4',
+        'springgreen4', 'steelblue4', 'tan4', 'thistle4', 'tomato4',
+        'turquoise4', 'violetred4', 'wheat4', 'yellow4'))
+
+#####
+# Parse SBML file.
+
 ns = 'http://www.sbml.org/sbml/level2'
 qnames = dict((tag, lxml.etree.QName(ns, tag).text)
               for tag in ('species', 'reaction'))
@@ -112,6 +131,9 @@ for event, element in lxml.etree.iterparse(sbml_file, tag=qnames['reaction']):
         raise RuntimeError('duplicate component name: {}'.format(r.name))
     globals()[r.name] = r
 
+#####
+# Construct graphviz representation of reaction network.
+
 graph = pygraphviz.AGraph(directed=True, rankdir='LR', compound=True)
 graph.node_attr.update(fontname='Helvetica')
 graph.edge_attr.update(arrowsize=0.7)
@@ -122,10 +144,11 @@ for s in species:
 for r in reactions:
     graph.add_node(r.id, _type='reaction', label=r.name, shape='none',
                    fontcolor='#13ac4a', width=0, height=0, margin=0.05)
+    color = next(color_cycle)
     for reactant in r.reactants:
-        graph.add_edge(reactant.id, r.id)
+        graph.add_edge(reactant.id, r.id, color=color)
     for product in r.products:
-        graph.add_edge(r.id, product.id)
+        graph.add_edge(r.id, product.id, color=color)
 
 # delete some "nuisance" nodes from the graph
 for label in 'ATP', 'R_degraded', 'Inh':
@@ -215,10 +238,11 @@ for subgraphs, node_iter in itertools.groupby(rxn_nodes, rxn_to_cn.get):
         len(nodes) > 1):
         node_id = 'reaction_' + '_'.join(sg.name for sg in subgraphs)
         label = r'\n'.join(sorted(n.attr['label'] for n in nodes))
-        graph.add_node(node_id, label=label, fontcolor='#13ac4a', shape='none',
-                       width=0, height=0, margin=0.05)
+        graph.add_node(node_id, label=label, fontcolor='#13ac4a', shape='box',
+                       width=0, height=0, margin=0.05, color='#13ac4a20')
         r_nodes = graph.predecessors(nodes[0])
         p_nodes = graph.successors(nodes[0])
+        base_edge_attrs = {'color': next(color_cycle)}
         for ntype, species_nodes in ('reactant', r_nodes), ('product', p_nodes):
             for species_node in species_nodes:
                 sg = node_to_subgraph[species_node]
@@ -228,11 +252,10 @@ for subgraphs, node_iter in itertools.groupby(rxn_nodes, rxn_to_cn.get):
                 else:
                     lheadtail = 'lhead'
                     u, v = v, u
-                if len(sg) == 1:
-                    attrs = {}
-                else:
-                    attrs = {'arrowsize': 1.4, 'arrowhead': 'empty',
-                             lheadtail: sg.name}
+                attrs = dict(base_edge_attrs)
+                if len(sg) > 1:
+                    attrs.update({lheadtail: sg.name}, arrowsize=1.4,
+                                 style='bold')
                 graph.add_edge(u, v, **attrs)
         for n in nodes:
             graph.remove_node(n)
@@ -244,7 +267,8 @@ for subgraphs, node_iter in itertools.groupby(rxn_nodes, rxn_to_cn.get):
 
 graph.write('chen_2009.dot')
 
-## Debugging/cleanup checks
+#####
+# Debugging/cleanup checks
 
 # determine truly redundant species -- same name, same compartment
 sa = sorted(species, key=lambda s: (s.label, s.compartment))
