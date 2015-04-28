@@ -60,9 +60,6 @@ def add_box(*species_list):
     nodes = [s.id for s in species_list]
     name = 'cluster_{}'.format(next(cluster_seq))
     cluster = graph.add_subgraph(nodes, name, color='none', bgcolor='gray94')
-    sg = cluster.add_subgraph(rank='same')
-    for n1, n2 in zip(nodes[:-1], nodes[1:]):
-        sg.add_edge(n2, n1, color='red', weight=1, constraint='false')
     return cluster
 
 ns = 'http://www.sbml.org/sbml/level2'
