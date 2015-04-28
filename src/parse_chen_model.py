@@ -114,17 +114,18 @@ for event, element in lxml.etree.iterparse(sbml_file, tag=qnames['reaction']):
 
 graph = pygraphviz.AGraph(directed=True, rankdir='LR', compound=True)
 graph.node_attr.update(fontname='Helvetica')
+graph.edge_attr.update(arrowsize=0.7)
 for s in species:
     label = '<{0.label} <sup>{0.name}</sup>>'.format(s)
     graph.add_node(s.id, _type='species', label=label, shape='none',
-                   bgcolor='white', margin=0.1)
+                   bgcolor='white', margin=0.01, height=0)
 for r in reactions:
     graph.add_node(r.id, _type='reaction', label=r.name, shape='none',
                    fontcolor='#13ac4a', width=0, height=0, margin=0.05)
     for reactant in r.reactants:
-        graph.add_edge(reactant.id, r.id, arrowsize=0.7)
+        graph.add_edge(reactant.id, r.id)
     for product in r.products:
-        graph.add_edge(r.id, product.id, arrowsize=0.7)
+        graph.add_edge(r.id, product.id)
 
 # delete some "nuisance" nodes from the graph
 for label in 'ATP', 'R_degraded', 'Inh':
@@ -218,10 +219,18 @@ for subgraphs, node_iter in itertools.groupby(rxn_nodes, rxn_to_cn.get):
                        width=0, height=0, margin=0.05)
         for r_node in graph.predecessors(nodes[0]):
             sg = node_to_subgraph[r_node]
-            graph.add_edge(sg.nodes_iter().next(), node_id, arrowsize=1.4, ltail=sg.name)
+            u, v = sg.nodes_iter().next(), node_id
+            graph.add_edge(u, v)
+            if len(sg) > 1:
+                graph.get_edge(u, v).attr.update(
+                    arrowsize=1.4, arrowhead='empty', ltail=sg.name)
         for p_node in graph.successors(nodes[0]):
             sg = node_to_subgraph[p_node]
-            graph.add_edge(node_id, sg.nodes_iter().next(), arrowsize=1.4, lhead=sg.name)
+            u, v = node_id, sg.nodes_iter().next()
+            graph.add_edge(u, v)
+            if len(sg) > 1:
+                graph.get_edge(u, v).attr.update(
+                    arrowsize=1.4, arrowhead='empty', lhead=sg.name)
         for n in nodes:
             graph.remove_node(n)
 
