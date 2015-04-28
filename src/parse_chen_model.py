@@ -101,18 +101,6 @@ for event, element in lxml.etree.iterparse(sbml_file, tag=qnames['reaction']):
         raise RuntimeError('duplicate component name: {}'.format(r.name))
     globals()[r.name] = r
 
-# determine truly redundant species -- same name, same compartment
-sa = sorted(species, key=lambda s: (s.label, s.compartment))
-rs = [x
-      for x in ((n, map(lambda s: s.compartment, it))
-          for n, it in itertools.groupby(sa, lambda s: s.label))
-      if len(x[1]) == 2 and x[1][0] == x[1][1]]
-
-# find reactions where product is not a trivial concatenation of reactants
-# (e.g. A + B -> A:B)
-mismatch_rxns = [r for r in reactions
-                 if r.products[0].label != ':'.join([s.label for s in r.reactants])]
-
 graph = pygraphviz.AGraph(directed=True, rankdir='LR', compound=True)
 graph.node_attr.update(fontname='Helvetica')
 for s in species:
@@ -230,3 +218,17 @@ for subgraphs, node_iter in itertools.groupby(rxn_nodes, rxn_to_cn.get):
 #     globals()[sg.name] = sg
 
 graph.write('chen_2009.dot')
+
+## Debugging/cleanup checks
+
+# determine truly redundant species -- same name, same compartment
+sa = sorted(species, key=lambda s: (s.label, s.compartment))
+rs = [x
+      for x in ((n, map(lambda s: s.compartment, it))
+          for n, it in itertools.groupby(sa, lambda s: s.label))
+      if len(x[1]) == 2 and x[1][0] == x[1][1]]
+
+# find reactions where product is not a trivial concatenation of reactants
+# (e.g. A + B -> A:B)
+mismatch_rxns = [r for r in reactions
+                 if r.products[0].label != ':'.join([s.label for s in r.reactants])]
