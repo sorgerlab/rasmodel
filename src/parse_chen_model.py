@@ -111,6 +111,8 @@ for event, element in lxml.etree.iterparse(sbml_file, tag=qnames['species']):
     compartment = xpath(element, 's:annotation/text()')
     if compartment is not None:
         compartment = compartment.strip().lower()
+        if 'endo' in compartment:
+            label = 'endo|' + label
     s = Species(species_id, name, label, compartment)
     species.append(s)
     species_id_map[s.id] = s
@@ -151,12 +153,13 @@ for r in reactions:
         graph.add_edge(r.id, product.id, color=color)
 
 # delete some "nuisance" nodes from the graph
-for label in 'ATP', 'R_degraded', 'Inh':
+for label in 'ATP', 'Inh':
     graph.remove_node(species_by_label(label).id)
 
 # Fix reactions that were specified "backwards" in the original model. This
 # swaps the direction of all edges on these reaction nodes.
-for r in v804, v807, v812, v813, v822, v823, v824, v825:
+for r in (v804, v807, v812, v813, v822, v823, v824, v825,
+          v808, v811, v809, v826, v810, v827):
     reverse_reaction(r)
 # Fix "retrograde" reactions -- those whose forward direction is logically
 # "backward" in the signaling network. This switches the logical edge direction
@@ -214,6 +217,15 @@ add_box(c381, c384, c312, c225, c226, c227, c23)
 # dimer:P:GAP:Grb2:Sos
 add_box(c387, c390, c315, c234, c235, c236, c25)
 
+# endosomes
+add_box(c156, c154, c155, c6)
+add_box(c16, c515)
+add_box(c10, c157, c158)
+add_box(c11, c159, c160, c161, c421, c422, c518, c519)
+add_box(c86)
+add_box(c126, c123, c124, c125, c169, c170)
+add_box(c8, c162, c163, c164, c337, c338, c290)
+
 # Delete stuff we haven't explicitly enumerated through add_box calls above.
 box_nodes = [n for g in graph.subgraphs() for n in g.nodes()]
 nodes_keep = set(box_nodes).union(neighbor_set(box_nodes))
@@ -259,6 +271,10 @@ for subgraphs, node_iter in itertools.groupby(rxn_nodes, rxn_to_cn.get):
                 graph.add_edge(u, v, **attrs)
         for n in nodes:
             graph.remove_node(n)
+
+# TEST
+#graph.add_subgraph([s.id for s in species if s.id in graph and 'endo' in s.compartment],
+#                   'endosome', color='red')
 
 # TEMP
 # for sg in graph.subgraphs():
