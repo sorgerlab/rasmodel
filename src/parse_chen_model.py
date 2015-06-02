@@ -168,6 +168,8 @@ for r in (v804, v807, v812, v813, v822, v823, v824, v825,
 for r in v443,:
     reverse_reaction(r, keep_appearance=True)
 
+## Plasma membrane receptors and ligands
+
 # single ErbB1
 add_box(c531)
 # single receptors
@@ -186,6 +188,9 @@ add_box(c116, c122, c127, c128, c168, c139, c137, c138)
 add_box(c5, c148, c149, c150, c335, c336, c289)
 # Phosphorylated monomers
 add_box(c330, c87, c331, c332)
+
+## Adapters
+
 # GAP
 add_box(c14)
 # dimer#P:GAP
@@ -217,14 +222,34 @@ add_box(c381, c384, c312, c225, c226, c227, c23)
 # dimer:P:GAP:Grb2:Sos
 add_box(c387, c390, c315, c234, c235, c236, c25)
 
-# endosomes
+## Endosome receptors and ligands
+
+# single receptors
 add_box(c156, c154, c155, c6)
+# 2:2 / 2:3 / 2:4 dimers
+add_box(c425, c339, c340)
+# ligands
 add_box(c16, c515)
+# degraded EGF
+add_box(c13)
+# ligand-bound single receptors
 add_box(c10, c157, c158)
+# ligand-bound receptor dimers
 add_box(c11, c159, c160, c161, c421, c422, c518, c519)
+# degraded receptor pool
 add_box(c86)
+# ATP-and-ligand-bound receptor dimers
 add_box(c126, c123, c124, c125, c169, c170)
+# Phosphorylated dimers (dimer#P)
 add_box(c8, c162, c163, c164, c337, c338, c290)
+
+## RTK phosphatase
+
+# RTK Phosphatase
+add_box(c280)
+# dimer#P:Phosphatase
+add_box(c415, c416, c281, c283, c282, c417, c418)
+
 
 # Delete stuff we haven't explicitly enumerated through add_box calls above.
 box_nodes = [n for g in graph.subgraphs() for n in g.nodes()]
