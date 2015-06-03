@@ -236,8 +236,6 @@ add_box(c13)
 add_box(c10, c157, c158)
 # ligand-bound receptor dimers
 add_box(c11, c159, c160, c161, c421, c422, c518, c519)
-# degraded receptor pool
-add_box(c86)
 # ATP-and-ligand-bound receptor dimers
 add_box(c126, c123, c124, c125, c169, c170)
 # Phosphorylated dimers (dimer#P)
@@ -249,6 +247,23 @@ add_box(c8, c162, c163, c164, c337, c338, c290)
 add_box(c280)
 # dimer#P:Phosphatase
 add_box(c415, c416, c281, c283, c282, c417, c418)
+
+## Endosome adapters
+
+# dimer#P:GAP
+add_box(c343, c346, c293, c17, c165, c166, c167)
+# dimer#P:GAP:Shc
+add_box(c349, c350, c296, c174, c175, c176, c63)
+# dimer#P:GAP:(Shc#P)
+add_box(c353, c356, c299, c183, c184, c185, c64)
+# dimer#P:GAP:(Shc#P):Grb2
+add_box(c359, c362, c302, c192, c193, c194, c65)
+# dimer#P:GAP:(Shc#P):Grb2:Sos
+add_box(c365, c368, c305, c201, c202, c203, c66)
+# dimer#P:GAP:Grb2
+add_box(c383, c386, c314, c228, c229, c230, c18)
+# dimer:P:GAP:Grb2:Sos
+add_box(c389, c392, c317, c237, c238, c239, c19)
 
 
 # Delete stuff we haven't explicitly enumerated through add_box calls above.
