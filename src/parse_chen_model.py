@@ -158,14 +158,14 @@ for label in 'ATP', 'Inh':
 
 # Fix reactions that were specified "backwards" in the original model. This
 # swaps the direction of all edges on these reaction nodes.
-for r in (v804, v807, v812, v813, v822, v823, v824, v825,
-          v808, v811, v809, v826, v810, v827):
+for r in (v804, v807, v812, v813, v822, v823, v824, v825, v808, v811, v809,
+          v826, v810, v827, v657, v658, v659, v660, v661, v662, v663):
     reverse_reaction(r)
 # Fix "retrograde" reactions -- those whose forward direction is logically
 # "backward" in the signaling network. This switches the logical edge direction
 # without changing the visual appearance (i.e. which end has the arrowhead),
 # leading to improved graph layout.
-for r in v443,:
+for r in (v443, ):
     reverse_reaction(r, keep_appearance=True)
 
 ## Plasma membrane receptors and ligands
