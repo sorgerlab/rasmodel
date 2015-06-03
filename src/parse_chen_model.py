@@ -267,8 +267,10 @@ rxn_cluster_neighbors = [
     tuple(sorted(node_to_subgraph[sn] for sn in graph.neighbors(rn)))
     for rn in rxn_nodes]
 rxn_to_cn = dict(zip(rxn_nodes, rxn_cluster_neighbors))
-rno = list(rxn_nodes)
-rxn_nodes.sort(key=rxn_to_cn.get)
+# Sort reaction nodes based on which species subgraphs (clusters) they are
+# adjacent to. Map subgraphs to their ids because graph equality in pygraphviz
+# is VERY expensive -- it serializes them to strings and compares those!
+rxn_nodes.sort(key=lambda r: map(id, rxn_to_cn[r]))
 for subgraphs, node_iter in itertools.groupby(rxn_nodes, rxn_to_cn.get):
     nodes = list(node_iter)
     if (all(sum(n.attr['_type'] == 'species' for n in sg) in (1, len(nodes)) for sg in subgraphs) and
