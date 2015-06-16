@@ -161,10 +161,16 @@ for label in 'ATP',:
 # swaps the direction of all edges on these reaction nodes.
 for r in (v804, v807, v812, v813, v822, v823, v824, v825, v808, v811, v809,
           v826, v810, v827, v657, v658, v659, v660, v661, v662, v663,
-          v109, v111, v123, v139, v140, v141, v161, # GAP:Grb2 dissoc cPP
-          v107, v108, v122, v128, v129, v130, v162, # GAP:Grb2:Sos dissoc cPP
-          v110, v116, v126, v148, v149, v150, v157, # GAP:Shc#P:Grb2:Sos dissoc cPP
-          v117, v118, v127, v151, v152, v153, v158, # GAP:Shc#P:Grb2 dissoc cPP
+          v109, v111, v123, v139, v140, v141, v161, # R.. diss cPP
+          v107, v108, v122, v128, v129, v130, v162, # R..Sos diss cPP
+          v117, v118, v127, v151, v152, v153, v158, # R..Shc diss cPP
+          v110, v116, v126, v148, v149, v150, v157, # R..Shc..Sos diss cPP
+          v105, v106, v121, v136, v137, v138, v160, # R..RasGDP diss cPP
+          v103, v104, v120, v133, v134, v135, v159, # R..RasGTP diss cPP
+          v114, v115, v125, v145, v146, v147, v156, # R..Shc..RasGDP diss cPP
+          v112, v113, v124, v142, v143, v144, v155, # R..Shc..RasGTP diss cPP
+          v289, v293, v295, v296, v297, v307, v309, # R..Shc..RasGDP diss RasGTP
+          v283, v285, v287, v294, v301, v302, v303, # R..RasGDP diss RasGTP
           ):
     reverse_reaction(r)
 # Fix "retrograde" reactions -- those whose forward direction is logically
@@ -292,6 +298,41 @@ add_box(c388, c391, c316, c240, c241, c242, c88)
 add_box(c285)
 # receptor:Inh
 add_box(c286, c502, c506, c503)
+
+## RAS-bound complexes
+
+# Ras:GDP
+add_box(c26)
+# Ras:GTP
+add_box(c28)
+
+# dimer#P:GAP:(Shc#P):Grb2:Sos:RasGDP, plasma membrane
+add_box(c369, c372, c306, c207, c208, c209, c36)
+# dimer#P:GAP:(Shc#P):Grb2:Sos:RasGDP, cpp-bound
+add_box(c370, c373, c307, c213, c214, c215, c93)
+# dimer#P:GAP:(Shc#P):Grb2:Sos:RasGDP, endosome
+add_box(c371, c374, c308, c210, c211, c212, c67)
+
+# dimer#P:GAP:(Shc#P):Grb2:Sos:RasGTP, plasma membrane
+add_box(c375, c378, c309, c216, c217, c218, c37)
+# dimer#P:GAP:(Shc#P):Grb2:Sos:RasGTP, cpp-bound
+add_box(c376, c379, c310, c222, c223, c224, c94)
+# dimer#P:GAP:(Shc#P):Grb2:Sos:RasGTP, endosome
+add_box(c377, c380, c311, c219, c220, c221, c68)
+
+# dimer#P:GAP:Grb2:Sos:RasGDP, plasma membrane
+add_box(c393, c396, c318, c243, c244, c245, c27)
+# dimer#P:GAP:Grb2:Sos:RasGDP, cpp-bound
+add_box(c394, c397, c319, c249, c250, c251, c89)
+# dimer#P:GAP:Grb2:Sos:RasGDP, endosome
+add_box(c395, c398, c320, c246, c247, c248, c20)
+
+# dimer#P:GAP:Grb2:Sos:RasGTP, plasma membrane
+add_box(c399, c402, c321, c252, c253, c254, c29)
+# dimer#P:GAP:Grb2:Sos:RasGTP, cpp-bound
+add_box(c400, c403, c322, c258, c259, c260, c90)
+# dimer#P:GAP:Grb2:Sos:RasGTP, endosome
+add_box(c401, c404, c323, c255, c256, c257, c21)
 
 # Delete stuff we haven't explicitly enumerated through add_box calls above.
 box_nodes = [n for g in graph.subgraphs() for n in g.nodes()]
