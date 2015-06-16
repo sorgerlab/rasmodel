@@ -1,3 +1,4 @@
+from __future__ import division
 import sys
 import collections
 import re
@@ -274,6 +275,8 @@ dropped_species_nodes = set(n for n in nodes_drop if n.attr['_type'] == 'species
 drop2 = neighbor_set(dropped_species_nodes)
 for n in list(nodes_drop.union(drop2)):
     graph.remove_node(n)
+num_keep_species = len([n for n in graph.nodes() if n.attr['_type'] == 'species'])
+num_keep_reactions = len([n for n in graph.nodes() if n.attr['_type'] == 'reaction'])
 
 # Collapse sets of parallel reaction nodes.
 node_to_subgraph = {n: g for g in graph.subgraphs() for n in g.nodes()}
@@ -324,6 +327,15 @@ for subgraphs, node_iter in itertools.groupby(rxn_nodes, rxn_to_cn.get):
 #     globals()[sg.name] = sg
 
 graph.write('chen_2009.dot')
+
+num_total_species = len(species)
+num_total_reactions = len(reactions)
+print >>sys.stderr, ("Species: {} / {} ({}%)"
+                     .format(num_keep_species, num_total_species,
+                             100 * num_keep_species / num_total_species))
+print >>sys.stderr, ("Reactions: {} / {} ({}%)"
+                     .format(num_keep_reactions, num_total_reactions,
+                             100 * num_keep_reactions / num_total_reactions))
 
 #####
 # Debugging/cleanup checks
