@@ -159,19 +159,21 @@ for label in 'ATP',:
 
 # Fix reactions that were specified "backwards" in the original model. This
 # swaps the direction of all edges on these reaction nodes.
-for r in (v804, v807, v812, v813, v822, v823, v824, v825, v808, v811, v809,
-          v826, v810, v827, v657, v658, v659, v660, v661, v662, v663,
-          v109, v111, v123, v139, v140, v141, v161, # R.. diss cPP
-          v107, v108, v122, v128, v129, v130, v162, # R..Sos diss cPP
-          v117, v118, v127, v151, v152, v153, v158, # R..Shc diss cPP
-          v110, v116, v126, v148, v149, v150, v157, # R..Shc..Sos diss cPP
-          v105, v106, v121, v136, v137, v138, v160, # R..RasGDP diss cPP
-          v103, v104, v120, v133, v134, v135, v159, # R..RasGTP diss cPP
-          v114, v115, v125, v145, v146, v147, v156, # R..Shc..RasGDP diss cPP
-          v112, v113, v124, v142, v143, v144, v155, # R..Shc..RasGTP diss cPP
-          v289, v293, v295, v296, v297, v307, v309, # R..Shc..RasGDP diss RasGTP
-          v283, v285, v287, v294, v301, v302, v303, # R..RasGDP diss RasGTP
-          ):
+for r in (
+    v804, v807, v812, v813, v822, v823, v824, v825, # dimer#P catalysis step
+    v808, v811, v809, v826, v810, v827,       # endo|dimer#P catalysis step
+    v657, v658, v659, v660, v661, v662, v663, # endo|dimer#P diss RTK_Pase
+    v109, v111, v123, v139, v140, v141, v161, # R.. diss cPP
+    v107, v108, v122, v128, v129, v130, v162, # R..Sos diss cPP
+    v117, v118, v127, v151, v152, v153, v158, # R..Shc diss cPP
+    v110, v116, v126, v148, v149, v150, v157, # R..Shc..Sos diss cPP
+    v105, v106, v121, v136, v137, v138, v160, # R..RasGDP diss cPP
+    v103, v104, v120, v133, v134, v135, v159, # R..RasGTP diss cPP
+    v114, v115, v125, v145, v146, v147, v156, # R..Shc..RasGDP diss cPP
+    v112, v113, v124, v142, v143, v144, v155, # R..Shc..RasGTP diss cPP
+    v289, v293, v295, v296, v297, v307, v309, # R..Shc..RasGDP diss RasGTP
+    v283, v285, v287, v294, v301, v302, v303, # R..RasGDP diss RasGTP
+    ):
     reverse_reaction(r)
 # Fix "retrograde" reactions -- those whose forward direction is logically
 # "backward" in the signaling network. This switches the logical edge direction
