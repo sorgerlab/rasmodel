@@ -154,19 +154,24 @@ for r in reactions:
         graph.add_edge(r.id, product.id, color=color)
 
 # delete some "nuisance" nodes from the graph
-for label in 'ATP', 'Inh':
+for label in 'ATP',:
     graph.remove_node(species_by_label(label).id)
 
 # Fix reactions that were specified "backwards" in the original model. This
 # swaps the direction of all edges on these reaction nodes.
 for r in (v804, v807, v812, v813, v822, v823, v824, v825, v808, v811, v809,
-          v826, v810, v827, v657, v658, v659, v660, v661, v662, v663):
+          v826, v810, v827, v657, v658, v659, v660, v661, v662, v663,
+          v109, v111, v123, v139, v140, v141, v161, # GAP:Grb2 dissoc cPP
+          v107, v108, v122, v128, v129, v130, v162, # GAP:Grb2:Sos dissoc cPP
+          v110, v116, v126, v148, v149, v150, v157, # GAP:Shc#P:Grb2:Sos dissoc cPP
+          v117, v118, v127, v151, v152, v153, v158, # GAP:Shc#P:Grb2 dissoc cPP
+          ):
     reverse_reaction(r)
 # Fix "retrograde" reactions -- those whose forward direction is logically
 # "backward" in the signaling network. This switches the logical edge direction
 # without changing the visual appearance (i.e. which end has the arrowhead),
 # leading to improved graph layout.
-for r in (v443, ):
+for r in (v443, v211):
     reverse_reaction(r, keep_appearance=True)
 
 ## Plasma membrane receptors and ligands
@@ -266,6 +271,27 @@ add_box(c383, c386, c314, c228, c229, c230, c18)
 # dimer:P:GAP:Grb2:Sos
 add_box(c389, c392, c317, c237, c238, c239, c19)
 
+## Coated-pit-protein-bound adapters
+
+# cPP
+add_box(c12)
+# endo|cPP
+add_box(c9)
+# dimer#P:GAP:(Shc#P):Grb2
+add_box(c358, c361, c301, c195, c196, c197, c91)
+# dimer#P:GAP:(Shc#P):Grb2:Sos
+add_box(c364, c367, c304, c204, c205, c206, c92)
+# dimer#P:GAP:Grb2
+add_box(c382, c385, c313, c231, c232, c233, c7)
+# dimer:P:GAP:Grb2:Sos
+add_box(c388, c391, c316, c240, c241, c242, c88)
+
+## Inhibitor
+
+# Inh
+add_box(c285)
+# receptor:Inh
+add_box(c286, c502, c506, c503)
 
 # Delete stuff we haven't explicitly enumerated through add_box calls above.
 box_nodes = [n for g in graph.subgraphs() for n in g.nodes()]
