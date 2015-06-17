@@ -187,8 +187,9 @@ for r in (
     v103, v104, v120, v133, v134, v135, v159, # R..RasGTP diss cPP
     v114, v115, v125, v145, v146, v147, v156, # R..Shc..RasGDP diss cPP
     v112, v113, v124, v142, v143, v144, v155, # R..Shc..RasGTP diss cPP
-    v289, v293, v295, v296, v297, v307, v309, # R..Shc..RasGDP diss RasGTP
-    v283, v285, v287, v294, v301, v302, v303, # R..RasGDP diss RasGTP
+    v283, v285, v287, v294, v301, v302, v303, # R..RasGDP cat
+    v289, v293, v295, v296, v297, v307, v309, # R..Shc..RasGDP cat
+    v257, v268, v269, v270, v274, v280, v282, # endo|R..RasGDP cat
     ):
     reverse_reaction(r)
 # Fix "retrograde" reactions -- those whose forward direction is logically
@@ -323,6 +324,8 @@ add_box(c286, c502, c506, c503)
 add_box(c26)
 # Ras:GTP
 add_box(c28)
+# Ras_activated:GTP
+add_box(c43)
 
 # dimer#P:GAP:(Shc#P):Grb2:Sos:RasGDP, plasma membrane
 add_box(c369, c372, c306, c207, c208, c209, c36)
