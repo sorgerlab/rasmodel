@@ -72,7 +72,23 @@ def add_box(*species_list):
     nodes = [s.id for s in species_list]
     name = 'cluster_{}'.format(next(cluster_seq))
     cluster = graph.add_subgraph(nodes, name, color='none', bgcolor='gray94')
+    globals()[name] = cluster
+    cluster.graph_attr.update(label=name, fontname='courier bold', fontsize=18) # DEBUG
     return cluster
+
+def add_group(*cluster_list):
+    name = 'cluster_group_{}'.format(next(cluster_seq))
+    cluster = graph.add_subgraph([], name)
+    cluster.graph_attr.update(label=name, fontname='courier bold', fontsize=24,
+                              color='red', bgcolor='pink') # DEBUG
+    for sg in cluster_list:
+        cluster.add_nodes_from(sg)
+        globals()[sg.name] = cluster.add_subgraph(sg, sg.name, **sg.graph_attr)
+        graph.remove_subgraph(sg.name)
+    for rxn_node in set(itertools.chain.from_iterable(graph.neighbors_iter(n)
+                                                      for n in cluster.nodes())):
+        if all(neighbor in cluster for neighbor in graph.neighbors(rxn_node)):
+            cluster.add_node(rxn_node)
 
 # All the dark ("4") colors from the graphviz color set.
 color_cycle = itertools.cycle((
@@ -365,7 +381,8 @@ for subgraphs, node_iter in itertools.groupby(rxn_nodes, rxn_to_cn.get):
         node_id = 'reaction_' + '_'.join(sg.name for sg in subgraphs)
         label = r'\n'.join(sorted(n.attr['label'] for n in nodes))
         graph.add_node(node_id, label=label, fontcolor='#13ac4a', shape='box',
-                       width=0, height=0, margin=0.05, color='#13ac4a20')
+                       width=0, height=0, margin=0.05, color='#13ac4a20',
+                       _type='reaction')
         r_nodes = graph.predecessors(nodes[0])
         p_nodes = graph.successors(nodes[0])
         base_edge_attrs = {'color': next(color_cycle)}
@@ -386,14 +403,8 @@ for subgraphs, node_iter in itertools.groupby(rxn_nodes, rxn_to_cn.get):
         for n in nodes:
             graph.remove_node(n)
 
-# TEST
-#graph.add_subgraph([s.id for s in species if s.id in graph and 'endo' in s.compartment],
-#                   'endosome', color='red')
-
-# TEMP
-# for sg in graph.subgraphs():
-#     sg.graph_attr['label'] = sg.name
-#     globals()[sg.name] = sg
+add_group(cluster_5, cluster_6, cluster_7)
+add_group(cluster_29, cluster_30, cluster_31)
 
 graph.write('chen_2009.dot')
 
