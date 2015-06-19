@@ -53,11 +53,11 @@ def neighbor_set(nodes):
 
 def reverse_reaction(reaction, keep_appearance=False):
     for s in reaction.reactants:
-        if s.id in graph:
-            reverse_edge(s.id, reaction.id, keep_appearance)
+        if s.name in graph:
+            reverse_edge(s.name, reaction.name, keep_appearance)
     for s in reaction.products:
-        if s.id in graph:
-            reverse_edge(reaction.id, s.id, keep_appearance)
+        if s.name in graph:
+            reverse_edge(reaction.name, s.name, keep_appearance)
 
 def reverse_edge(u, v, keep_appearance):
     e = graph.get_edge(u, v)
@@ -69,7 +69,7 @@ def reverse_edge(u, v, keep_appearance):
 
 cluster_seq = itertools.count()
 def add_box(*species_list):
-    nodes = [s.id for s in species_list]
+    nodes = [s.name for s in species_list]
     name = 'cluster_{}'.format(next(cluster_seq))
     cluster = graph.add_subgraph(nodes, name, color='none', bgcolor='gray94')
     globals()[name] = cluster
@@ -158,20 +158,20 @@ graph.node_attr.update(fontname='Helvetica')
 graph.edge_attr.update(arrowsize=0.7)
 for s in species:
     label = '<{0.label} <sup>{0.name}</sup>>'.format(s)
-    graph.add_node(s.id, _type='species', label=label, shape='none',
+    graph.add_node(s.name, _type='species', label=label, shape='none',
                    bgcolor='white', margin=0.01, height=0)
 for r in reactions:
-    graph.add_node(r.id, _type='reaction', label=r.name, shape='none',
+    graph.add_node(r.name, _type='reaction', label=r.name, shape='none',
                    fontcolor='#13ac4a', width=0, height=0, margin=0.05)
     color = next(color_cycle)
     for reactant in r.reactants:
-        graph.add_edge(reactant.id, r.id, color=color)
+        graph.add_edge(reactant.name, r.name, color=color)
     for product in r.products:
-        graph.add_edge(r.id, product.id, color=color)
+        graph.add_edge(r.name, product.name, color=color)
 
 # delete some "nuisance" nodes from the graph
 for label in 'ATP',:
-    graph.remove_node(species_by_label(label).id)
+    graph.remove_node(species_by_label(label).name)
 
 # Fix reactions that were specified "backwards" in the original model. This
 # swaps the direction of all edges on these reaction nodes.
