@@ -159,7 +159,8 @@ for event, element in lxml.etree.iterparse(sbml_file, tag=qnames['reaction']):
 #####
 # Construct graphviz representation of reaction network.
 
-graph = pygraphviz.AGraph(directed=True, rankdir='LR', compound=True)
+graph = pygraphviz.AGraph(directed=True, rankdir='LR', compound=True,
+                          nodesep=0.1, ranksep=1.2)
 graph.node_attr.update(fontname='Helvetica')
 graph.edge_attr.update(arrowsize=0.7)
 for s in species:
