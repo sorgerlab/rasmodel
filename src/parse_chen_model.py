@@ -9,6 +9,7 @@ import pygraphviz
 
 Species = collections.namedtuple('Species',
                                  'id name label compartment')
+DEBUG = True
 
 class Reaction(collections.namedtuple(
         'ReactionBase',
@@ -73,14 +74,18 @@ def add_box(*species_list):
     name = 'cluster_{}'.format(next(cluster_seq))
     cluster = graph.add_subgraph(nodes, name, color='none', bgcolor='gray94')
     globals()[name] = cluster
-    cluster.graph_attr.update(label=name, fontname='courier bold', fontsize=18) # DEBUG
+    if DEBUG:
+        cluster.graph_attr.update(label=name, fontname='courier bold',
+                                  fontsize=18)
     return cluster
 
 def add_group(*cluster_list):
     name = 'cluster_group_{}'.format(next(cluster_seq))
-    cluster = graph.add_subgraph([], name)
-    cluster.graph_attr.update(label=name, fontname='courier bold', fontsize=24,
-                              color='red', bgcolor='pink') # DEBUG
+    cluster = graph.add_subgraph([], name, color='none')
+    globals()[name] = cluster
+    if DEBUG:
+        cluster.graph_attr.update(label=name, fontname='courier bold',
+                                  fontsize=24, color='red', bgcolor='pink')
     for sg in cluster_list:
         cluster.add_nodes_from(sg)
         globals()[sg.name] = cluster.add_subgraph(sg, sg.name, **sg.graph_attr)
@@ -89,6 +94,7 @@ def add_group(*cluster_list):
                                                       for n in cluster.nodes())):
         if all(neighbor in cluster for neighbor in graph.neighbors(rxn_node)):
             cluster.add_node(rxn_node)
+    return cluster
 
 # All the dark ("4") colors from the graphviz color set.
 color_cycle = itertools.cycle((
