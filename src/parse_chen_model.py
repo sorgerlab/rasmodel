@@ -422,8 +422,9 @@ for subgraphs, node_iter in itertools.groupby(rxn_nodes, rxn_to_cn.get):
         for n in nodes:
             graph.remove_node(n)
 
-add_group(cluster_5, cluster_6, cluster_7)
-add_group(cluster_29, cluster_30, cluster_31)
+add_group(cluster_5, cluster_6, cluster_7, cluster_8)
+add_group(cluster_24, cluster_28, cluster_29, cluster_30, cluster_31,
+          cluster_25, cluster_32, cluster_33)
 
 graph.write('chen_2009.dot')
 
