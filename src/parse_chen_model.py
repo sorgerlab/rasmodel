@@ -426,6 +426,12 @@ add_group(cluster_5, cluster_6, cluster_7, cluster_8)
 add_group(cluster_24, cluster_28, cluster_29, cluster_30, cluster_31,
           cluster_25, cluster_32, cluster_33)
 
+# If requested, remove free adapter proteins to simplify the graph.
+simplify_adapters = False
+if simplify_adapters:
+    for species in c12, c28, c26, c43, c22, c24, c30, c39, c31, c40, c9, c38, c14:
+        graph.remove_node(species)
+
 graph.write('chen_2009.dot')
 
 num_total_species = len(species)
