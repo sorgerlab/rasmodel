@@ -61,21 +61,26 @@ def species_by_label(pattern, multi=False):
 def neighbor_set(nodes):
     return set(itertools.chain.from_iterable(graph.neighbors(n) for n in nodes))
 
-def reverse_reaction(reaction, keep_appearance=False):
+def reverse_reaction(reaction, logical=True, visual=True):
     for s in reaction.reactants:
         if s in graph:
-            reverse_edge(s, reaction, keep_appearance)
+            reverse_edge(s, reaction, logical, visual)
     for s in reaction.products:
         if s in graph:
-            reverse_edge(reaction, s, keep_appearance)
+            reverse_edge(reaction, s, logical, visual)
 
-def reverse_edge(u, v, keep_appearance):
+def reverse_edge(u, v, logical, visual):
     e = graph.get_edge(u, v)
-    attrs = dict(e.attr)
-    if keep_appearance:
-        attrs['dir'] = 'back'
-    graph.add_edge(v, u, **attrs)
-    graph.remove_edge(u, v)
+    if not logical and not visual:
+        raise ValueError("logical and/or visual must be True")
+    elif not logical and visual:
+        e.attr['dir'] = 'back'
+    elif logical:
+        attrs = dict(e.attr)
+        if not visual:
+            attrs['dir'] = 'back'
+        graph.add_edge(v, u, **attrs)
+        graph.remove_edge(u, v)
 
 cluster_seq = itertools.count()
 def add_box(*species_list):
@@ -206,14 +211,31 @@ for r in (
     v283, v285, v287, v294, v301, v302, v303, # R..RasGDP cat
     v289, v293, v295, v296, v297, v307, v309, # R..Shc..RasGDP cat
     v257, v268, v269, v270, v274, v280, v282, # endo|R..RasGDP cat
+    v411, v412,             # Raf phos
+    v495, v496, v497, v498, # MEK phos
+    v511, v512, v513, v514, # ERK phos
     ):
     reverse_reaction(r)
 # Fix "retrograde" reactions -- those whose forward direction is logically
 # "backward" in the signaling network. This switches the logical edge direction
 # without changing the visual appearance (i.e. which end has the arrowhead),
 # leading to improved graph layout.
-for r in (v443, v211):
-    reverse_reaction(r, keep_appearance=True)
+for r in (
+    v443,                   # Shc spontaneous dephos
+    v211,                   # cPP transloc to cytoplasm
+    v487, v488,             # Raf#P bind Pase1
+    v505, v506, v499, v500, # MEK#P(#P) bind Pase2
+    v521, v522, v515, v516, # ERK#P(#P) bind Pase3
+    ):
+    reverse_reaction(r, visual=False)
+# Fix reactions that are backwards AND retrograde. This switches the visual
+# appearance without changing the logical direction.
+for r in (
+    v489, v490,             # Raf dephos
+    v502, v503, v501, v504, # MEK#P(#P) dephos
+    v519, v520, v517, v518, # ERK#P(#P) dephos
+    ):
+    reverse_reaction(r, logical=False)
 
 ## Plasma membrane receptors and ligands
 
@@ -340,8 +362,16 @@ add_box(c286, c502, c506, c503)
 add_box(c26)
 # Ras:GTP
 add_box(c28)
+# (Ras:GTP)_i
+add_box(c69)
 # Ras_activated:GTP
 add_box(c43)
+# (Ras_activated:GTP)_i
+add_box(c71)
+# Raf:Ras:GTP
+add_box(c42)
+# (Raf:Ras:GTP)_i
+add_box(c70)
 
 # dimer#P:GAP:(Shc#P):Grb2:Sos:RasGDP, plasma membrane
 add_box(c369, c372, c306, c207, c208, c209, c36)
@@ -371,6 +401,54 @@ add_box(c400, c403, c322, c258, c259, c260, c90)
 # dimer#P:GAP:Grb2:Sos:RasGTP, endosome
 add_box(c401, c404, c323, c255, c256, c257, c21)
 
+## MAPK signaling
+
+# Raf
+add_box(c41)
+# MEK
+add_box(c47)
+# ERK
+add_box(c55)
+# Pase1
+add_box(c44)
+# Pase2
+add_box(c53)
+# Pase3
+add_box(c60)
+# Pase4
+add_box(c113)
+# Raf#P
+add_box(c45, c72)
+# Raf#P:Pase1
+add_box(c46, c73)
+# MEK:Raf#P
+add_box(c48, c74)
+# MEK#P
+add_box(c49, c75)
+# MEK#P:Raf#P
+add_box(c50, c76)
+# MEK#P#P
+add_box(c51, c77)
+# MEK#P#P:Pase2
+add_box(c52, c78)
+# MEK#P:Pase2
+add_box(c54, c79)
+
+# ERK:MEK#P#P
+add_box(c56, c80)
+# ERK#P
+add_box(c57, c81)
+# ERK#P:MEK#P#P
+add_box(c58, c82)
+# ERK#P#P
+add_box(c59, c83)
+# ERK#P#P:Pase3
+add_box(c61, c84)
+# ERK#P:Pase3
+add_box(c62, c85)
+# MKP_deg (Pase3 degraded)
+add_box(c520)
+
 # Delete stuff we haven't explicitly enumerated through add_box calls above.
 box_nodes = [n for g in graph.subgraphs() for n in g.nodes()]
 nodes_keep = set(box_nodes).union(neighbor_set(box_nodes))
@@ -395,8 +473,29 @@ rxn_to_cn = dict(zip(rxn_nodes, rxn_cluster_neighbors))
 rxn_nodes.sort(key=lambda r: map(id, rxn_to_cn[r]))
 for subgraphs, node_iter in itertools.groupby(rxn_nodes, rxn_to_cn.get):
     nodes = list(node_iter)
-    if (all(sum(n.attr['_type'] == 'species' for n in sg) in (1, len(nodes)) for sg in subgraphs) and
-        len(nodes) > 1):
+    edges = []
+    for sg in subgraphs:
+        for rn, sn in itertools.product(nodes, sg):
+            for u, v in itertools.permutations([rn, sn]):
+                try:
+                    edges.append(graph.get_edge(u, v))
+                except KeyError:
+                    continue
+    # Necessary conditions for collapsing this set of reaction nodes:
+    # 1) There are at least two reactions.
+    multiple_rxns = len(nodes) > 1
+    # 2) There is a 1:1 connection between every reaction and the species in
+    # each neighboring cluster, or the neighboring cluster is of size 1.
+    full_coverage = all(
+        sum(n.attr['_type'] == 'species' for n in sg) in (1, len(nodes))
+        for sg in subgraphs
+        )
+    # 3) Each edge is going in the same direction (i.e. don't collapse forward
+    # and backward reactions involving the exact same species). We probably
+    # won't fail this check in a well-built model, but the "dir" attribute
+    # preservation below does depend on this condition.
+    edges_same_dir = len(set(e.attr['dir'] for e in edges)) == 1
+    if (multiple_rxns and full_coverage and edges_same_dir):
         node_id = 'reaction_' + '_'.join(sg.name for sg in subgraphs)
         label = r'\n'.join(sorted(n.attr['label'] for n in nodes))
         graph.add_node(node_id, label=label, fontcolor='#13ac4a', shape='box',
@@ -404,7 +503,10 @@ for subgraphs, node_iter in itertools.groupby(rxn_nodes, rxn_to_cn.get):
                        _type='reaction')
         r_nodes = graph.predecessors(nodes[0])
         p_nodes = graph.successors(nodes[0])
-        base_edge_attrs = {'color': next(color_cycle)}
+        base_edge_attrs = {
+            'color': next(color_cycle),
+            'dir': edges[0].attr['dir'],
+            }
         for ntype, species_nodes in ('reactant', r_nodes), ('product', p_nodes):
             for species_node in species_nodes:
                 sg = node_to_subgraph[species_node]
