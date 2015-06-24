@@ -9,6 +9,13 @@ import pygraphviz
 
 DEBUG = True
 
+# Adding the endosomal receptor degradation reactions adds way too much clutter
+# so by default this is off.
+show_r_degraded = False
+
+# Removing free adapter proteins simplifies the graph.
+simplify_adapters = False
+
 class Species(collections.namedtuple(
         'SpeciesBase',
         'id name label compartment')):
@@ -174,7 +181,7 @@ for event, element in lxml.etree.iterparse(sbml_file, tag=qnames['reaction']):
 # Construct graphviz representation of reaction network.
 
 graph = pygraphviz.AGraph(directed=True, rankdir='LR', compound=True,
-                          nodesep=0.1, ranksep=1.2)
+                          nodesep=0.1, ranksep=1.2, mclimit=10)
 graph.node_attr.update(fontname='Helvetica')
 graph.edge_attr.update(arrowsize=0.7)
 for s in species:
@@ -211,29 +218,39 @@ for r in (
     v283, v285, v287, v294, v301, v302, v303, # R..RasGDP cat
     v289, v293, v295, v296, v297, v307, v309, # R..Shc..RasGDP cat
     v257, v268, v269, v270, v274, v280, v282, # endo|R..RasGDP cat
-    v411, v412,             # Raf phos
-    v495, v496, v497, v498, # MEK phos
-    v511, v512, v513, v514, # ERK phos
-    ):
+    v411, v412,                               # Raf phos
+    v495, v496, v497, v498,                   # MEK phos
+    v511, v512, v513, v514,                   # ERK phos
+    v815, v816, v817, v818, v819, v820, v821, # Gab1 phos
+    # The following row would include v764 but one of its reactants is wrong
+    # (this is an error in the model).
+    v758, v759, v760, v761, v762, v763,       # PI3K..RasGDP cat
+    v737, v741, v743, v739, v749, v745, v747, # ERK..Gab1#P cat
+    v744, v742, v740, v738, v750, v746, v748, # ERK_i..Gab1#P cat
+   ):
     reverse_reaction(r)
 # Fix "retrograde" reactions -- those whose forward direction is logically
 # "backward" in the signaling network. This switches the logical edge direction
 # without changing the visual appearance (i.e. which end has the arrowhead),
 # leading to improved graph layout.
 for r in (
-    v443,                   # Shc spontaneous dephos
-    v211,                   # cPP transloc to cytoplasm
-    v487, v488,             # Raf#P bind Pase1
-    v505, v506, v499, v500, # MEK#P(#P) bind Pase2
-    v521, v522, v515, v516, # ERK#P(#P) bind Pase3
+    v443,                                     # Shc spontaneous dephos
+    v211,                                     # cPP transloc to cytoplasm
+    v487, v488,                               # Raf#P bind Pase1
+    v505, v506, v499, v500,                   # MEK#P(#P) bind Pase2
+    v521, v522, v515, v516,                   # ERK#P(#P) bind Pase3
+    v707, v708, v709, v710, v711, v712, v713, # Gab1#P bind Shp2
+    v770, v771, v772, v773, v774, v775, v776, # Gab1#P#P bind Pase9t
     ):
     reverse_reaction(r, visual=False)
 # Fix reactions that are backwards AND retrograde. This switches the visual
 # appearance without changing the logical direction.
 for r in (
-    v489, v490,             # Raf dephos
-    v502, v503, v501, v504, # MEK#P(#P) dephos
-    v519, v520, v517, v518, # ERK#P(#P) dephos
+    v489, v490,                               # Raf dephos
+    v502, v503, v501, v504,                   # MEK dephos
+    v519, v520, v517, v518,                   # ERK dephos
+    v714, v715, v716, v717, v718, v719, v720, # Gab1#P dephos
+    v781, v783, v777, v782, v779, v780, v778, # Gab1#P#P dephos
     ):
     reverse_reaction(r, logical=False)
 
@@ -441,6 +458,7 @@ add_box(c57, c81)
 # ERK#P:MEK#P#P
 add_box(c58, c82)
 # ERK#P#P
+# TODO: split these to make the Gab1 second phosphorylation reactions collapse?
 add_box(c59, c83)
 # ERK#P#P:Pase3
 add_box(c61, c84)
@@ -448,6 +466,41 @@ add_box(c61, c84)
 add_box(c62, c85)
 # MKP_deg (Pase3 degraded)
 add_box(c520)
+
+##  PI3K signaling
+
+# Gab1
+add_box(c426)
+# Shp2
+add_box(c463)
+# PI3K
+add_box(c287)
+# Pase9t
+add_box(c521)
+# dimer#P:GAP:Grb2:Gab1
+add_box(c442, c439, c436, c427, c428, c429, c483)
+# dimer#P:GAP:Grb2:Gab1:ATP
+add_box(c130, c131, c132, c133, c134, c135, c136)
+# dimer#P:GAP:Grb2:Gab1#P
+add_box(c457, c460, c454, c445, c446, c447, c486)
+# dimer#P:GAP:Grb2:Gab1#P:Shp2
+add_box(c476, c479, c473, c464, c465, c466, c489)
+# dimer#P:GAP:Grb2:Gab1#P:ERK#P#P
+add_box(c477, c480, c474, c433, c435, c438, c431)
+# dimer#P:GAP:Grb2:Gab1#P:ERK#P#P_i
+add_box(c478, c481, c475, c434, c437, c440, c432)
+# dimer#P:GAP:Grb2:Gab1#P#P
+add_box(c491, c487, c490, c430, c409, c410, c488)
+# dimer#P:GAP:Grb2:Gab1#P#P:Pase9t
+add_box(c456, c407, c522, c424, c411, c412, c523)
+# dimer#P:GAP:Grb2:Gab1#P:PI3K
+add_box(c405, c408, c324, c261, c262, c263, c104)
+# dimer#P:GAP:Grb2:Gab1#P:PI3K:RasGDP
+add_box(c269, c325, c268, c265, c267, c266, c264)
+
+if show_r_degraded:
+  #R_degraded
+  add_box(c86)
 
 # Delete stuff we haven't explicitly enumerated through add_box calls above.
 box_nodes = [n for g in graph.subgraphs() for n in g.nodes()]
@@ -524,15 +577,16 @@ for subgraphs, node_iter in itertools.groupby(rxn_nodes, rxn_to_cn.get):
         for n in nodes:
             graph.remove_node(n)
 
+
 add_group(cluster_5, cluster_6, cluster_7, cluster_8)
 add_group(cluster_24, cluster_28, cluster_29, cluster_30, cluster_31,
           cluster_25, cluster_32, cluster_33)
 
-# If requested, remove free adapter proteins to simplify the graph.
-simplify_adapters = False
+
+# Remove free adapter proteins to simplify the graph.
 if simplify_adapters:
-    for species in c12, c28, c26, c43, c22, c24, c30, c39, c31, c40, c9, c38, c14:
-        graph.remove_node(species)
+    for s in c12, c28, c26, c43, c22, c24, c30, c39, c31, c40, c9, c38, c14:
+        graph.remove_node(s)
 
 graph.write('chen_2009.dot')
 
