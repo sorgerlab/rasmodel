@@ -227,7 +227,7 @@ for r in (
     v758, v759, v760, v761, v762, v763,       # PI3K..RasGDP cat
     v737, v741, v743, v739, v749, v745, v747, # ERK..Gab1#P cat
     v744, v742, v740, v738, v750, v746, v748, # ERK_i..Gab1#P cat
-   ):
+    ):
     reverse_reaction(r)
 # Fix "retrograde" reactions -- those whose forward direction is logically
 # "backward" in the signaling network. This switches the logical edge direction
@@ -241,6 +241,8 @@ for r in (
     v521, v522, v515, v516,                   # ERK#P(#P) bind Pase3
     v707, v708, v709, v710, v711, v712, v713, # Gab1#P bind Shp2
     v770, v771, v772, v773, v774, v775, v776, # Gab1#P#P bind Pase9t
+    v609, v610, v611, v612,                   # R..Sos bind ERK#P#P
+    v613, v614,                               # free Sos bind ERK#P#P
     ):
     reverse_reaction(r, visual=False)
 # Fix reactions that are backwards AND retrograde. This switches the visual
@@ -251,6 +253,9 @@ for r in (
     v519, v520, v517, v518,                   # ERK dephos
     v714, v715, v716, v717, v718, v719, v720, # Gab1#P dephos
     v781, v783, v777, v782, v779, v780, v778, # Gab1#P#P dephos
+    v615, v618, v616, v619,                   # R..Sos phos
+    v669, v670, v671, v672,                   # R..Grb2 diss Sos#P
+    v617, v620,                               # free Sos phos
     ):
     reverse_reaction(r, logical=False)
 
@@ -466,6 +471,19 @@ add_box(c61, c84)
 add_box(c62, c85)
 # MKP_deg (Pase3 degraded)
 add_box(c520)
+
+# dimer#P:GAP:Grb2:Sos:ERK#P#P
+add_box(c95, c96)
+# dimer#P:GAP:(Shc#P):Grb2:Sos:ERK#P#P
+add_box(c97, c98)
+# dimer#P:GAP:Grb2:Sos#P
+add_box(c99, c100)
+# dimer#P:GAP:(Shc#P):Grb2:Sos#P
+add_box(c419, c420)
+# ERK#P#P:Sos
+add_box(c101, c102)
+# Sos#P
+add_box(c103)
 
 ##  PI3K signaling
 
