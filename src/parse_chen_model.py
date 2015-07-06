@@ -227,6 +227,10 @@ for r in (
     v758, v759, v760, v761, v762, v763,       # PI3K..RasGDP cat
     v737, v741, v743, v739, v749, v745, v747, # ERK..Gab1#P cat
     v744, v742, v740, v738, v750, v746, v748, # ERK_i..Gab1#P cat
+    # The following should include a reaction involving c408 (4:2 dimer) but the
+    # product species c455 was mislabled and the reaction was omitted.
+    v628, v629, v630, v631, v632, v633,       # PIP2 phos (regular)
+    v634, v635, v636, v637, v638,             # PIP2 phos (2:3 dimer extra rxns)
     ):
     reverse_reaction(r)
 # Fix "retrograde" reactions -- those whose forward direction is logically
@@ -515,6 +519,15 @@ add_box(c456, c407, c522, c424, c411, c412, c523)
 add_box(c405, c408, c324, c261, c262, c263, c104)
 # dimer#P:GAP:Grb2:Gab1#P:PI3K:RasGDP
 add_box(c269, c325, c268, c265, c267, c266, c264)
+
+# PIP2
+add_box(c444)
+# PIP3
+add_box(c106)
+# dimer#P:GAP:Grb2:Gab1#P:PI3K:PIP2
+add_box(c453, c455, c452, c449, c450, c451, c448)
+# (ErbB2:ErbB3)#P:GAP:Grb2:Gab1#P:PI3K:PIP2*{2,3,4,5,6}
+add_box(c467, c468, c469, c470, c471)
 
 if show_r_degraded:
   #R_degraded
