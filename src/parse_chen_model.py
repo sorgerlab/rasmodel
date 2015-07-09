@@ -255,7 +255,8 @@ for label in 'ATP',:
 # Fix reactions that were specified "backwards" in the original model. This
 # swaps the direction of all edges on these reaction nodes.
 for r in (
-    v804, v807, v812, v813, v822, v823, v824, v825, # dimer#P catalysis step
+    v804, v807, v812, v813, v822, v823, v824, # dimer#P catalysis step
+    v825, v814,                               #   (continued)
     v808, v811, v809, v826, v810, v827,       # endo|dimer#P catalysis step
     v657, v658, v659, v660, v661, v662, v663, # endo|dimer#P diss RTK_Pase
     v109, v111, v123, v139, v140, v141, v161, # R.. diss cPP
@@ -326,10 +327,10 @@ add_box(c288, c117)
 add_box(c1, c514)
 # ligand-bound single receptors
 add_box(c3, c142, c144)
-# ligand-bound receptor dimers
-add_box(c4, c145, c146, c147, c355, c345, c516, c517)
-# ATP-and-ligand-bound receptor dimers
-add_box(c116, c122, c127, c128, c168, c139, c137, c138)
+# ligand-bound receptor dimers, and 2:2#P dimer
+add_box(c4, c145, c146, c147, c355, c345, c516, c517, c284)
+# ATP-and-ligand-bound receptor dimers, and ATP-bound 2:2#P dimer
+add_box(c116, c122, c127, c128, c168, c139, c137, c138, c129)
 # Phosphorylated dimers (dimer#P)
 add_box(c5, c148, c149, c150, c335, c336, c289)
 # Phosphorylated monomers
