@@ -16,9 +16,27 @@ show_r_degraded = False
 # Removing free adapter proteins simplifies the graph.
 simplify_adapters = False
 
+def simple_repr(x):
+    fields = list(x._fields)
+    fields.remove('id')
+    fields_repr = ', '.join('{0}={1!r}'.format(f, getattr(x, f))
+                            for f in fields)
+    return '{0}({1})'.format(type(x).__name__, fields_repr)
+
 class Species(collections.namedtuple(
         'SpeciesBase',
-        'id name label compartment')):
+        'id name label compartment initial_amount constant')):
+
+    __repr__ = simple_repr
+
+    def __str__(self):
+        return self.name
+
+class Parameter(collections.namedtuple(
+        'ParameterBase',
+        'id name value constant notes')):
+
+    __repr__ = simple_repr
 
     def __str__(self):
         return self.name
@@ -31,13 +49,13 @@ class Reaction(collections.namedtuple(
         return self.name
 
     def __repr__(self):
-        simple_attrs = ('id', 'name', 'label')
+        simple_attrs = ('name', 'label')
         simple_attr_repr = ', '.join('{0}={1!r}'.format(a, getattr(self, a))
                                      for a in simple_attrs)
         species_repr = ', '.join(
             ['{0}=({1})'.format(et, ', '.join(s.name for s in getattr(self, et)))
              for et in 'reactants', 'products'])
-        param_repr = ', '.join(['{0}={1!r}'.format(pt, getattr(self, pt))
+        param_repr = ', '.join(['{0}={1}'.format(pt, getattr(self, pt))
                                 for pt in 'kf', 'kr'])
         return '{0}({1}, {2}, {3})'.format(type(self).__name__,
                                            simple_attr_repr, species_repr,
@@ -138,37 +156,70 @@ color_cycle = itertools.cycle((
 
 ns = 'http://www.sbml.org/sbml/level2'
 qnames = dict((tag, lxml.etree.QName(ns, tag).text)
-              for tag in ('species', 'reaction'))
+              for tag in ('species', 'reaction', 'parameter'))
 
 sbml_file = open(sys.argv[1])
 
 species = []
+parameters = []
 reactions = []
 species_id_map = {}
+parameters_name_map = {}
 for event, element in lxml.etree.iterparse(sbml_file, tag=qnames['species']):
     species_id = element.get('id')
     name = element.get('name')
     label = xpath(element, 's:notes/text()').strip()
     # special fixup for weird ATP label
     if label == 'ATP  1.2e9':
-        label = 'ATP'
+        label = u'ATP'
     compartment = xpath(element, 's:annotation/text()')
     if compartment is not None:
         compartment = compartment.strip().lower()
         if 'endo' in compartment:
             label = 'endo|' + label
-    s = Species(species_id, name, label, compartment)
+    initial_amount = float(element.get('initialAmount'))
+    constant = element.get('constant')
+    if constant == 'true':
+        constant = True
+    elif constant is None:
+        constant = False
+    else:
+        raise RuntimeError('bad species.constant value: {}'.format(constant))
+    s = Species(species_id, name, label, compartment, initial_amount, constant)
     species.append(s)
     species_id_map[s.id] = s
     if s.name in globals():
         raise RuntimeError('duplicate component name: {}'.format(s.name))
     globals()[s.name] = s
 sbml_file.seek(0)
+for event, element in lxml.etree.iterparse(sbml_file, tag=qnames['parameter']):
+    parameter_id = element.get('id')
+    name = element.get('name')
+    value = float(element.get('value'))
+    constant = element.get('constant')
+    if constant is None:
+        constant = True
+    elif constant == 'false':
+        constant = False
+    else:
+        raise RuntimeError('bad parameter.constant value: {}'.format(constant))
+    notes = xpath(element, 's:notes/text()')
+    if notes is not None:
+        notes = notes.strip()
+    p = Parameter(parameter_id, name, value, constant, notes)
+    parameters.append(p)
+    parameters_name_map[p.name] = p
+    if p.name in globals():
+        raise RuntimeError('duplicate component name: {}'.format(p.name))
+    globals()[p.name] = p
+sbml_file.seek(0)
 for event, element in lxml.etree.iterparse(sbml_file, tag=qnames['reaction']):
     rxn_id = element.get('id')
     label = re.sub(r' +', ' ', element.get('name'))
     name, label = label.split(' ', 1)
     label, kf, kr = label.rsplit(' ', 2)
+    kf = parameters_name_map[kf]
+    kr = parameters_name_map[kr]
     reactants = tuple(map(species_id_map.get, reactionSpecies(element, 'reactant')))
     products = tuple(map(species_id_map.get, reactionSpecies(element, 'product')))
     r = Reaction(rxn_id, name, label, reactants, products, kf, kr)
