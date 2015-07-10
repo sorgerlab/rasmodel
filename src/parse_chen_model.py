@@ -624,11 +624,14 @@ if show_r_degraded:
 
 # Delete stuff we haven't explicitly enumerated through add_box calls above.
 box_nodes = [n for g in graph.subgraphs() for n in g.nodes()]
-nodes_keep = set(box_nodes).union(neighbor_set(box_nodes))
-nodes_drop = set(graph.nodes()) - nodes_keep
-dropped_species_nodes = set(n for n in nodes_drop if n.attr['_type'] == 'species')
-drop2 = neighbor_set(dropped_species_nodes)
-for n in list(nodes_drop.union(drop2)):
+box_and_neighbors = set(box_nodes) | neighbor_set(box_nodes)
+species_nodes_to_drop = set(
+    n for n in graph.nodes_iter()
+    if n not in box_and_neighbors and n.attr['_type'] == 'species')
+reaction_nodes_to_drop = neighbor_set(species_nodes_to_drop)
+dropped_species = [s for s in species if s.name in species_nodes_to_drop]
+dropped_reactions = [r for r in reactions if r.name in reaction_nodes_to_drop]
+for n in list(species_nodes_to_drop | reaction_nodes_to_drop):
     graph.remove_node(n)
 num_keep_species = len([n for n in graph.nodes() if n.attr['_type'] == 'species'])
 num_keep_reactions = len([n for n in graph.nodes() if n.attr['_type'] == 'reaction'])
