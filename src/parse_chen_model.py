@@ -312,6 +312,7 @@ for r in (
     v615, v618, v616, v619,                   # R..Sos phos
     v669, v670, v671, v672,                   # R..Grb2 diss Sos#P
     v617, v620,                               # free Sos phos
+    v686, v687,                               # PIP3 dephos
     ):
     reverse_reaction(r, logical=False)
 
@@ -580,6 +581,11 @@ add_box(c106)
 add_box(c453, c455, c452, c449, c450, c451, c448)
 # (ErbB2:ErbB3)#P:GAP:Grb2:Gab1#P:PI3K:PIP2*{2,3,4,5,6}
 add_box(c467, c468, c469, c470, c471)
+
+# PTEN, Shp
+add_box(c279, c461)
+# PIP3:PTEN, PIP3:Shp
+add_box(c482, c462)
 
 if show_r_degraded:
   #R_degraded
