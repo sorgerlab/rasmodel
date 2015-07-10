@@ -682,6 +682,7 @@ for subgraphs, node_iter in itertools.groupby(rxn_nodes, rxn_to_cn.get):
         base_edge_attrs = {
             'color': next(color_cycle),
             'dir': edges[0].attr['dir'],
+            'weight': len(nodes),
             }
         for ntype, species_nodes in ('reactant', r_nodes), ('product', p_nodes):
             for species_node in species_nodes:
