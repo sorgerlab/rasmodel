@@ -283,6 +283,8 @@ for r in (
     # product species c455 was mislabled and the reaction was omitted.
     v628, v629, v630, v631, v632, v633,       # PIP2 phos (regular)
     v634, v635, v636, v637, v638,             # PIP2 phos (2:3 dimer extra rxns)
+    v643, v644,                               # AKT phos
+    v767, v768,                               # Raf#P#Ser cat
     ):
     reverse_reaction(r)
 # Fix "retrograde" reactions -- those whose forward direction is logically
@@ -299,6 +301,8 @@ for r in (
     v770, v771, v772, v773, v774, v775, v776, # Gab1#P#P bind Pase9t
     v609, v610, v611, v612,                   # R..Sos bind ERK#P#P
     v613, v614,                               # free Sos bind ERK#P#P
+    v721, v722,                               # PTEN/Shp bind PIP3
+    v646, v645,                               # AKT#P(#P) bind Pase4
     ):
     reverse_reaction(r, visual=False)
 # Fix reactions that are backwards AND retrograde. This switches the visual
@@ -313,6 +317,8 @@ for r in (
     v669, v670, v671, v672,                   # R..Grb2 diss Sos#P
     v617, v620,                               # free Sos phos
     v686, v687,                               # PIP3 dephos
+    v649,                                     # PDK1 diss PIP3
+    v647, v648,                               # AKT#P(#P) dephos
     ):
     reverse_reaction(r, logical=False)
 
@@ -494,8 +500,6 @@ add_box(c44)
 add_box(c53)
 # Pase3
 add_box(c60)
-# Pase4
-add_box(c113)
 # Raf#P
 add_box(c45, c72)
 # Raf#P:Pase1
@@ -586,6 +590,40 @@ add_box(c467, c468, c469, c470, c471)
 add_box(c279, c461)
 # PIP3:PTEN, PIP3:Shp
 add_box(c482, c462)
+
+## AKT signaling
+
+# AKT
+add_box(c107)
+# PDK1
+add_box(c109)
+# Pase4
+add_box(c113)
+# PIP3:AKT
+add_box(c108)
+# PIP3:AKT:PDK1
+add_box(c110)
+# PIP3:PDK1
+add_box(c111)
+# AKT#P
+add_box(c112)
+# PIP3:AKT#P
+add_box(c495)
+# PIP3:AKT#P:PDK1
+add_box(c496)
+# AKT#P#P
+add_box(c497)
+# AKT#P:Pase4
+add_box(c114)
+# AKT#P#P:Pase4
+add_box(c498)
+
+## AKT negative feedback on Raf
+
+# AKT#P#P:Raf#P#Ser
+add_box(c472, c484)
+# Raf#P#Ser
+add_box(c485)
 
 if show_r_degraded:
   #R_degraded
