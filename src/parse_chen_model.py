@@ -434,13 +434,6 @@ add_box(c382, c385, c313, c231, c232, c233, c7)
 # dimer:P:GAP:Grb2:Sos
 add_box(c388, c391, c316, c240, c241, c242, c88)
 
-## Inhibitor
-
-# Inh
-add_box(c285)
-# receptor:Inh
-add_box(c286, c502, c506, c503)
-
 ## RAS-bound complexes
 
 # Ras:GDP
