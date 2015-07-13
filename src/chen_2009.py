@@ -67,7 +67,7 @@ def get_species_names():
          temp = [re.sub(r'([^(]+).*state=\'pp\'.*', r'\1#P#P', i) for i in temp]
          temp = [re.sub(r'([^(]+).*state=\'gdp\'.*', r'\1:GDP', i) for i in temp]
          temp = [re.sub(r'([^(]+).*state=\'gtp\'.*', r'\1:GTP', i) for i in temp]
-         temp = [re.sub(r'([^(]+).*state=\'active_gtp\'.*', r'(\1_activated:GTP)', i) for i in temp]
+         temp = [re.sub(r'([^(]+).*state=\'active_gtp\'.*', r'\1_activated:GTP', i) for i in temp]
          temp = [re.sub(r'(RAF).*state=\'p_ser\'.*', r'\1:P:Ser', i) for i in temp]
          temp = [re.sub(r'([^(]+).*', r'\1', i) for i in temp]
          s = ':'.join(temp)
