@@ -1,87 +1,10 @@
 from __future__ import division
 import sys
-import collections
-import re
+import os
 import itertools
-import operator
-import lxml.etree
+import argparse
 import pygraphviz
-
-DEBUG = True
-
-# Adding the endosomal receptor degradation reactions adds way too much clutter
-# so by default this is off.
-show_r_degraded = False
-
-# Removing free adapter proteins simplifies the graph.
-simplify_adapters = False
-
-def simple_repr(x):
-    fields = list(x._fields)
-    fields.remove('id')
-    fields_repr = ', '.join('{0}={1!r}'.format(f, getattr(x, f))
-                            for f in fields)
-    return '{0}({1})'.format(type(x).__name__, fields_repr)
-
-class Species(collections.namedtuple(
-        'SpeciesBase',
-        'id name label compartment initial_amount constant')):
-
-    __repr__ = simple_repr
-
-    def __str__(self):
-        return self.name
-
-class Parameter(collections.namedtuple(
-        'ParameterBase',
-        'id name value constant notes')):
-
-    __repr__ = simple_repr
-
-    def __str__(self):
-        return self.name
-
-class Reaction(collections.namedtuple(
-        'ReactionBase',
-        'id name label reactants products kf kr')):
-
-    def __str__(self):
-        return self.name
-
-    def __repr__(self):
-        simple_attrs = ('name', 'label')
-        simple_attr_repr = ', '.join('{0}={1!r}'.format(a, getattr(self, a))
-                                     for a in simple_attrs)
-        species_repr = ', '.join(
-            ['{0}=({1})'.format(et, ', '.join(s.name for s in getattr(self, et)))
-             for et in 'reactants', 'products'])
-        param_repr = ', '.join(['{0}={1}'.format(pt, getattr(self, pt))
-                                for pt in 'kf', 'kr'])
-        return '{0}({1}, {2}, {3})'.format(type(self).__name__,
-                                           simple_attr_repr, species_repr,
-                                           param_repr)
-
-def xpath(obj, path, single=True):
-    result = map(unicode, obj.xpath(path, namespaces={'s': ns}))
-    if single:
-        if len(result) == 0:
-            result = None
-        elif len(result) == 1:
-            result = result[0]
-        else:
-            raise ValueError("XPath expression matches more than one value")
-    return result
-
-def reactionSpecies(element, entity_type):
-    entity_type = entity_type.title()
-    query = 's:listOf{}s/s:speciesReference/@species'.format(entity_type)
-    return xpath(element, query, single=False)
-
-def species_by_label(pattern, multi=False):
-    if isinstance(pattern, basestring):
-        pattern = r'^{}$'.format(re.escape(pattern))
-    gen = (s for s in species if re.search(pattern, s.label))
-    return list(gen) if multi else next(gen)
+import original
 
 def neighbor_set(nodes):
     return set(itertools.chain.from_iterable(graph.neighbors(n) for n in nodes))
@@ -113,7 +36,7 @@ def add_box(*species_list):
     name = 'cluster_{}'.format(next(cluster_seq))
     cluster = graph.add_subgraph(nodes, name, color='none', bgcolor='gray94')
     globals()[name] = cluster
-    if DEBUG:
+    if args.debug:
         cluster.graph_attr.update(label=name, fontname='courier bold',
                                   fontsize=18)
     return cluster
@@ -122,7 +45,7 @@ def add_group(*cluster_list):
     name = 'cluster_group_{}'.format(next(cluster_seq))
     cluster = graph.add_subgraph([], name, color='none')
     globals()[name] = cluster
-    if DEBUG:
+    if args.debug:
         cluster.graph_attr.update(label=name, fontname='courier bold',
                                   fontsize=24, color='red', bgcolor='pink')
     for sg in cluster_list:
@@ -151,95 +74,37 @@ color_cycle = itertools.cycle((
         'springgreen4', 'steelblue4', 'tan4', 'thistle4', 'tomato4',
         'turquoise4', 'violetred4', 'wheat4', 'yellow4'))
 
-#####
-# Parse SBML file.
 
-ns = 'http://www.sbml.org/sbml/level2'
-qnames = dict((tag, lxml.etree.QName(ns, tag).text)
-              for tag in ('species', 'reaction', 'parameter'))
 
-sbml_file = open(sys.argv[1])
+argparser = argparse.ArgumentParser(
+    description='Render Chen 2009 SBML model reaction graph.')
+argparser.add_argument('-d', '--debug', action='store_true',
+                       help="Debug mode (extra visual output)")
+# Adding the endosomal receptor degradation reactions adds way too much clutter
+# so by default this is off.
+argparser.add_argument('--show-r-degraded', action='store_true',
+                       help="Show endosomal receptor degradation reactions")
+# Removing free adapter proteins simplifies the graph.
+argparser.add_argument('--simplify-adapters', action='store_true',
+                       help="Hide free adapter proteins")
+args = argparser.parse_args()
 
-species = []
-parameters = []
-reactions = []
-species_id_map = {}
-parameters_name_map = {}
-for event, element in lxml.etree.iterparse(sbml_file, tag=qnames['species']):
-    species_id = element.get('id')
-    name = element.get('name')
-    label = xpath(element, 's:notes/text()').strip()
-    # special fixup for weird ATP label
-    if label == 'ATP  1.2e9':
-        label = u'ATP'
-    compartment = xpath(element, 's:annotation/text()')
-    if compartment is not None:
-        compartment = compartment.strip().lower()
-        if 'endo' in compartment:
-            label = 'endo|' + label
-    initial_amount = float(element.get('initialAmount'))
-    constant = element.get('constant')
-    if constant == 'true':
-        constant = True
-    elif constant is None:
-        constant = False
-    else:
-        raise RuntimeError('bad species.constant value: {}'.format(constant))
-    s = Species(species_id, name, label, compartment, initial_amount, constant)
-    species.append(s)
-    species_id_map[s.id] = s
-    if s.name in globals():
-        raise RuntimeError('duplicate component name: {}'.format(s.name))
-    globals()[s.name] = s
-sbml_file.seek(0)
-for event, element in lxml.etree.iterparse(sbml_file, tag=qnames['parameter']):
-    parameter_id = element.get('id')
-    name = element.get('name')
-    value = float(element.get('value'))
-    constant = element.get('constant')
-    if constant is None:
-        constant = True
-    elif constant == 'false':
-        constant = False
-    else:
-        raise RuntimeError('bad parameter.constant value: {}'.format(constant))
-    notes = xpath(element, 's:notes/text()')
-    if notes is not None:
-        notes = notes.strip()
-    p = Parameter(parameter_id, name, value, constant, notes)
-    parameters.append(p)
-    parameters_name_map[p.name] = p
-    if p.name in globals():
-        raise RuntimeError('duplicate component name: {}'.format(p.name))
-    globals()[p.name] = p
-sbml_file.seek(0)
-for event, element in lxml.etree.iterparse(sbml_file, tag=qnames['reaction']):
-    rxn_id = element.get('id')
-    label = re.sub(r' +', ' ', element.get('name'))
-    name, label = label.split(' ', 1)
-    label, kf, kr = label.rsplit(' ', 2)
-    kf = parameters_name_map[kf]
-    kr = parameters_name_map[kr]
-    reactants = tuple(map(species_id_map.get, reactionSpecies(element, 'reactant')))
-    products = tuple(map(species_id_map.get, reactionSpecies(element, 'product')))
-    r = Reaction(rxn_id, name, label, reactants, products, kf, kr)
-    reactions.append(r)
-    if r.name in globals():
-        raise RuntimeError('duplicate component name: {}'.format(r.name))
-    globals()[r.name] = r
 
-#####
-# Construct graphviz representation of reaction network.
+model = original.get_model()
+model.export_globals()
+
+
+## Construct graphviz representation of reaction network.
 
 graph = pygraphviz.AGraph(directed=True, rankdir='LR', compound=True,
                           nodesep=0.1, ranksep=1.2, mclimit=10)
 graph.node_attr.update(fontname='Helvetica')
 graph.edge_attr.update(arrowsize=0.7)
-for s in species:
+for s in model.species:
     label = '<{0.label} <sup>{0.name}</sup>>'.format(s)
     graph.add_node(s, _type='species', label=label, shape='none',
                    bgcolor='white', margin=0.01, height=0)
-for r in reactions:
+for r in model.reactions:
     graph.add_node(r, _type='reaction', label=r.name, shape='none',
                    fontcolor='#13ac4a', width=0, height=0, margin=0.05)
     color = next(color_cycle)
@@ -250,7 +115,7 @@ for r in reactions:
 
 # delete some "nuisance" nodes from the graph
 for label in 'ATP',:
-    graph.remove_node(species_by_label(label))
+    graph.remove_node(model.species_by_label(label))
 
 # Fix reactions that were specified "backwards" in the original model. This
 # swaps the direction of all edges on these reaction nodes.
@@ -618,7 +483,7 @@ add_box(c472, c484)
 # Raf#P#Ser
 add_box(c485)
 
-if show_r_degraded:
+if args.show_r_degraded:
   #R_degraded
   add_box(c86)
 
@@ -629,8 +494,10 @@ species_nodes_to_drop = set(
     n for n in graph.nodes_iter()
     if n not in box_and_neighbors and n.attr['_type'] == 'species')
 reaction_nodes_to_drop = neighbor_set(species_nodes_to_drop)
-dropped_species = [s for s in species if s.name in species_nodes_to_drop]
-dropped_reactions = [r for r in reactions if r.name in reaction_nodes_to_drop]
+dropped_species = [s for s in model.species
+                   if s.name in species_nodes_to_drop]
+dropped_reactions = [r for r in model.reactions
+                     if r.name in reaction_nodes_to_drop]
 for n in list(species_nodes_to_drop | reaction_nodes_to_drop):
     graph.remove_node(n)
 num_keep_species = len([n for n in graph.nodes() if n.attr['_type'] == 'species'])
@@ -708,32 +575,26 @@ add_group(cluster_24, cluster_28, cluster_29, cluster_30, cluster_31,
 
 
 # Remove free adapter proteins to simplify the graph.
-if simplify_adapters:
+if args.simplify_adapters:
     for s in c12, c28, c26, c43, c22, c24, c30, c39, c31, c40, c9, c38, c14:
         graph.remove_node(s)
 
-graph.write('chen_2009.dot')
 
-num_total_species = len(species)
-num_total_reactions = len(reactions)
+# Write output to .dot file in same directory as this script.
+dot_path = os.path.join(os.path.dirname(__file__), '../chen_2009_original.dot')
+graph.write(dot_path)
+# Call graphviz to render a PDF.
+pdf_path = dot_path.replace('.dot', '.pdf')
+os.system("dot {} -Tpdf -o {}".format(dot_path, pdf_path))
+print >>sys.stderr, "Output rendered to:", os.path.relpath(pdf_path)
+
+
+num_total_species = len(model.species)
+num_total_reactions = len(model.reactions)
+print >>sys.stderr
 print >>sys.stderr, ("Species: {} / {} ({}%)"
                      .format(num_keep_species, num_total_species,
                              100 * num_keep_species / num_total_species))
 print >>sys.stderr, ("Reactions: {} / {} ({}%)"
                      .format(num_keep_reactions, num_total_reactions,
                              100 * num_keep_reactions / num_total_reactions))
-
-#####
-# Debugging/cleanup checks
-
-# determine truly redundant species -- same name, same compartment
-sa = sorted(species, key=lambda s: (s.label, s.compartment))
-rs = [x
-      for x in ((n, map(lambda s: s.compartment, it))
-          for n, it in itertools.groupby(sa, lambda s: s.label))
-      if len(x[1]) == 2 and x[1][0] == x[1][1]]
-
-# find reactions where product is not a trivial concatenation of reactants
-# (e.g. A + B -> A:B)
-mismatch_rxns = [r for r in reactions
-                 if r.products[0].label != ':'.join([s.label for s in r.reactants])]
