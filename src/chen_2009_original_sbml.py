@@ -116,7 +116,7 @@ qnames = dict((tag, lxml.etree.QName(ns, tag).text)
 def get_model():
 
     model_filename = os.path.join(os.path.dirname(__file__),
-                                  'original_sbml_model_norules.xml')
+                                  'chen_2009_original_sbml_norules.xml')
     f = open(model_filename)
 
     model = Model([], [], [])

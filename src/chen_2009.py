@@ -38,8 +38,9 @@ R_deg_v2()
 declare_observables()
 
 
-def get_species_list():
+def get_species_names():
     """Return species names based on original SBML model naming convention."""
+
     generate_equations(model)
 
     ordering = ('EGF HRG ErbB1 ErbB2 ErbB3 ErbB4 ATP RTK_Pase GAP Shc Grb2 Gab1 Shp2 '
@@ -89,6 +90,8 @@ def get_species_list():
     for i, comp in enumerate(all_species):
         if "comp='endo'" in comp:
             species_list[i] = 'endo|' + species_list[i]
+
+    return species_list
 
 
 if __name__ == '__main__':
