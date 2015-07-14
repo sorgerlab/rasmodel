@@ -30,7 +30,7 @@ def declare_monomers():
 
     Monomer('GAP', ['rec'])
     Monomer('Grb2', ['shc', 'erb', 'sos', 'gab1'])
-    Monomer('SOS', ['grb', 'ras'])
+    Monomer('SOS', ['grb', 'ras', 'erk','state'],{'state':['up','p']})
     Monomer('SHC', ['erb','grb', 'state'], {'state':['up','p']})
     Monomer('RAS', ['sos', 'pi3k', 'raf', 'state'], {'state':['gdp', 'gtp', 'active_gtp']})
 
@@ -50,7 +50,7 @@ def declare_monomers():
     Monomer('PTEN', ['pip'])
     Monomer('RAF', ['akt', 'pase1', 'mek','state', 'ras'], {'state':['up','p', 'p_ser']})
     Monomer('MEK', ['raf', 'pase2', 'erk', 'state'], {'state':['up','p', 'pp']})
-    Monomer('ERK', ['mek', 'pase3', 'gab1','state'], {'state':['up','p', 'pp']})
+    Monomer('ERK', ['mek', 'pase3', 'gab1','sos', 'state'], {'state':['up','p', 'pp']})
     Monomer('Pase1', ['raf'])
     Monomer('Pase2', ['mek'])
     Monomer('Pase3', ['erk'])
@@ -113,7 +113,7 @@ def declare_initial_conditions():
 #
     Initial(GAP(rec=None), GAP_0)
     Initial(Grb2(shc=None, erb=None, sos=None, gab1=None), Grb2_0)
-    Initial(SOS(grb=None, ras=None), SOS_0)
+    Initial(SOS(grb=None, ras=None, erk=None, state='up'), SOS_0)
     Initial(SHC(erb=None, grb=None, state='up'), SHC_0)
     Initial(RAS(sos=None, pi3k=None, raf=None,state='gdp'), RAS_gdp_0)
     # Initialized temporarily to check topology
@@ -137,14 +137,14 @@ def declare_initial_conditions():
     Initial(Shp(pip=None), Shp_0)
     Initial(RAF(akt=None, pase1=None, mek=None, ras=None, state='p'), RAF_0)
     Initial(MEK(raf=None, pase2=None, erk=None,state='up'), MEK_0)
-    Initial(ERK(mek=None, pase3=None,  state='up', gab1=None), ERK_0)
+    Initial(ERK(mek=None, pase3=None, sos=None, state='up', gab1=None), ERK_0)
     #Initial(ERK(mek=None, pase3=None,  state='pp', gab1=None), dummy_init)
 
     Initial(Pase1(raf=None), Pase1_0)
     Initial(Pase2(mek=None), Pase2_0)
     Initial(Pase3(erk=None), Pase3_0)
 
-    Initial(Grb2(shc=None, erb=None, sos=1, gab1=None) % SOS(grb=1, ras=None), Grb2SOS_0)
+    Initial(Grb2(shc=None, erb=None, sos=1, gab1=None) % SOS(grb=1, ras=None, erk=None,state='up'), Grb2SOS_0)
 
 
 ########################################################
@@ -431,8 +431,8 @@ def Grb2_binding_v2():
             Rule(place+'_Grb2_bind_erb1_'+erb.name, Erb1(gap=ANY,gs=None,d=2, cpp=None, comp=place) % erb(d=2,gs=None) + Grb2(erb=None,shc=None,gab1=None, sos=None) <>
                  Grb2(erb=1,shc=None,gab1=None, sos=None) % Erb1(gap=ANY,gs=1,d=2, cpp=None, comp=place) % erb(d=2,gs=None),kf_bind_erb_grb2, kr_bind_erb_grb2)
                 
-            Rule(place+'_Grb2sos_bind_erb1_'+erb.name, Erb1(gap=ANY,gs=None,d=2,  cpp=None, comp=place) % erb(d=2,gs=None) + SOS(grb=3, ras=None) % Grb2(erb=None,shc=None,gab1=None, sos=3) <>
-                     SOS(grb=3, ras=None) % Grb2(erb=1,shc=None,gab1=None, sos=3) % Erb1(gap=ANY,gs=1,d=2, cpp=None, comp=place) % erb(d=2,gs=None),kf_bind_erb_grb2, kr_bind_erb_grb2)
+            Rule(place+'_Grb2sos_bind_erb1_'+erb.name, Erb1(gap=ANY,gs=None,d=2,  cpp=None, comp=place) % erb(d=2,gs=None) + SOS(grb=3, ras=None, erk=None,state='up') % Grb2(erb=None,shc=None,gab1=None, sos=3) <>
+                     SOS(grb=3, ras=None,erk=None, state='up') % Grb2(erb=1,shc=None,gab1=None, sos=3) % Erb1(gap=ANY,gs=1,d=2, cpp=None, comp=place) % erb(d=2,gs=None),kf_bind_erb_grb2, kr_bind_erb_grb2)
     
         # Grb2 binds Erb2:Erb2/3/4 receptor dimers
         for erb in receptors[1:]:
@@ -441,16 +441,19 @@ def Grb2_binding_v2():
                  Grb2(erb=1,shc=None,gab1=None, sos=None) % Erb2(gap=ANY,gs=1,d=2,  cpp=None, comp=place) % erb(d=2,gs=None),kf_bind_erb_grb2, kr_bind_erb_grb2)
                 
             Rule(place+'_Grb2sos_bind_erb2_'+ erb.name, Erb2(gap=ANY,gs=None,d=2,  cpp=None, comp=place) % erb(d=2,gs=None) +
-             SOS(grb=3, ras=None) %Grb2(erb=None,shc=None,gab1=None, sos=3) <>
-             SOS(grb=3, ras=None) % Grb2(erb=1,shc=None,gab1=None, sos=3) % Erb2(gap=ANY,gs=1,d=2,  cpp=None, comp=place) % erb(d=2,gs=None),kf_bind_erb_grb2, kr_bind_erb_grb2)
+             SOS(grb=3, ras=None,erk=None, state='up') %Grb2(erb=None,shc=None,gab1=None, sos=3) <>
+             SOS(grb=3, ras=None, erk=None, state='up') % Grb2(erb=1,shc=None,gab1=None, sos=3) % Erb2(gap=ANY,gs=1,d=2,  cpp=None, comp=place) % erb(d=2,gs=None),kf_bind_erb_grb2, kr_bind_erb_grb2)
              
         # Grb2 binds SOS
-        Rule(place+'_bind_free_Grb2_SOS', Grb2(sos=None, erb=None, gab1=None) + SOS(grb=None,ras=None) <>
-             Grb2(sos=1, erb=None,gab1=None) % SOS(grb=1, ras=None), kf_grb2_sos, kr_grb2_sos)
+        Rule(place+'_bind_free_Grb2_SOS', Grb2(sos=None, erb=None, gab1=None) + SOS(grb=None,ras=None,erk=None, state='up') <>
+             Grb2(sos=1, erb=None,gab1=None) % SOS(grb=1, ras=None, erk=None, state='up'), kf_grb2_sos, kr_grb2_sos)
             
         for erb in receptors[:2]:
-                 Rule(place+'_bind_Grb2_SOS_'+ erb.name, erb(cpp=None, comp=place, gap=ANY) % Grb2(sos=None,gab1=None) + SOS(grb=None,ras=None) <>
-                      erb(cpp=None, gap=ANY, comp=place) % Grb2(sos=1,gab1=None) % SOS(grb=1, ras=None), kf_grb2_sos, kr_grb2_sos)
+                 Rule(place+'_bind_Grb2_SOS_'+ erb.name, erb(cpp=None, comp=place, gap=ANY) % Grb2(sos=None,gab1=None) + SOS(grb=None,erk=None, ras=None, state='up') <>
+                      erb(cpp=None, gap=ANY, comp=place) % Grb2(sos=1,gab1=None) % SOS(grb=1, ras=None, erk=None, state='up'), kf_grb2_sos, kr_grb2_sos)
+
+        # Release SOS~P from Grb2
+    Rule('release_SOS_P', SOS(grb=ANY, state='p') >> SOS(grb=None, state='p'), kr_grb2_sos)
 
 ########################################################
 def SHC_binding_v2():
@@ -491,13 +494,13 @@ def SHC_binding_v2():
 #
 #        # SHC binds Erb1:Erb(1/2/3/4) receptor dimers
         for erb in receptors:
-            Rule(place+'_SHC_grbsos_bind_erb1_'+erb.name, Erb1(gap=ANY,gs=None,d=2, cpp=None, comp=place) % erb(d=2,gs=None) + SOS(ras=None) % SHC(erb=None, grb=ANY) <>
-         SOS(ras=None) % SHC(erb=1, grb=ANY) % Erb1(gap=ANY,gs=1,d=2, cpp=None, comp=place) % erb(d=2,gs=None),kf_bind_erb_shc, kr_bind_erb_shc)
+            Rule(place+'_SHC_grbsos_bind_erb1_'+erb.name, Erb1(gap=ANY,gs=None,d=2, cpp=None, comp=place) % erb(d=2,gs=None) + SOS(ras=None,erk=None, state='up') % SHC(erb=None, grb=ANY) <>
+         SOS(ras=None, erk=None, state='up') % SHC(erb=1, grb=ANY) % Erb1(gap=ANY,gs=1,d=2, cpp=None, comp=place) % erb(d=2,gs=None),kf_bind_erb_shc, kr_bind_erb_shc)
         
         # SHC binds Erb2:Erb(2/3/4) receptor dimers
         for erb in receptors[1:]:
-            Rule(place+'_SHC_grbsps_bind_erb2_'+erb.name, Erb2(gap=ANY,gs=None,d=2, cpp=None, comp=place) % erb(d=2,gs=None) + SOS(ras=None) % SHC(erb=None, grb=ANY) <>
-                 SOS(ras=None) % SHC(erb=1, grb=ANY) % Erb2(gap=ANY,gs=1,d=2, cpp=None, comp=place) % erb(d=2,gs=None),kf_bind_erb_shc, kr_bind_erb_shc)
+            Rule(place+'_SHC_grbsps_bind_erb2_'+erb.name, Erb2(gap=ANY,gs=None,d=2, cpp=None, comp=place) % erb(d=2,gs=None) + SOS(ras=None, erk=None, state='up') % SHC(erb=None, grb=ANY) <>
+                 SOS(ras=None, erk=None, state='up') % SHC(erb=1, grb=ANY) % Erb2(gap=ANY,gs=1,d=2, cpp=None, comp=place) % erb(d=2,gs=None),kf_bind_erb_shc, kr_bind_erb_shc)
 
         # SHC <-> SHC~P
         Rule(place+'_shc_phos', SHC(erb=ANY, grb=None, state='up') <> SHC(erb=ANY, grb=None, state='p'), kshc_kin, kshc_phos)
@@ -525,8 +528,8 @@ def secondary_Grb2_binding():
                  Grb2(erb=None,sos=None, shc=None,gab1=None), kr_bind_shc_grb2, kf_bind_shc_grb2)
                  
             Rule(place+'_shc_grbsos_unbinding_'+erb.name, erb(cpp=None,gs=3,comp=place) % SHC(grb=1, erb=3, state='p') %
-                 Grb2(erb=None,sos=2, shc=1, gab1=None) % SOS(grb=2, ras=None) <> erb(cpp=None,gs=3,comp=place) %
-                 SHC(grb=None, erb=3, state='p') + Grb2(erb=None,sos=2, shc=None,gab1=None) % SOS(grb=2, ras=None), kr_bind_shc_grb2, kf_bind_shc_grb2)
+                 Grb2(erb=None,sos=2, shc=1, gab1=None) % SOS(grb=2, ras=None, erk=None, state='up') <> erb(cpp=None,gs=3,comp=place) %
+                 SHC(grb=None, erb=3, state='p') + Grb2(erb=None,sos=2, shc=None,gab1=None) % SOS(grb=2, erk=None, ras=None, state='up'), kr_bind_shc_grb2, kf_bind_shc_grb2)
 
 ########################################################
 def RAS_binds_sos():
@@ -551,20 +554,20 @@ def RAS_binds_sos():
     # RAS binds SOS
     for place in comprtmnts:
         for erb in receptors[:2]:
-            Rule(place+'_Ras_gdp_gdp_'+erb.name, erb(cpp=None,gap=ANY,comp=place) % GAP() % SOS(grb=ANY,ras=None) +
-                 RAS(sos=None, pi3k=None, raf=None, state='gdp') <>  erb(cpp=None, gap=ANY, comp=place) % GAP() % SOS(grb=ANY,ras=1) %
+            Rule(place+'_Ras_gdp_gdp_'+erb.name, erb(cpp=None,gap=ANY,comp=place) % GAP() % SOS(grb=ANY,erk=None, ras=None, state='up') +
+                 RAS(sos=None, pi3k=None, raf=None, state='gdp') <>  erb(cpp=None, gap=ANY, comp=place) % GAP() % SOS(grb=ANY,erk=None, ras=1, state='up') %
                  RAS(sos=1, pi3k=None, raf=None, state='gdp'), kf_gdp_gdp, kr_gdp_gdp)
 
-            Rule(place+'_Ras_gtp_gdp_'+erb.name, erb(cpp=None, gap=ANY, comp=place) % GAP() % SOS(grb=ANY,ras=None) +
-                 RAS(sos=None, pi3k=None, raf=None, state='gtp') <> erb(cpp=None, gap=ANY, comp=place) % GAP() % SOS(grb=ANY,ras=1) %
+            Rule(place+'_Ras_gtp_gdp_'+erb.name, erb(cpp=None, gap=ANY, comp=place) % GAP() % SOS(grb=ANY,erk=None, ras=None, state='up') +
+                 RAS(sos=None, pi3k=None, raf=None, state='gtp') <> erb(cpp=None, gap=ANY, comp=place) % GAP() % SOS(grb=ANY, erk=None, ras=1, state='up') %
                  RAS(sos=1, pi3k=None,raf=None,state='gdp'), kf_gtp_gdp, kr_gtp_gdp)
 
-            Rule(place+'_Ras_gdp_gtp_'+erb.name, erb(cpp=None, gap=ANY, comp=place) % GAP() % SOS(grb=ANY,ras=None) +
-                 RAS(sos=None, pi3k=None, raf=None, state='gdp') <> erb(cpp=None, gap=ANY, comp=place) % GAP() % SOS(grb=ANY,ras=1) %
+            Rule(place+'_Ras_gdp_gtp_'+erb.name, erb(cpp=None, gap=ANY, comp=place) % GAP() % SOS(grb=ANY,erk=None, ras=None, state='up') +
+                 RAS(sos=None, pi3k=None, raf=None, state='gdp') <> erb(cpp=None, gap=ANY, comp=place) % GAP() % SOS(grb=ANY,erk=None, ras=1, state='up') %
                  RAS(sos=1, pi3k=None, raf=None, state='gtp'), kf_gdp_gtp, kr_gdp_gtp)
 
-            Rule(place+'_Ras_agtp_gtp'+erb.name, erb(cpp=None, gap=ANY,comp=place) % GAP() % SOS(grb=ANY,ras=None) +
-                 RAS(sos=None, pi3k=None, raf=None,state='active_gtp') <> erb(cpp=None, gap=ANY, comp=place) % GAP() % SOS(grb=ANY,ras=1) %
+            Rule(place+'_Ras_agtp_gtp'+erb.name, erb(cpp=None, gap=ANY,comp=place) % GAP() % SOS(grb=ANY,erk=None, ras=None, state='up') +
+                 RAS(sos=None, pi3k=None, raf=None,state='active_gtp') <> erb(cpp=None, gap=ANY, comp=place) % GAP() % SOS(grb=ANY,erk=None, ras=1, state='up') %
                  RAS(sos=1, pi3k=None, raf=None,state='gtp'), kf_agtp_gtp, kr_agtp_gtp)
 
 ########################################################
@@ -657,10 +660,15 @@ def bind_cPP():
     place = 'pm'
     # EGF:Erb1 dimers require separate rules since bound ligand is also transported to pm compartment
     # 2(EGF:Erb1):Grb2(){compartment = ANY) + cPP <-> 2(EGF:Erb1):Grb2(): CPP { compartment = plasma membrane}
-    Rule(place+'_bind_cPP_erb1_erb1', cPP(erb=None,comp=place) + Grb2(gab1=None) % EGF(rec=3, comp=place) %
+    Rule(place+'_bind_cPP_erb1_erb1_noSoS', cPP(erb=None,comp=place) + Grb2(sos=None, gab1=None) % EGF(rec=3, comp=place) %
          Erb1(lig=3, d=1, cpp=None, gap=ANY, comp=place) % EGF(rec=4, comp=place) % Erb1(lig=4, d=1,gap=None, comp=place) <>
-         cPP(erb=2, comp='pm') % Grb2(gab1=None) % EGF(rec=3, comp='pm') % Erb1(lig=3, d=1,cpp=2, gap=ANY, comp='pm') %
+         cPP(erb=2, comp='pm') % Grb2(sos=None, gab1=None) % EGF(rec=3, comp='pm') % Erb1(lig=3, d=1,cpp=2, gap=ANY, comp='pm') %
          EGF(rec=4, comp='pm') % Erb1(lig=4, d=1,gap=None, comp='pm'), k4, kd4)
+         
+    Rule(place+'_bind_cPP_erb1_erb1', cPP(erb=None,comp=place) + SOS(erk=None, state='up') % Grb2(sos= ANY,gab1=None) % EGF(rec=3, comp=place) %
+            Erb1(lig=3, d=1, cpp=None, gap=ANY, comp=place) % EGF(rec=4, comp=place) % Erb1(lig=4, d=1,gap=None, comp=place) <>
+            cPP(erb=2, comp='pm') % SOS(erk=None, state='up') % Grb2(sos= ANY,gab1=None) % EGF(rec=3, comp='pm') % Erb1(lig=3, d=1,cpp=2, gap=ANY, comp='pm') %
+            EGF(rec=4, comp='pm') % Erb1(lig=4, d=1,gap=None, comp='pm'), k4, kd4)
     
     # Erb1:Erb(2/3/4) : Grb2(){compartment = ANY) + cPP <-> Erb1:Erb2/3/4:Grb2(): CPP { compartment = plasma membrane}
     for erb in receptors[1:]:
@@ -677,11 +685,16 @@ def bind_cPP():
     place = 'endo'
     # EGF:Erb1 dimers require separate rules since bound ligand is also transported to pm compartment
     # 2(EGF:Erb1):Grb2(){compartment = ANY) + cPP <-> 2(EGF:Erb1):Grb2(): CPP { compartment = plasma membrane}
-    Rule(place+'_bind_cPP_erb1_erb1', cPP(erb=None,comp=place) + Grb2(gab1=None) % EGF(rec=3, comp=place) %
+    Rule(place+'_bind_cPP_erb1_erb1_noSOS', cPP(erb=None,comp=place) + Grb2(gab1=None, sos=None) % EGF(rec=3, comp=place) %
          Erb1(lig=3, d=1, cpp=None, gap=ANY, comp=place) % EGF(rec=4, comp=place) % Erb1(lig=4, d=1,gap=None, comp=place) <>
-         cPP(erb=2, comp='pm') % Grb2(gab1=None) % EGF(rec=3, comp='pm') % Erb1(lig=3, d=1,cpp=2, gap=ANY, comp='pm') %
+         cPP(erb=2, comp='pm') % Grb2(gab1=None, sos=None) % EGF(rec=3, comp='pm') % Erb1(lig=3, d=1,cpp=2, gap=ANY, comp='pm') %
          EGF(rec=4, comp='pm') % Erb1(lig=4, d=1,gap=None, comp='pm'), k5, kd5b)
-        
+
+    Rule(place+'_bind_cPP_erb1_erb1', cPP(erb=None,comp=place) + SOS(erk=None, state='up')% Grb2(gab1=None, sos=ANY) % EGF(rec=3, comp=place) %
+         Erb1(lig=3, d=1, cpp=None, gap=ANY, comp=place) % EGF(rec=4, comp=place) % Erb1(lig=4, d=1,gap=None, comp=place) <>
+         cPP(erb=2, comp='pm') % SOS(erk=None, state='up') % Grb2(gab1=None, sos=ANY) % EGF(rec=3, comp='pm') % Erb1(lig=3, d=1,cpp=2, gap=ANY, comp='pm') %
+         EGF(rec=4, comp='pm') % Erb1(lig=4, d=1,gap=None, comp='pm'), k5, kd5b)
+    
          # Erb1:Erb(2/3/4) : Grb2(){compartment = ANY) + cPP <-> Erb1:Erb2/3/4:Grb2(): CPP { compartment = plasma membrane}
     for erb in receptors[1:]:
              Rule(place+'_bind_cPP_erb1_'+erb.name, cPP(erb=None,comp=place) + Grb2(gab1=None) % Erb1(d=1, cpp=None, gap=ANY, comp=place) %
@@ -743,7 +756,7 @@ def Erk_catalysis():
 
     alias_model_components()
 
-    catalyze_state(ERK(pase3=None, mek=None, state='pp'), 'gab1', Gab1(shp2=None, pi3k=None), 'erk', 'state', 'p', 'pp', (kf_bind_Erk, kr_bind_Erk, kcat_Erk))
+    catalyze_state(ERK(pase3=None, mek=None, sos=None, state='pp'), 'gab1', Gab1(shp2=None, pi3k=None), 'erk', 'state', 'p', 'pp', (kf_bind_Erk, kr_bind_Erk, kcat_Erk))
 
 ########################################################
 def Pase_9t_catalysis():
@@ -912,6 +925,10 @@ def MAPK_pathway():
     Parameter('k58', 8.33e-7)    # k56
     Parameter('kd58', 56.7)    # kd56
     
+    Parameter('kf_erk_sos',1)
+    Parameter('kr_erk_sos', 0.1)
+    Parameter('kcat_erk_sos', 1)
+    
     alias_model_components()
 
     # RAS:GTP + RAF -> RasGTP:RAF
@@ -941,15 +958,26 @@ def MAPK_pathway():
     catalyze_state(Pase2(), 'mek', MEK(raf=None,erk=None), 'pase2', 'state', 'pp', 'p', (kf_mek_pase2, kr_mek_pase2, kcat_mek_pase2))
 
     # MEK~P phosphorylates ERk
-    catalyze_state(MEK(raf=None, pase2=None, state='p'), 'erk', ERK(pase3=None, gab1=None), 'mek', 'state', 'up', 'p', (kf_raf_mek, kr_raf_mek, kcat_raf_mek))
+    catalyze_state(MEK(raf=None, pase2=None, state='pp'), 'erk', ERK(pase3=None, sos=None, gab1=None), 'mek', 'state', 'up', 'p', (kf_raf_mek, kr_raf_mek, kcat_raf_mek))
 
-    catalyze_state(MEK(raf=None, pase2=None, state='p'), 'erk', ERK(pase3=None, gab1=None), 'mek', 'state', 'p', 'pp', (kf_raf_mek, kr_raf_mek, kcat_raf_mek))
+    catalyze_state(MEK(raf=None, pase2=None, state='pp'), 'erk', ERK(pase3=None, sos=None, gab1=None), 'mek', 'state', 'p', 'pp', (kf_raf_mek, kr_raf_mek, kcat_raf_mek))
     
 
     # ERK~P dephosphorylated by Pase3
-    catalyze_state(Pase3(), 'erk', ERK(mek=None,gab1=None), 'pase3', 'state', 'p', 'up', (k58, kd58, kcat_erk_pase3))
+    catalyze_state(Pase3(), 'erk', ERK(mek=None, sos=None, gab1=None), 'pase3', 'state', 'p', 'up', (k58, kd58, kcat_erk_pase3))
     
-    catalyze_state(Pase3(), 'erk', ERK(mek=None,gab1=None), 'pase3', 'state', 'pp', 'p', (kf_erk_pase3, kr_erk_pase3, kcat_erk_pase3))
+    catalyze_state(Pase3(), 'erk', ERK(mek=None,sos=None, gab1=None), 'pase3', 'state', 'pp', 'p', (kf_erk_pase3, kr_erk_pase3, kcat_erk_pase3))
+
+    # ERK#PP phosphorylates SOS in ErbB1 homodimers
+    Rule('sos_binds_erk', ERK(mek=None, gab1=None, pase3=None, state='pp', sos=None) +  Erb1(cpp=None, rtk=None) % Erb1(cpp=None, rtk=None) % SOS(ras=None, erk=None, state='up') <>
+        ERK(mek=None, gab1=None, pase3=None, state='pp', sos=1) %  Erb1(cpp=None, rtk=None) % Erb1(cpp=None,rtk=None) % SOS(ras=None, erk=1, state='up'), kf_erk_sos, kr_erk_sos)
+         
+    # ERK#PP phosphorylaes free SOS
+    Rule('freeSos_binds_erk', ERK(mek=None, gab1=None, pase3=None, state='pp', sos=None) + SOS(ras=None, erk=None, grb=None, state='up') <>
+        ERK(mek=None, gab1=None, pase3=None, state='pp', sos=1) % SOS(ras=None, erk=1, grb=None, state='up'), kf_erk_sos, kr_erk_sos)
+
+    Rule('Sos_p_catalysis', ERK(sos=1, state='pp') % SOS(erk=1,state='up') >> ERK(sos=None, state='pp') + SOS( erk=None,state = 'p'), kcat_erk_sos)
+
 
 ##########################################
 def R_deg():
@@ -1021,6 +1049,8 @@ def R_deg_v2():
     # Degrade Pase3 (V769)
     Rule('degrade_Pase3', Pase3(erk=None) >> None, k116)
 
+    Rule('degrade_endo_EGF', EGF(comp='endo', rec=None) >> None, kdeg)
+
 ########################################################
 def declare_observables():
     alias_model_components()
@@ -1036,3 +1066,41 @@ if __name__ == '__main__':
         "programatically manipulated,\nnot executed directly. The above " \
             " output is merely a diagnostic aid."
 
+
+#Notes: Following parameters are not set as constants
+#kd1 //
+#k1c //
+#kd1c //
+#k1d
+#kd1d //
+#k6
+#kd6 //
+#k35
+#kd35
+#k48
+#kd48
+#k56
+#kd56
+#k58
+#kd58
+#kd73
+#kd74
+#kd75
+#k74
+#k75
+#k97 //
+#kd97
+#k97c //
+#kd97c
+#k99
+#k103
+#kd103
+#k116 //
+#k119 //
+#k120
+#kd129
+#k120b
+#kd120b
+#kd122 //
+#k1
+#k122 //
