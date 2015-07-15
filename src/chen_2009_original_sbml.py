@@ -112,6 +112,54 @@ ns = 'http://www.sbml.org/sbml/level2'
 qnames = dict((tag, lxml.etree.QName(ns, tag).text)
               for tag in ('species', 'reaction', 'parameter'))
 
+label_edits = {
+    'c95': '2(EGF:ErbB1)#P:GAP:Grb2:Sos:ERK#P#P',
+    'c96': 'endo|2(EGF:ErbB1)#P:GAP:Grb2:Sos:ERK#P#P',
+    'c98': 'endo|2(EGF:ErbB1)#P:GAP:(Shc#P):Grb2:Sos:ERK#P#P',
+    'c100': 'endo|2(EGF:ErbB1)#P:GAP:Grb2:Sos#P',
+    'c101': 'Sos:ERK#P#P',
+    'c105': 'ATP',
+    'c123': 'endo|EGF:ErbB1:ErbB2:ATP',
+    'c124': 'endo|EGF:ErbB1:ErbB3:ATP',
+    'c125': 'endo|EGF:ErbB1:ErbB4:ATP',
+    'c126': 'endo|2(EGF:ErbB1:ATP)-FullActive',
+    'c157': 'endo|HRG:ErbB3',
+    'c158': 'endo|HRG:ErbB4',
+    'c169': 'endo|(HRG:ErbB3):ErbB2:ATP',
+    'c170': 'endo|(HRG:ErbB4):ErbB2:ATP',
+    'c264': '2(EGF:ErbB1)#P:GAP:Grb2:Gab1#P:PI3K:Ras:GDP',
+    'c284': 'ErbB2#P:ErbB2',
+    'c288': 'ErbB2:ErbB3',
+    'c339': 'endo|ErbB2:ErbB3',
+    'c340': 'endo|ErbB2:ErbB4',
+    'c407': '(ErbB4:ErbB2)#P:GAP:Grb2:Gab1#P#P:Pase9t',
+    'c409': '(ErbB1:ErbB3)#P:GAP:Grb2:Gab1#P#P',
+    'c410': '(ErbB1:ErbB4)#P:GAP:Grb2:Gab1#P#P',
+    'c411': '(ErbB1:ErbB3)#P:GAP:Grb2:Gab1#P#P:Pase9t',
+    'c412': '(ErbB1:ErbB4)#P:GAP:Grb2:Gab1#P#P:Pase9t',
+    'c417': 'endo|(ErbB3:ErbB2)#P:RTK_Pase',
+    'c418': 'endo|(ErbB4:ErbB2)#P:RTK_Pase',
+    'c419': '2(EGF:ErbB1)#P:GAP:(Shc#P):Grb2:Sos#P',
+    'c420': 'endo|2(EGF:ErbB1)#P:GAP:(Shc#P):Grb2:Sos#P',
+    'c421': 'endo|(HRG:ErbB3):ErbB2',
+    'c422': 'endo|(HRG:ErbB4):ErbB2',
+    'c424': '(ErbB1:ErbB2)#P:GAP:Grb2:Gab1#P#P:Pase9t',
+    'c425': 'endo|ErbB2:ErbB2',
+    'c430': '(ErbB1:ErbB2)#P:GAP:Grb2:Gab1#P#P',
+    'c431': '2(EGF:ErbB1)#P:GAP:Grb2:Gab1#P:ERK#P#P',
+    'c438': '(ErbB1:ErbB4)#P:GAP:Grb2:Gab1#P:ERK#P#P',
+    'c455': '(ErbB4:ErbB2)#P:GAP:Grb2:Gab1#P:PI3K:PIP2',
+    'c456': '(ErbB3:ErbB2)#P:GAP:Grb2:Gab1#P#P:Pase9t',
+    'c472': 'Raf#P:AKT:P:P',
+    'c486': '2(EGF:ErbB1)#P:GAP:Grb2:Gab1#P',
+    'c487': '(ErbB4:ErbB2)#P:GAP:Grb2:Gab1#P#P',
+    'c488': '2(EGF:ErbB1)#P:GAP:Grb2:Gab1#P#P',
+    'c489': '2(EGF:ErbB1)#P:GAP:Grb2:Gab1#P:Shp2',
+    'c490': '2(ErbB2)#P:GAP:Grb2:Gab1#P#P',
+    'c491': '(ErbB3:ErbB2)#P:GAP:Grb2:Gab1#P#P',
+    'c522': '2(EGF:ErbB1)#P:GAP:Grb2:Gab1#P#P:Pase9t',
+    'c523': '2(ErbB2)#P:GAP:Grb2:Gab1#P#P:Pase9t',
+    }
 
 def get_model():
 
@@ -127,9 +175,6 @@ def get_model():
         species_id = element.get('id')
         name = element.get('name')
         label = xpath(element, 's:notes/text()').strip()
-        # special fixup for weird ATP label
-        if label == 'ATP  1.2e9':
-            label = u'ATP'
         compartment = xpath(element, 's:annotation/text()')
         if compartment is not None:
             compartment = compartment.strip().lower()
@@ -143,6 +188,9 @@ def get_model():
             const = False
         else:
             raise RuntimeError('bad species.constant value: {}'.format(const))
+        # Override label for some badly named species.
+        if name in label_edits:
+            label = label_edits[name]
         s = Species(species_id, name, label, compartment, initial_amount, const)
         model.species.append(s)
         species_id_map[s.id] = s
