@@ -186,9 +186,9 @@ def transport():
 #             erb(lig=None, d=None, atp=None, state='up', comp='endo'), k6b, kd6b) # rate constants are k6b = kd6b = 0
 
     " v165 - 175 "
-    Rule('Erb11_pm_to_endo', EGF(rec=2, comp='pm') % EGF(rec=3, comp='pm') % Erb1(lig=2, d=1, rtk=None, cpp=None, state='p', comp='pm')
+    Rule('Erb11_pm_to_endo', EGF(rec=2, comp='pm') % EGF(rec=3, comp='pm') % Erb1(lig=2, d=1, rtk=None, cpp=None, gap=None, state='p', comp='pm')
          % Erb1(lig=3, d=1, rtk=None, state='p', gap=None, comp='pm') <>
-         EGF(rec=2, comp='endo') % EGF(rec=3, comp='endo') % Erb1(lig=2, d=1, rtk=None, cpp=None, state='p', comp='endo') %
+         EGF(rec=2, comp='endo') % EGF(rec=3, comp='endo') % Erb1(lig=2, d=1, rtk=None, cpp=None, gap=None, state='p', comp='endo') %
          Erb1(lig=3, d=1, rtk=None, state='p', gap=None, comp='endo'), k6, kd6)
 
     " v185-187 "
@@ -366,13 +366,13 @@ def trans_phosphorylation():
                  Erb1(lig=None,d=1, state='p', atp=None, comp=place) % r(lig=None,d=1, state='p', atp=None) + ATP(erb=None,gab1=None), kcat_phos)
 
         # 2(EGF:Erb1) -> 2(EGF:Erb1)~P
-        Rule('Erb1_tp_bind_Erb1_'+ place, Erb1(lig=ANY,d=1, state='up', atp=None, comp=place) %
+        Rule('Erb1_tp_bind_Erb1_'+ place, Erb1(lig=ANY,d=1, state='up', atp=3, comp=place)% ATP(erb=3, gab1=None) %
              Erb1(lig=ANY,d=1, state='up', atp=None) + ATP(erb=None, gab1=None) <>
-             ATP(erb=2,gab1=None) % Erb1(lig=ANY,d=1, state='up', atp=2, comp=place) % Erb1(lig=ANY,d=1, state='up', atp=None) , kon, koff)
+             ATP(erb=3, gab1=None) % ATP(erb=2,gab1=None) % Erb1(lig=ANY,d=1, state='up', atp=3, comp=place) % Erb1(lig=ANY,d=1, state='up', atp=2) , kon, koff)
             
         Rule('Erb1_tp_cat_Erb1_'+ place, Erb1(lig=ANY,d=1, state='up', atp=2, comp=place) %
-             Erb1(lig=ANY,d=1, state='up', atp=None)% ATP(erb=2,gab1=None) >>
-             Erb1(lig=ANY,d=1, state='p', atp=None, comp=place) % Erb1(lig=ANY,d=1, state='p', atp=None) + ATP(erb=None,gab1=None), kcat_phos)
+             Erb1(lig=ANY,d=1, state='up', atp=3)% ATP(erb=2,gab1=None)% ATP(erb=3, gab1=None) >>
+             Erb1(lig=ANY,d=1, state='p', atp=None, comp=place) % Erb1(lig=ANY,d=1, state='p', atp=None) + ATP(erb=None,gab1=None) , kcat_phos)
 
         # Erb2~P:Erb2 -> 2(Erb2)~P
         Rule('Erb2_tp_Erb2_up_'+ place, Erb2(d=1, state='p', comp=place) % Erb2(d=1, state='up') >>
