@@ -1,28 +1,30 @@
 """Print SBML model species and PySB model species for 1-1 comparison."""
 
+from __future__ import division
 import difflib
 import re
 import chen_2009_original_sbml
 import chen_2009
 from pysb.bng import generate_equations
 
-def get_pysb_names():
-    """Return species names based on original SBML model naming convention."""
+def get_pysb_species():
+    """Return species names mostly aligned to SBML model naming convention."""
 
     model = chen_2009.model
     generate_equations(model)
 
-    ordering = ('EGF HRG ErbB1 ErbB2 ErbB3 ErbB4 ATP RTK_Pase GAP Shc Grb2 Gab1 Shp2 '
-                'Pase9t PI3K PIP2 Sos MEK Pase2 ERK Pase3 Raf Pase1 Ras cPP PIP3 '
-                'AKT Pase4 PDK1 PTEN Shp').split()
+    ordering = ('EGF HRG ErbB1 ErbB2 ErbB3 ErbB4 ATP RTK_Pase GAP Shc Grb2 '
+                'Gab1 Shp2 Pase9t PI3K PIP2 Sos ERK MEK Pase2 Pase3 Raf Pase1 '
+                'Ras cPP PIP3 AKT Pase4 PDK1 PTEN Shp').split()
     ordering_map = {p: i for i, p in enumerate(ordering)}
 
-    all_species = [str(i) for i in model.species]
-    all_species = [i for i in all_species  if i not in ('__source()', '__sink()')]
+    species = [s for s in model.species
+               if str(s) not in ('__source()', '__sink()')]
+    species_str = [str(s) for s in species]
 
-    monomers_in_species = [i.split(" % ") for i in all_species]
+    monomers_in_species = [i.split(" % ") for i in species_str]
 
-    species_list = []
+    names = []
     for mlist in monomers_in_species:
          mlist = [s.replace('Erb', 'ErbB') for s in mlist]
          mlist = [s.replace('SHC', 'Shc') for s in mlist]
@@ -47,47 +49,75 @@ def get_pysb_names():
          s = re.sub(r'^\(ErbB2:ErbB([34])\)', r'(ErbB\1:ErbB2)', s)
          s = re.sub(r'^\(ErbB2:ErbB2\)', r'2(ErbB2)', s)
          s = re.sub(r'EGF:\(ErbB1:ErbB1\)', r'2(EGF:ErbB1)', s)
-         if re.match(r'2\(EGF:ErbB1\).*Gab1#[^:]+(?!:PI3K$|:PI3K:PIP2$)', s):
-              s = re.sub(r'(Gab1#[^:]+)', r'(\1)', s)
+         s = re.sub(r'^EGF:ErbB1:ErbB1:ATP$', r'2(EGF:ErbB1:ATP)', s)
          s = re.sub(r'(Shc#P)', r'(\1)', s)
          s = re.sub(r'(Sos:)(Ras:G[DT]P)', r'\1(\2)', s)
          s = re.sub(r'AKT#P#P', r'AKT:P:P', s)
          s = re.sub(r'HRG:ErbB1:ErbB([34])', r'(HRG:ErbB\1:ErbB1)', s)
          s = re.sub(r'HRG:ErbB2:ErbB([34])', r'(HRG:ErbB\1):ErbB2', s)
-         species_list.append(s)
+         s = re.sub(r'^EGF:ErbB1:ErbB1:ATP:ATP$', r'2(EGF:ErbB1:ATP)-FullActive', s)
+         names.append(s)
 
-    for i, comp in enumerate(all_species):
+    for i, comp in enumerate(species_str):
         if "comp='endo'" in comp:
-            species_list[i] = 'endo|' + species_list[i]
+            names[i] = re.sub(r'(EGF:ErbB1:ErbB[234])$', r'(\1)', names[i])
+            names[i] = 'endo|' + names[i]
 
-    species_list.sort()
+    names, species = zip(*sorted(zip(names, species)))
 
-    return species_list
-
-
-def get_sbml_names_species():
-    model = chen_2009_original_sbml.get_model()
-    ignore = ('_i', '_h', 'Inh')
-    species = sorted([s for s in model.species
-                      if not any(i in s.label for i in ignore)],
-                     key=lambda x: x.label)
-    names = [s.label for s in species]
     return names, species
 
 
-pysb_names = get_pysb_names()
-sbml_names, sbml_species = get_sbml_names_species()
+def get_sbml_species():
+    model = chen_2009_original_sbml.get_model()
+    ignore_patterns = ('_i', '_h', 'Inh')
+    ignore_names = (
+        'c13', 'c520', 'c86', # Degradation sinks
+        'c80', 'c82', # MEK#P#P:ERK "_i" species that are missing _i in label
+        )
+    species = [s for s in model.species
+               if not any(i in s.label for i in ignore_patterns)
+               and s.name not in ignore_names]
+    names = [s.label for s in species]
+    names, species = zip(*sorted(zip(names, species)))
+    return names, species
 
-fmt = '%-60s\t%-51s'
-print fmt % ('SBML', 'PySB')
-print fmt % (('=' * 50,) * 2)
+
+pysb_names, pysb_species = get_pysb_species()
+sbml_names, sbml_species = get_sbml_species()
+
+if len(pysb_names) != len(set(pysb_names)):
+    raise RuntimeError("Duplicate pysb species names")
+if len(sbml_names) != len(set(sbml_names)):
+    raise RuntimeError("Duplicate sbml species names")
+
+print_matches = False
+
+matches = 0
+fmt = '%-60s\t%1s\t%-51s'
+print fmt % ('SBML', '', 'PySB')
+print fmt % ('=' * 50, '', '=' * 50)
 print
 sm = difflib.SequenceMatcher(None, sbml_names, pysb_names)
 for tag, i1, i2, j1, j2 in sm.get_opcodes():
-    if tag == 'delete':
-        for si in xrange(i1, i2):
+    if tag in ('delete', 'replace'):
+        for si in range(i1, i2):
             ss = '%s - %s' % (sbml_names[si], sbml_species[si].name)
-            print fmt % (ss, '')
-    elif tag == 'insert':
-        for s in pysb_names[j1:j2]:
-            print fmt % ('', s)
+            print fmt % (ss, '', '')
+    if tag in ('insert', 'replace'):
+        for sj in range(j1, j2):
+            ss = '%s - s%d' % (pysb_names[sj], sj)
+            print fmt % ('', '', ss)
+    if tag == 'equal':
+        matches += i2 - i1
+        if print_matches:
+            for si, sj in zip(range(i1, i2), range(j1, j2)):
+                sbml = '%s - %s' % (sbml_names[si], sbml_species[si].name)
+                pysb = '%s - s%d' % (pysb_names[sj], sj)
+                print fmt % (sbml, '=', pysb)
+
+print
+print "Total matches: %d / %d (%.2f%%)" % (matches, len(sbml_names),
+                                         matches / len(sbml_names) * 100)
+print "SBML species missed: %d" % (len(sbml_names) - matches)
+print "PySB surplus species: %d" % (len(pysb_names) - matches)
