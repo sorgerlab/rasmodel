@@ -261,11 +261,17 @@ def receptor_dimerization():
                  Erb1(lig=ANY, atp=None, d=1, state='up', comp=place) % erb(lig=None,d=1, atp=None, state='up', comp=place),
                  k2b, kd2b)
 
-        # EGf:Erb1:ATP + EGF:Erb1:ATP <-> 2(EGF:Erb1)
+#        # EGf:Erb1:ATP + EGF:Erb1:ATP <-> 2(EGF:Erb1)
+#        Rule(place+'_bind_egf_E1_atp_egf_erb1', ATP(erb=2,gab1=None) % Erb1(lig=ANY,atp=2,d=None,state='up', comp=place) +
+#             ATP(erb=3,gab1=None) % Erb1(lig=ANY, d=None,atp=3,state='up', comp=place) <>
+#             Erb1(lig=ANY, atp=None, d=1,state='up', comp=place) % Erb1(lig=ANY, d=1, atp=None,state='up', comp=place) +
+#             ATP(erb=None,gab1=None) , k2, kd2)
+
+        # EGf:Erb1:ATP + EGF:Erb1:ATP <-> 2(EGF:Erb1:ATP)
         Rule(place+'_bind_egf_E1_atp_egf_erb1', ATP(erb=2,gab1=None) % Erb1(lig=ANY,atp=2,d=None,state='up', comp=place) +
-             ATP(erb=3,gab1=None) % Erb1(lig=ANY, d=None,atp=3,state='up', comp=place) <>
-             Erb1(lig=ANY, atp=None, d=1,state='up', comp=place) % Erb1(lig=ANY, d=1, atp=None,state='up', comp=place) +
-             ATP(erb=None,gab1=None) , k2, kd2)
+                  ATP(erb=3,gab1=None) % Erb1(lig=ANY, d=None,atp=3,state='up', comp=place) <>
+                  ATP(erb=2,gab1=None) % Erb1(lig=ANY, atp=2, d=1,state='up', comp=place) % Erb1(lig=ANY, d=1, atp=None,state='up', comp=place) +
+                  ATP(erb=None,gab1=None) , k2, kd2)
     
         # HRG:Erb(3/4) + Erb2 <-> Erb2:Erb(3/4)
         bind_table([[   Erb2(atp=None, state='up', comp=place)],
@@ -318,15 +324,38 @@ def lateral_signaling():
     Parameter('bind_Erb2_Erb2up_kf', 8.3e-9)    # k103
     Parameter('bind_Erb2_Erb2up_kr', 0.016)     # kd103
     
+    Parameter('kon2', 1.87e-8)           # k122
+    Parameter('koff2', 1)                # kd122
+    Parameter('kcat_phos2', 0.177828)    # kd123
+    
     alias_model_components()
     
-    for place in comprtmnts:
-    
     # Erb2~P + Erb2 <-> Erb2~P:Erb2
-        Rule('bind_Erb2_Erb2_up_'+place, Erb2(d=None, state='p', gap=None, rtk=None, comp=place) +
-             Erb2(d=None, state='up',gap=None, rtk=None, comp=place) <>
-             Erb2(d=1, state='p',gap=None, rtk=None, comp=place) % Erb2(d=1,state='up',gap=None, rtk=None, comp=place),
+    Rule('bind_Erb2_Erb2_up_', Erb2(d=None, state='p', gap=None, rtk=None, comp='pm', atp=None) +
+             Erb2(d=None, state='up',gap=None, rtk=None, comp='pm', atp=None) <>
+             Erb2(d=1, state='p',gap=None, rtk=None, comp='pm', atp=None) % Erb2(d=1,state='up',gap=None, rtk=None, comp='pm', atp=None),
              bind_Erb2_Erb2up_kf,bind_Erb2_Erb2up_kr)
+
+#        # Erb2~P:Erb2 -> 2(Erb2)~P
+    Rule('Erb2_tp_Erb2_up', Erb2(d=1, state='p', comp='pm', atp=None, gap=None, rtk=None, cpp=None) % Erb2(d=1, state='up', atp=None, gap=None, comp='pm', rtk=None, cpp=None) +ATP(erb=None, gab1=None) <>
+     Erb2(d=1, state='p', atp=None, comp='pm', gap=None, rtk=None, cpp=None) % Erb2(d=1, state='up', atp=2, gap=None, comp='pm', rtk=None, cpp=None)% ATP(erb=2, gab1=None), kon2, koff2)
+
+    Rule('Erb2_tp_cat_', Erb2(d=1, state='p', atp=None, comp='pm') % Erb2(d=1, state='up', atp=2, comp='pm') % ATP(erb=2, gab1=None) >>
+              Erb2(d=1, state='p', atp=None, comp='pm') % Erb2(d=1, state='p', atp=None, comp='pm') +  ATP(erb=None, gab1=None), kcat_phos2)
+
+#########################
+def Erb2_magic_rxns():
+    Parameter('kf_bind_erb2', 1)
+    Parameter('kr_bind_erb2', 0.1)
+    Parameter('kcat_magic', 1)
+
+    alias_model_components()
+
+    for erb in receptors[2:]:
+        Rule('bind_Erb2_' +erb.name, Erb2(d=None, atp=None, state='up', comp='pm', gap=None, cpp=None) + erb(lig=None, d=None, atp=None, state='up', comp='pm', gap=None, cpp=None) <>
+             Erb2(d=1, atp=None, state='up', comp='pm', gap=None, cpp=None) % erb(lig=None, d=1, atp=None, state='up', comp='pm', gap=None, cpp=None), kf_bind_erb2, kr_bind_erb2)
+
+        Rule('phosphorylate_Erb2_'+ erb.name, EGF(rec=None, comp='pm') + Erb2(d=1, atp=None, state='up', comp='pm', gap=None, cpp=None) % erb(lig=None, d=1, atp=None, state='up', comp='pm', gap=None, cpp=None) >> Erb2(d=1, atp=None, state='p', comp='pm', gap=None, cpp=None) % erb(lig=None, d=1, atp=None, state='p', comp='pm', gap=None, cpp=None), kcat_magic)
 
 ########################################################
 def trans_phosphorylation():
@@ -341,19 +370,46 @@ def trans_phosphorylation():
     
     alias_model_components()
     
+    # HRG:Erb(3/4):Erb1 -> Erb(3/4)~P:Erb1~P
+    for s in receptors[2:]:
+        #for r in receptors[:2]:
+        Rule(s.name+'_tp_bind_', s(lig=ANY,d=1, state='up', atp=None, comp='pm') %
+             Erb1(lig=None,d=1, state='up', atp=None) + ATP(erb=None,gab1=None) <>
+             s(lig=ANY,d=1, state='up', atp=2, comp='pm') % Erb1(lig=None,d=1, state='up', atp=None) % ATP(erb=2, gab1=None), kon, koff)
+            
+        Rule(s.name+'_tp_cat_', HRG(rec=3, comp='pm') % s(lig=3,d=1, state='up', atp=2, comp='pm', gap=None) %
+                 Erb1(lig=None,d=1, state='up', atp=None, gap=None) % ATP(erb=2,gab1=None) >>
+                 s(lig=None,d=1, state='p', atp=None, comp='pm', gap=None) % Erb1(lig=None,d=1, state='p', atp=None, gap=None) +
+                 ATP(erb=None,gab1=None), kcat_phos)
+    
     for place in comprtmnts:
     
-        # HRG:Erb(3/4):ERB(1/2) -> Erb(3/4)~P:Erb(1/2)~P
+#        # HRG:Erb(3/4):ERB(1/2) -> Erb(3/4)~P:Erb(1/2)~P
+#        for s in receptors[2:]:
+#            for r in receptors[:2]:
+#                Rule(place + '_' + s.name+'_tp_bind_'+ r.name, s(lig=ANY,d=1, state='up', atp=None, comp=place) %
+#                     r(lig=None,d=1, state='up', atp=None) + ATP(erb=None,gab1=None) <>
+#                     s(lig=ANY,d=1, state='up', atp=2, comp=place) % r(lig=None,d=1, state='up', atp=None) % ATP(erb=2, gab1=None), kon, koff)
+#                     
+#                Rule(place + '_' + s.name+'_tp_cat_'+ r.name, HRG(rec=3, comp=place) % s(lig=3,d=1, state='up', atp=2, comp=place, gap=None) %
+#                     r(lig=None,d=1, state='up', atp=None, gap=None) % ATP(erb=2,gab1=None) >>
+#                     s(lig=None,d=1, state='p', atp=None, comp=place, gap=None) % r(lig=None,d=1, state='p', atp=None, gap=None) +
+#                     ATP(erb=None,gab1=None), kcat_phos)
+
+        # HRG:Erb(3/4):Erb2 -> Erb(3/4)~P:Erb2~P
         for s in receptors[2:]:
-            for r in receptors[:2]:
-                Rule(place + '_' + s.name+'_tp_bind_'+ r.name, s(lig=ANY,d=1, state='up', atp=None, comp=place) %
-                     r(lig=None,d=1, state='up', atp=None) + ATP(erb=None,gab1=None) <>
-                     s(lig=ANY,d=1, state='up', atp=2, comp=place) % r(lig=None,d=1, state='up', atp=None) % ATP(erb=2, gab1=None), kon, koff)
-                     
-                Rule(place + '_' + s.name+'_tp_cat_'+ r.name, HRG(rec=3, comp=place) % s(lig=3,d=1, state='up', atp=2, comp=place, gap=None) %
-                     r(lig=None,d=1, state='up', atp=None, gap=None) % ATP(erb=2,gab1=None) >>
-                     s(lig=None,d=1, state='p', atp=None, comp=place, gap=None) % r(lig=None,d=1, state='p', atp=None, gap=None) +
-                     ATP(erb=None,gab1=None), kcat_phos)
+            #for r in receptors[:2]:
+            Rule(place + '_' + s.name+'_tp_bind_', s(lig=ANY,d=1, state='up', atp=None, comp=place) %
+             Erb2(lig=None,d=1, state='up', atp=None) + ATP(erb=None,gab1=None) <>
+             s(lig=ANY,d=1, state='up', atp=2, comp=place) % Erb2(lig=None,d=1, state='up', atp=None) % ATP(erb=2, gab1=None), kon, koff)
+            
+            Rule(place + '_' + s.name+'_tp_cat_', HRG(rec=3, comp=place) % s(lig=3,d=1, state='up', atp=2, comp=place, gap=None) %
+                 Erb2(lig=None,d=1, state='up', atp=None, gap=None) % ATP(erb=2,gab1=None) >>
+                 s(lig=None,d=1, state='p', atp=None, comp=place, gap=None) % Erb2(lig=None,d=1, state='p', atp=None, gap=None) +
+                 ATP(erb=None,gab1=None), kcat_phos)
+        
+
+
 
         # EGF:Erb1::Erb(2/3/4) -> Erb1~P:Erb(2/3/4)~P
         for r in receptors[1:]:
@@ -374,9 +430,6 @@ def trans_phosphorylation():
              Erb1(lig=ANY,d=1, state='up', atp=3)% ATP(erb=2,gab1=None)% ATP(erb=3, gab1=None) >>
              Erb1(lig=ANY,d=1, state='p', atp=None, comp=place) % Erb1(lig=ANY,d=1, state='p', atp=None) + ATP(erb=None,gab1=None) , kcat_phos)
 
-        # Erb2~P:Erb2 -> 2(Erb2)~P
-        Rule('Erb2_tp_Erb2_up_'+ place, Erb2(d=1, state='p', comp=place) % Erb2(d=1, state='up') >>
-             Erb2(d=1, state='p', comp=place) % Erb2(d=1, state='p'), kcat_phos)
 
         # Erb3/4~P:Erb2~P -> HRG:Erb3/4:Erb2:ATP
 
