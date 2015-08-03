@@ -153,7 +153,7 @@ for tag, i1, i2, j1, j2 in sm.get_opcodes():
                 print fmt % (sbml, '=', pysb)
 
 pysb_to_sbml = {p.index: s.name for p, s in zip(pysb_species, sbml_species)}
-pysb_to_sbml[42] = '(degraded)'
+pysb_to_sbml[46] = '(degraded)'
 pysb_reactions = sorted(
     ' -> '.join(sorted([
             ' + '.join(sorted(pysb_to_sbml[s] for s in r[field]))

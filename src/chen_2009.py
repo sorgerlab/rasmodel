@@ -34,7 +34,7 @@ PI3K_binds_RAS()
 AKT_rxns()
 MAPK_pathway()
 R_deg_v2()
-Erb2_magic_rxns()
+ErbB2_magic_rxns()
 declare_observables()
 
 
