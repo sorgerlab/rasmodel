@@ -359,35 +359,35 @@ add_box(c53)
 # Pase3
 add_box(c60)
 # Raf#P
-add_box(c45, c72)
+add_box(c45) #, c72)
 # Raf#P:Pase1
-add_box(c46, c73)
+add_box(c46) #, c73)
 # MEK:Raf#P
-add_box(c48, c74)
+add_box(c48) #, c74)
 # MEK#P
-add_box(c49, c75)
+add_box(c49) #, c75)
 # MEK#P:Raf#P
-add_box(c50, c76)
+add_box(c50) #, c76)
 # MEK#P#P
-add_box(c51, c77)
+add_box(c51) #, c77)
 # MEK#P#P:Pase2
-add_box(c52, c78)
+add_box(c52) #, c78)
 # MEK#P:Pase2
-add_box(c54, c79)
+add_box(c54) #, c79)
 
 # ERK:MEK#P#P
-add_box(c56, c80)
+add_box(c56) #, c80)
 # ERK#P
-add_box(c57, c81)
+add_box(c57) #, c81)
 # ERK#P:MEK#P#P
-add_box(c58, c82)
+add_box(c58) #, c82)
 # ERK#P#P
 # TODO: split these to make the Gab1 second phosphorylation reactions collapse?
-add_box(c59, c83)
+add_box(c59) #, c83)
 # ERK#P#P:Pase3
-add_box(c61, c84)
+add_box(c61) #, c84)
 # ERK#P:Pase3
-add_box(c62, c85)
+add_box(c62) #, c85)
 # MKP_deg (Pase3 degraded)
 add_box(c520)
 
@@ -400,7 +400,7 @@ add_box(c99, c100)
 # dimer#P:GAP:(Shc#P):Grb2:Sos#P
 add_box(c419, c420)
 # ERK#P#P:Sos
-add_box(c101, c102)
+add_box(c101) #, c102)
 # Sos#P
 add_box(c103)
 
@@ -425,7 +425,7 @@ add_box(c476, c479, c473, c464, c465, c466, c489)
 # dimer#P:GAP:Grb2:Gab1#P:ERK#P#P
 add_box(c477, c480, c474, c433, c435, c438, c431)
 # dimer#P:GAP:Grb2:Gab1#P:ERK#P#P_i
-add_box(c478, c481, c475, c434, c437, c440, c432)
+#add_box(c478, c481, c475, c434, c437, c440, c432)
 # dimer#P:GAP:Grb2:Gab1#P#P
 add_box(c491, c487, c490, c430, c409, c410, c488)
 # dimer#P:GAP:Grb2:Gab1#P#P:Pase9t
