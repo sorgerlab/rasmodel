@@ -17,7 +17,7 @@ def declare_monomers():
     global comprtmnts
     
     # ErbB receptors bind ligands at site lig, other ligands at side d, ATP at side atp, GAP on gs, SHC or Grb2 on gs, RTK on rtk, CPP on cpp
-    Monomer('Erb1', ['lig', 'd', 'atp', 'state', 'gap', 'gs', 'rtk', 'cpp', 'comp'], {'state':['up', 'p', 'pm', 'endo'], 'comp': ['pm', 'endo']})
+    Monomer('Erb1', ['lig', 'd', 'atp', 'state', 'gap', 'gs', 'rtk', 'cpp', 'comp'], {'state':['up', 'p','full_act'], 'comp': ['pm', 'endo']})
     Monomer('Erb2', ['lig', 'd', 'atp', 'state', 'gap', 'gs', 'rtk', 'cpp', 'comp'], {'state':['up', 'p'], 'comp': ['pm', 'endo']})
     Monomer('Erb3', ['lig', 'd', 'atp', 'state', 'gap', 'gs', 'rtk', 'cpp','comp'], {'state':['up', 'p'], 'comp': ['pm', 'endo']})
     Monomer('Erb4', ['lig', 'd', 'atp', 'state', 'gap', 'gs', 'rtk', 'cpp','comp'], {'state':['up', 'p'], 'comp': ['pm', 'endo']})
@@ -108,8 +108,8 @@ def declare_initial_conditions():
     Initial(Erb4(lig=None, atp=None, d=None, gap=None, gs=None, rtk=None,cpp=None, state='up', comp ='pm'), Erb4_0)
     Initial(EGF(rec=None, comp ='pm'), EGF_0)
     Initial(HRG(rec=None, comp ='pm'), HRG_0)
-    #Initial(HRG(rec=None, comp ='endo'), dummy_init)
-    #Initial(HRG(rec=1, comp='endo')% Erb4(lig=1, d=None,atp=None, gap=None, gs=None, rtk=None, cpp=None, state='up', comp ='endo'), dummy_init)
+    Initial(HRG(rec=None, comp ='endo'), dummy_init)
+    Initial(HRG(rec=1, comp='endo')% Erb4(lig=1, d=None,atp=None, gap=None, gs=None, rtk=None, cpp=None, state='up', comp ='endo'), dummy_init)
     Initial(ATP(erb=None, gab1=None), ATP_0)
     Initial(RTK(erb=None), RTK_0)
 #
@@ -483,21 +483,21 @@ def trans_phosphorylation():
         # 2(EGF:Erb1) -> 2(EGF:Erb1)~P
         Rule('Erb1_tp_bind_Erb1_'+ place, Erb1(lig=ANY,d=1, state='up', atp=3, comp=place)% ATP(erb=3, gab1=None) %
              Erb1(lig=ANY,d=1, state='up', atp=4)% ATP(erb=4, gab1=None) + ATP(erb=None, gab1=None) <>
-            ATP(erb=2,gab1=None) % Erb1(lig=ANY,d=1, state='up', atp=None, comp=place) % Erb1(lig=ANY,d=1, state='up', atp=2) , k122, kd122)
+            ATP(erb=2,gab1=None) % ATP(erb=3, gab1=None) % Erb1(lig=ANY,d=1, state='full_act', atp=3, comp=place) % Erb1(lig=ANY,d=1, state='full_act', atp=2) , k122, kd122)
             
-        Rule('Erb1_tp_cat_Erb1_'+ place, Erb1(lig=ANY,d=1, state='up', atp=2, comp=place) %
-             Erb1(lig=ANY,d=1, state='up', atp=None)% ATP(erb=2,gab1=None) >>
+        Rule('Erb1_tp_cat_Erb1_'+ place, Erb1(lig=ANY,d=1, state='full_act', atp=2, comp=place) %
+             Erb1(lig=ANY,d=1, state='full_act', atp=3)% ATP(erb=2,gab1=None)% ATP(erb=3,gab1=None) >>
              Erb1(lig=ANY,d=1, state='p', atp=None, comp=place) % Erb1(lig=ANY,d=1, state='p', atp=None) + ATP(erb=None,gab1=None) , kd123)
 
 
         # Erb3/4~P:Erb2~P -> HRG:Erb3/4:Erb2:ATP
 
-    for s in receptors[2:]:
+#    for s in receptors[2:]:
 #        Rule('krcat_Erb2_'+s.name, s(lig=None, d=1, state='p', gap=None, atp=None, rtk=None, comp='pm') % Erb2(state='p', d=1, comp='pm',rtk=None, cpp=None, gap=None)
 #                 >> HRG(rec=3, comp='pm') % ATP(erb=2, gab1=None) % s(lig=3, d=1, state='up', gap=None, atp=2, rtk=None, comp='pm') % Erb2(state='up', d=1, comp='pm',rtk=None, cpp=None, gap=None), k123)
 #
-        Rule('krcat_Erb2_endo'+s.name, s(lig=None, d=1, state='p', gap=None, atp=None, rtk=None, comp='endo') % Erb2(state='p', d=1, comp='endo',rtk=None, cpp=None, gap=None)
-         >> HRG(rec=3, comp='endo') % ATP(erb=2, gab1=None) % s(lig=3, d=1, state='up', gap=None, atp=2, rtk=None, comp='endo') % Erb2(state='up', d=1, comp='endo',rtk=None, cpp=None, gap=None), k123)
+#        Rule('krcat_Erb2_endo'+s.name, s(lig=None, d=1, state='p', gap=None, atp=None, rtk=None, comp='endo') % Erb2(state='p', d=1, comp='endo',rtk=None, cpp=None, gap=None)
+#         >> HRG(rec=3, comp='endo') % ATP(erb=2, gab1=None) % s(lig=3, d=1, state='up', gap=None, atp=2, rtk=None, comp='endo') % Erb2(state='up', d=1, comp='endo',rtk=None, cpp=None, gap=None), k123)
 #
 ########################################################
 def GAP_binding():
