@@ -143,13 +143,12 @@ for r in (
     # (this is an error in the model).
     v758, v759, v760, v761, v762, v763,       # PI3K..RasGDP cat
     v737, v741, v743, v739, v749, v745, v747, # ERK..Gab1#P cat
-    v744, v742, v740, v738, v750, v746, v748, # ERK_i..Gab1#P cat
     # The following should include a reaction involving c408 (4:2 dimer) but the
     # product species c455 was mislabled and the reaction was omitted.
     v628, v629, v630, v631, v632, v633,       # PIP2 phos (regular)
     v634, v635, v636, v637, v638,             # PIP2 phos (2:3 dimer extra rxns)
     v643, v644,                               # AKT phos
-    v767, v768,                               # Raf#P#Ser cat
+    v767,                                     # Raf#P#Ser cat
     ):
     reverse_reaction(r)
 # Fix "retrograde" reactions -- those whose forward direction is logically
@@ -305,16 +304,10 @@ add_box(c388, c391, c316, c240, c241, c242, c88)
 add_box(c26)
 # Ras:GTP
 add_box(c28)
-# (Ras:GTP)_i
-add_box(c69)
 # Ras_activated:GTP
 add_box(c43)
-# (Ras_activated:GTP)_i
-add_box(c71)
 # Raf:Ras:GTP
 add_box(c42)
-# (Raf:Ras:GTP)_i
-add_box(c70)
 
 # dimer#P:GAP:(Shc#P):Grb2:Sos:RasGDP, plasma membrane
 add_box(c369, c372, c306, c207, c208, c209, c36)
@@ -359,48 +352,48 @@ add_box(c53)
 # Pase3
 add_box(c60)
 # Raf#P
-add_box(c45) #, c72)
+add_box(c45)
 # Raf#P:Pase1
-add_box(c46) #, c73)
+add_box(c46)
 # MEK:Raf#P
-add_box(c48) #, c74)
+add_box(c48)
 # MEK#P
-add_box(c49) #, c75)
+add_box(c49)
 # MEK#P:Raf#P
-add_box(c50) #, c76)
+add_box(c50)
 # MEK#P#P
-add_box(c51) #, c77)
+add_box(c51)
 # MEK#P#P:Pase2
-add_box(c52) #, c78)
+add_box(c52)
 # MEK#P:Pase2
-add_box(c54) #, c79)
+add_box(c54)
 
 # ERK:MEK#P#P
-add_box(c56) #, c80)
+add_box(c56)
 # ERK#P
-add_box(c57) #, c81)
+add_box(c57)
 # ERK#P:MEK#P#P
-add_box(c58) #, c82)
+add_box(c58)
 # ERK#P#P
 # TODO: split these to make the Gab1 second phosphorylation reactions collapse?
-add_box(c59) #, c83)
+add_box(c59)
 # ERK#P#P:Pase3
-add_box(c61) #, c84)
+add_box(c61)
 # ERK#P:Pase3
-add_box(c62) #, c85)
+add_box(c62)
 # MKP_deg (Pase3 degraded)
 add_box(c520)
 
 # dimer#P:GAP:Grb2:Sos:ERK#P#P
-add_box(c95, c96)
+add_box(c95)
 # dimer#P:GAP:(Shc#P):Grb2:Sos:ERK#P#P
-add_box(c97, c98)
+add_box(c97)
 # dimer#P:GAP:Grb2:Sos#P
 add_box(c99, c100)
 # dimer#P:GAP:(Shc#P):Grb2:Sos#P
 add_box(c419, c420)
 # ERK#P#P:Sos
-add_box(c101) #, c102)
+add_box(c101)
 # Sos#P
 add_box(c103)
 
@@ -424,8 +417,6 @@ add_box(c457, c460, c454, c445, c446, c447, c486)
 add_box(c476, c479, c473, c464, c465, c466, c489)
 # dimer#P:GAP:Grb2:Gab1#P:ERK#P#P
 add_box(c477, c480, c474, c433, c435, c438, c431)
-# dimer#P:GAP:Grb2:Gab1#P:ERK#P#P_i
-#add_box(c478, c481, c475, c434, c437, c440, c432)
 # dimer#P:GAP:Grb2:Gab1#P#P
 add_box(c491, c487, c490, c430, c409, c410, c488)
 # dimer#P:GAP:Grb2:Gab1#P#P:Pase9t
@@ -479,7 +470,7 @@ add_box(c498)
 ## AKT negative feedback on Raf
 
 # AKT#P#P:Raf#P#Ser
-add_box(c472, c484)
+add_box(c472)
 # Raf#P#Ser
 add_box(c485)
 

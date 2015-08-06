@@ -114,8 +114,6 @@ qnames = dict((tag, lxml.etree.QName(ns, tag).text)
 
 label_edits = {
     'c95': '2(EGF:ErbB1)#P:GAP:Grb2:Sos:ERK#P#P',
-    'c96': 'endo|2(EGF:ErbB1)#P:GAP:Grb2:Sos:ERK#P#P',
-    'c98': 'endo|2(EGF:ErbB1)#P:GAP:(Shc#P):Grb2:Sos:ERK#P#P',
     'c100': 'endo|2(EGF:ErbB1)#P:GAP:Grb2:Sos#P',
     'c101': 'Sos:ERK#P#P',
     'c105': 'ATP',
