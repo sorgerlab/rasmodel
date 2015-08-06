@@ -153,13 +153,19 @@ for tag, i1, i2, j1, j2 in sm.get_opcodes():
                 print fmt % (sbml, '=', pysb)
 
 pysb_to_sbml = {p.index: s.name for p, s in zip(pysb_species, sbml_species)}
-pysb_to_sbml[46] = '(degraded)'
-pysb_reactions = sorted(
+sink_index = next(i for i, s in enumerate(pysb_model.species)
+                  if str(s) == '__sink()')
+pysb_to_sbml[sink_index] = '(degraded)'
+for i, r in enumerate(chen_2009.model.reactions_bidirectional):
+    r['index'] = i
+pysb_reactions = [
     ' -> '.join(sorted([
             ' + '.join(sorted(pysb_to_sbml[s] for s in r[field]))
             for field in 'reactants', 'products'
             ], key=lambda x: 999 if x == '(degraded)' else -len(x)))
-    for r in chen_2009.model.reactions_bidirectional)
+    for r in chen_2009.model.reactions_bidirectional]
+pysb_reactions, pysb_reactions_index = zip(
+    *sorted(zip(pysb_reactions, range(len(pysb_reactions)))))
 sinks = [s for s in sbml_model.species if s.name in ('c13', 'c520', 'c86')]
 sbml_reactions = sorted(
     ' -> '.join([
@@ -178,7 +184,9 @@ for tag, i1, i2, j1, j2 in sm.get_opcodes():
     if tag in ('insert', 'replace'):
         # Reactions in pysb model but not in sbml model.
         for sj in range(j1, j2):
-            ss = '%s - r%d' % (pysb_reactions[sj], sj)
+            ss = '%s - r%d' % (
+                pysb_reactions[sj],
+                pysb_reactions_index[sj])
             print fmt % ('', '', ss)
     if tag == 'equal':
         # Reactions in both.
