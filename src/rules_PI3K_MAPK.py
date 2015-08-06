@@ -75,17 +75,17 @@ def declare_initial_conditions():
     Parameter('GAP_0', 534751)
     Parameter('Grb2_0', 1264.91)    # c22 //// Grb2:SOS has non-zero initial condition (c30)
     Parameter('SOS_0', 0)           # c24 // zero ic
-    Parameter('Grb2SOS_0', 8.89e7)  # c30
+    Parameter('Grb2SOS_0', 8.8914e7)  # c30
     Parameter('SHC_0', 11e+5)       # c31
     Parameter('RAS_gdp_0', 58095.2) # c26
-    Parameter('dummy_init', 1e-10)  # to initialize RAS-GDP and RAS_active GTP
+    Parameter('dummy_init', 1e-19)  # to initialize RAS-GDP and RAS_active GTP
     
     Parameter('cPP_0', 4498.73)     # c12
 
     Parameter('Gab1_0',94868.3)     # c426
     Parameter('Shp2_0', 1e+6)       # c463
     Parameter('Pase9t_0', 0)        # c521 // zero ic
-    Parameter('PI3K_0', 3.55e+7)    # c287
+    Parameter('PI3K_0', 3.55656e+7)    # c287
     Parameter('PIP2_0', 393639)     # c444
     Parameter('PIP3_0', 0)          # c106 // zero ic
     Parameter('AKT_0', 905000)      # c107
@@ -108,6 +108,8 @@ def declare_initial_conditions():
     Initial(Erb4(lig=None, atp=None, d=None, gap=None, gs=None, rtk=None,cpp=None, state='up', comp ='pm'), Erb4_0)
     Initial(EGF(rec=None, comp ='pm'), EGF_0)
     Initial(HRG(rec=None, comp ='pm'), HRG_0)
+    #Initial(HRG(rec=None, comp ='endo'), dummy_init)
+    #Initial(HRG(rec=1, comp='endo')% Erb4(lig=1, d=None,atp=None, gap=None, gs=None, rtk=None, cpp=None, state='up', comp ='endo'), dummy_init)
     Initial(ATP(erb=None, gab1=None), ATP_0)
     Initial(RTK(erb=None), RTK_0)
 #
@@ -129,7 +131,6 @@ def declare_initial_conditions():
     Initial(PI3K(gab1=None, pip2=None, ras=None), PI3K_0)
     Initial(PIP2(pi3k=None), PIP2_0)
     Initial(PIP3(akt=None, pdk=None, bnd=None), PIP3_0)
-    #  Initial(HRG(rec=None, comp ='endo'), dummy_init)
     Initial(AKT(pip=None, pase=None,raf=None, state='up'), AKT_0)
     Initial(PDK1(pip=None), PDK1_0)
     Initial(Pase4(akt=None), Pase4_0)
@@ -147,12 +148,13 @@ def declare_initial_conditions():
     Initial(Grb2(shc=None, erb=None, sos=1, gab1=None) % SOS(grb=1, ras=None, erk=None,state='up'), Grb2SOS_0)
 
 
+
 ########################################################
 def ErbB1_priming():
     " v828 in sbml model"
     " Unlike other Erb monomers, ErbB1 can participate in reactions only after binding with ATP "
     
-    Parameter('k122_priming', 1.87e-8)  # k122
+    Parameter('k122_priming', 1.8704e-8)  # k122
     Parameter('kd122_priming', 1)        # kd122
     
     alias_model_components()
@@ -167,8 +169,8 @@ def transport():
     shuttle between plasma membrane and endosome "
     " *** Need to check for other transport reactions "
     
-    Parameter('k15', 0)              # k15
-    Parameter('kd15', 1.667e-8)       # kd15
+    Parameter('k15', 1.667e-8)              # k15
+    Parameter('kd15', 0)       # kd15
     Parameter('k7', 5e-05)                      # k7
     Parameter('kd7', 1.38e-4)                   # kd7
     Parameter('k6', 0.013)                      # k6; k6b = 0
@@ -178,7 +180,7 @@ def transport():
     
     alias_model_components()
     
-    # Erb1:ATP v164
+    # v164 Erb1:ATP v164
     Rule('Transport_Erb1_ATP', Erb1(d=None, lig=None, atp=ANY, state='up', comp='pm') <>
          Erb1(d=None, lig=None, atp=ANY, state='up', comp='endo'), k6, kd6)
     
@@ -223,15 +225,20 @@ def transport():
         Erb2(d=1, atp=None, rtk=None,state='p', gap=None, comp='endo') % erb(d=1, atp=None, rtk=None, state='p', gap=None, comp='endo'),
         k7, kd7)
 
-    Rule('transport_cPP', cPP(erb=None, comp='pm') <> cPP(erb=None, comp='endo'), k15, kd15)
+    " v211  cPP(endo) <-> cPP(pm) , c9 <-> c12 "
+    Rule('transport_cPP', cPP(erb=None, comp='endo') <> cPP(erb=None, comp='pm'), k15, kd15)
 
     " v180 "
     Rule('transport_Erb24_shc', Erb2(d=1, rtk=None, atp=None, state='p', gap=ANY, comp='pm') % Erb4(d=1, rtk=None, atp=None, state='p', gap=None, comp='pm')
-     % SHC(grb=None, state='up') <> Erb2(d=1, rtk=None, atp=None, state='p', gap=ANY, comp='endo') % Erb4(d=1, rtk=None, atp=None, state='p', gap=None, comp='endo') % SHC(grb=None, state='up'), k7, kd7)
+     % SHC(grb=None, state='up') <> Erb2(d=1, rtk=None, atp=None, state='p', gap=ANY, comp='endo') % Erb4(d=1, rtk=None, atp=None, state='p', gap=None, comp='endo') % SHC(grb=None, state='up'), k6, kd6)
+    "v184"
+    Rule('transport_Erb24_shcp', Erb2(d=1, rtk=None, atp=None, state='p', gap=ANY, comp='pm') % Erb4(d=1, rtk=None, atp=None, state='p', gap=None, comp='pm')
+     % SHC(grb=None, state='p') <> Erb2(d=1, rtk=None, atp=None, state='p', gap=ANY, comp='endo') % Erb4(d=1, rtk=None, atp=None, state='p', gap=None, comp='endo') % SHC(grb=None, state='p'), k6b, kd6b)
 
     " v179, 181"
     Rule('transport_Erb23_shc', Erb2(d=1, rtk=None, atp=None, state='p', gap=ANY, comp='pm') % Erb3(d=1, rtk=None, atp=None, state='p', gap=None, comp='pm')
-     % SHC(grb=None) <> Erb2(d=1, rtk=None, atp=None, state='p', gap=ANY, comp='endo') % Erb3(d=1, rtk=None, atp=None, state='p', gap=None, comp='endo') % SHC(grb=None), k7, kd7)
+     % SHC(grb=None) <> Erb2(d=1, rtk=None, atp=None, state='p', gap=ANY, comp='endo') % Erb3(d=1, rtk=None, atp=None, state='p', gap=None, comp='endo') % SHC(grb=None), k6b, kd6b)
+
 
     " v191-193 "
     Rule('transport_Erb2_gap', Erb2(d=1, rtk=None, atp=None, state='p', gap=ANY, gs=None, comp='pm') % Erb2(d=1, rtk=None, atp=None, state='p', gap=None, comp='pm')
@@ -248,23 +255,32 @@ def ligand_binding():
     
     Parameter('k1', 1e+7)            # k1
     Parameter('k119', 1e+7)            # k119
-    Parameter('kd1', 0.033)      # kd1
+    Parameter('kd1', 0.0033)      # kd1
     Parameter('kd119', 0.0103115)  # kd119
+    Parameter('k10b',0.05426)
+    Parameter('kd10',0.011)
         
     alias_model_components()
     
-    for place in comprtmnts:
-        # ErbB1:ATP + EGF -> EGF:Erb1:ATP
-        Rule('Erb1_EGF_'+place, Erb1(lig=None,d=None,atp=ANY, state='up', comp=place) + EGF(rec=None, comp=place) <>
-             Erb1(lig=1,d=None,atp=ANY, state='up', comp=place) % EGF(rec=1, comp=place), k1, kd1)
+    
+    # ErbB1:ATP + EGF -> EGF:Erb1:ATP
+    Rule('Erb1_EGF_pm', Erb1(lig=None,d=None,atp=ANY, state='up', comp='pm') + EGF(rec=None, comp='pm') <>
+             Erb1(lig=1,d=None,atp=ANY, state='up', comp='pm') % EGF(rec=1, comp='pm'), k1, kd1)
+             
+    Rule('Erb1_EGF_endo', Erb1(lig=None,d=None,atp=ANY, state='up', comp='endo') + EGF(rec=None, comp='endo') <>
+                  Erb1(lig=1,d=None,atp=ANY, state='up', comp='endo') % EGF(rec=1, comp='endo'), k10b, kd10)
         
-        # ErbB3 + HRG -> ErbB3:HRG
-        Rule('Erb3_HRG' + place, Erb3(lig=None,d=None,atp=None,state='up', comp=place) + HRG(rec=None, comp=place) <>
-             Erb3(lig=1,d=None,atp=None, state='up', comp=place) % HRG(rec=1, comp=place), k119, kd119)
+    # ErbB3 + HRG -> ErbB3:HRG (plasma membrane)
+    Rule('Erb3_HRG_pm', Erb3(lig=None,d=None,atp=None,state='up', comp='pm') + HRG(rec=None, comp='pm') <>
+             Erb3(lig=1,d=None,atp=None, state='up', comp='pm') % HRG(rec=1, comp='pm'), k119, kd119)
+    
+    # ErbB3 + HRG -> ErbB3:HRG (endosome)
+    Rule('Erb3_HRG_endo', Erb3(lig=None,d=None,atp=None,state='up', comp='endo') + HRG(rec=None, comp='endo') <>
+         Erb3(lig=1,d=None,atp=None, state='up', comp='endo') % HRG(rec=1, comp='endo'), k10b, kd10)
         
-        # ErbB4 + HRG -> ErbB4:HRG
-        Rule('Erb4_HRG'+place, Erb4(lig=None,d=None,atp=None, state='up', comp=place) + HRG(rec=None, comp=place) <>
-             Erb4(lig=1,d=None,atp=None, state='up', comp=place) % HRG(rec=1, comp=place), k119, kd119)
+    # ErbB4 + HRG -> ErbB4:HRG (this reaction takes place only in pm compartment as per Chen 2009)
+    Rule('Erb4_HRG_pm', Erb4(lig=None,d=None,atp=None, state='up', comp='pm') + HRG(rec=None, comp='pm') <>
+             Erb4(lig=1,d=None,atp=None, state='up', comp='pm') % HRG(rec=1, comp='pm'), k119, kd119)
 
 ########################################################
 def receptor_dimerization():
@@ -302,10 +318,12 @@ def receptor_dimerization():
 #             ATP(erb=None,gab1=None) , k2, kd2)
 
         # EGf:Erb1:ATP + EGF:Erb1:ATP <-> 2(EGF:Erb1:ATP)
+        " Note that in this reaction, we deliberatley allow one ATP to be released, so that the complex can consequently bind a third ATP\
+        during the transphoshorylation step (see v24 in sbml model) "
         Rule(place+'_bind_egf_E1_atp_egf_erb1', ATP(erb=2,gab1=None) % Erb1(lig=ANY,atp=2,d=None,state='up', comp=place) +
                   ATP(erb=3,gab1=None) % Erb1(lig=ANY, d=None,atp=3,state='up', comp=place) <>
-                  ATP(erb=2,gab1=None) % Erb1(lig=ANY, atp=2, d=1,state='up', comp=place) % Erb1(lig=ANY, d=1, atp=None,state='up', comp=place) +
-                  ATP(erb=None,gab1=None) , k2, kd2)
+                  ATP(erb=2,gab1=None) % Erb1(lig=ANY, atp=2, d=1,state='up', comp=place) % Erb1(lig=ANY, d=1, atp=3,state='up', comp=place) %
+                  ATP(erb=3,gab1=None) , k2, kd2)
     
         # HRG:Erb(3/4) + Erb2 <-> Erb2:Erb(3/4)
         bind_table([[   Erb2(atp=None, state='up', comp=place)],
@@ -360,7 +378,7 @@ def lateral_signaling():
     Parameter('k103_ls', 8.3e-9)    # k103
     Parameter('kd103_ls', 0.016)     # kd103
     
-    Parameter('k122_ls', 1.87e-8)           # k122
+    Parameter('k122_ls', 1.8704e-8)           # k122
     Parameter('kd122_ls', 1)                # kd122
     Parameter('kd123_ls', 0.177828)    # kd123
     
@@ -404,7 +422,7 @@ def trans_phosphorylation():
     " Lig:dimer + ATP <-> Lig:dimer:ATP -> dimer~P + ATP *** Note that ligand dissapears in the ES -> E + P step "
     " check v29 since product end sup in the endosome"
     
-    Parameter('k122', 1.87e-8)    # k122
+    Parameter('k122', 1.8704e-8)    # k122
     Parameter('kd122', 1)         # kd122
     Parameter('kd123', 0.177828)  # kd123
     Parameter('k123', 0)          # k123
@@ -464,42 +482,55 @@ def trans_phosphorylation():
 
         # 2(EGF:Erb1) -> 2(EGF:Erb1)~P
         Rule('Erb1_tp_bind_Erb1_'+ place, Erb1(lig=ANY,d=1, state='up', atp=3, comp=place)% ATP(erb=3, gab1=None) %
-             Erb1(lig=ANY,d=1, state='up', atp=None) + ATP(erb=None, gab1=None) <>
-             ATP(erb=3, gab1=None) % ATP(erb=2,gab1=None) % Erb1(lig=ANY,d=1, state='up', atp=3, comp=place) % Erb1(lig=ANY,d=1, state='up', atp=2) , k122, kd122)
+             Erb1(lig=ANY,d=1, state='up', atp=4)% ATP(erb=4, gab1=None) + ATP(erb=None, gab1=None) <>
+            ATP(erb=2,gab1=None) % Erb1(lig=ANY,d=1, state='up', atp=None, comp=place) % Erb1(lig=ANY,d=1, state='up', atp=2) , k122, kd122)
             
         Rule('Erb1_tp_cat_Erb1_'+ place, Erb1(lig=ANY,d=1, state='up', atp=2, comp=place) %
-             Erb1(lig=ANY,d=1, state='up', atp=3)% ATP(erb=2,gab1=None)% ATP(erb=3, gab1=None) >>
+             Erb1(lig=ANY,d=1, state='up', atp=None)% ATP(erb=2,gab1=None) >>
              Erb1(lig=ANY,d=1, state='p', atp=None, comp=place) % Erb1(lig=ANY,d=1, state='p', atp=None) + ATP(erb=None,gab1=None) , kd123)
 
 
         # Erb3/4~P:Erb2~P -> HRG:Erb3/4:Erb2:ATP
 
-        for s in receptors[2:]:
-            Rule(place+'krcat_Erb2_'+s.name, s(lig=None, d=1, state='p', gap=None, atp=None, rtk=None, comp=place) % Erb2(state='p', d=1, comp=place,rtk=None, cpp=None, gap=None)
-                 >> HRG(rec=3, comp=place) % ATP(erb=2, gab1=None) % s(lig=3, d=1, state='up', gap=None, atp=2, rtk=None, comp=place) % Erb2(state='up', d=1, comp=place,rtk=None, cpp=None, gap=None), k123)
-
+    for s in receptors[2:]:
+#        Rule('krcat_Erb2_'+s.name, s(lig=None, d=1, state='p', gap=None, atp=None, rtk=None, comp='pm') % Erb2(state='p', d=1, comp='pm',rtk=None, cpp=None, gap=None)
+#                 >> HRG(rec=3, comp='pm') % ATP(erb=2, gab1=None) % s(lig=3, d=1, state='up', gap=None, atp=2, rtk=None, comp='pm') % Erb2(state='up', d=1, comp='pm',rtk=None, cpp=None, gap=None), k123)
+#
+        Rule('krcat_Erb2_endo'+s.name, s(lig=None, d=1, state='p', gap=None, atp=None, rtk=None, comp='endo') % Erb2(state='p', d=1, comp='endo',rtk=None, cpp=None, gap=None)
+         >> HRG(rec=3, comp='endo') % ATP(erb=2, gab1=None) % s(lig=3, d=1, state='up', gap=None, atp=2, rtk=None, comp='endo') % Erb2(state='up', d=1, comp='endo',rtk=None, cpp=None, gap=None), k123)
+#
 ########################################################
 def GAP_binding():
     
     "v194-v207"
     " In the Chen 2009 model, each dimer binds to a single unit of downstream substrates like GAP, Grb2, SHC. To reproduce this \
         reaction, GAP (and Grb2, SHc) bind only the Erb1 receptor in all its dimers or Erb2 in its dimers. In Erb1:Erb2 dimers, GAP binds Erb1 "
+    " Erb1:Erb[3-4] dimers in both compartments bind GAP with rate constants k8b and k8bd "
+    " Erb1:Erb2 dimer in pm comparmtment binds with rate constants k8b and k8bd  "
     
-    Parameter('k8', 5.9e-7)   # k8   In a subset, the rate constants are 8b and 8db, no pattern observed
-    Parameter('kd8', 0.2)      # kd8
+    Parameter('k8', 5.9e-7)
+    Parameter('kd8', 0.2)
+    Parameter('k8b',9.3e-6)
+    Parameter('kd8b', 0.02)
     
     alias_model_components()
     
     for place in comprtmnts:
-    
-        # Erb1:Erb1/2/3/4 + GAP <->
-        for erb in receptors:
+        # Erb1:Erb1[1-2] + GAP <->
+        for erb in receptors[:2]:
             Rule(place+'_gap_bind_erb1_'+erb.name, Erb1(state='p', d=1, gap=None,gs=None, rtk=None, comp=place) %
                  erb(state='p',d=1, gap=None,gs=None, rtk=None) + GAP(rec=None) <>
                  Erb1(state='p', d=1, gap=2,gs=None, rtk=None, comp=place) % erb(state='p',d=1, gap=None,gs=None, rtk=None) %
                  GAP(rec=2), k8, kd8)
     
-        # Erb2:Erb2/3/4 + GAP <->
+        # Erb1:Erb1[3-4] + GAP <->
+        for erb in receptors[2:]:
+            Rule(place+'_gap_bind_erb1_'+erb.name, Erb1(state='p', d=1, gap=None,gs=None, rtk=None, comp=place) %
+                 erb(state='p',d=1, gap=None,gs=None, rtk=None) + GAP(rec=None) <>
+                 Erb1(state='p', d=1, gap=2,gs=None, rtk=None, comp=place) % erb(state='p',d=1, gap=None,gs=None, rtk=None) %
+                 GAP(rec=2), k8b, kd8b)
+    
+        # Erb2:Erb[2-4] + GAP <->
         for erb in receptors[1:]:
             Rule(place+'_gap_bind_erb2_'+erb.name, Erb2(state='p', d=1, gap=None,gs=None, rtk=None, comp=place) %
                  erb(state='p',d=1,gap=None,gs=None, rtk=None) + GAP(rec=None) <>
@@ -512,6 +543,7 @@ def Grb2_binding_v2():
     
     Parameter('k16', 1.67e-05)     # k16
     Parameter('kd24', 0.55)         # kd24 = 0.55 or kd63 = 0.275; kd63 appears in 6 of the 29 backward reactions, no apparent pattern observed :(
+    Parameter('kd63', 0.275)
     Parameter('k17',  1.67e-05)         # k17
     Parameter('kd17', 0.06)              # kd17
     Parameter('k34', 7.5e-6)
@@ -540,22 +572,33 @@ def Grb2_binding_v2():
          
 
     for place in comprtmnts:
+        # Grb2 binds Erb1:Erb1 receptor homodimer dimers with kd63 as the backward rate constant
+        Rule(place+'_Grb2_bind_erb1', Erb1(gap=ANY,gs=None,d=2, cpp=None, comp=place) % Erb1(d=2,gs=None) + Grb2(erb=None,shc=None,gab1=None, sos=None) <>
+             Grb2(erb=1,shc=None,gab1=None, sos=None) % Erb1(gap=ANY,gs=1,d=2, cpp=None, comp=place) % Erb1(d=2,gs=None),k16, kd63)
         
-        # Grb2 binds Erb1:Erb(1/2/3/4) receptor dimers
-        for erb in receptors:
-            # Bind
+        # Grb2 binds Erb1:Erb[2-4] receptor dimers
+        for erb in receptors[1:]:
             Rule(place+'_Grb2_bind_erb1_'+erb.name, Erb1(gap=ANY,gs=None,d=2, cpp=None, comp=place) % erb(d=2,gs=None) + Grb2(erb=None,shc=None,gab1=None, sos=None) <>
                  Grb2(erb=1,shc=None,gab1=None, sos=None) % Erb1(gap=ANY,gs=1,d=2, cpp=None, comp=place) % erb(d=2,gs=None),k16, kd24)
-                
+
+        # Grb2:SOS binds Erb1:Erb[1-4] receptor dimers
+        for erb in receptors:
             Rule(place+'_Grb2sos_bind_erb1_'+erb.name, Erb1(gap=ANY,gs=None,d=2,  cpp=None, comp=place) % erb(d=2,gs=None) + SOS(grb=3, ras=None, erk=None,state='up') % Grb2(erb=None,shc=None,gab1=None, sos=3) <>
                      SOS(grb=3, ras=None,erk=None, state='up') % Grb2(erb=1,shc=None,gab1=None, sos=3) % Erb1(gap=ANY,gs=1,d=2, cpp=None, comp=place) % erb(d=2,gs=None),k34, kd34)
+        
+        # Grb2 binds Erb2:Erb2 receptor dimers with kd63 as the backward rate constant
+        Rule(place+'_Grb2_bind_erb2_', Erb2(gap=ANY,gs=None,d=2,  cpp=None, comp=place) % Erb2(d=2,gs=None) +
+                 Grb2(erb=None,shc=None,gab1=None, sos =None) <>
+                 Grb2(erb=1,shc=None,gab1=None, sos=None) % Erb2(gap=ANY,gs=1,d=2,  cpp=None, comp=place) % Erb2(d=2,gs=None),k16, kd63)
     
-        # Grb2 binds Erb2:Erb2/3/4 receptor dimers
-        for erb in receptors[1:]:
+        # Grb2 binds Erb2:Erb[3-4] receptor dimers
+        for erb in receptors[2:]:
             Rule(place+'_Grb2_bind_erb2_'+ erb.name, Erb2(gap=ANY,gs=None,d=2,  cpp=None, comp=place) % erb(d=2,gs=None) +
                  Grb2(erb=None,shc=None,gab1=None, sos =None) <>
                  Grb2(erb=1,shc=None,gab1=None, sos=None) % Erb2(gap=ANY,gs=1,d=2,  cpp=None, comp=place) % erb(d=2,gs=None),k16, kd24)
-                
+        
+        # Grb2:SOS binds Erb2:Erb[2-4] receptor dimers
+        for erb in receptors[1:]:
             Rule(place+'_Grb2sos_bind_erb2_'+ erb.name, Erb2(gap=ANY,gs=None,d=2,  cpp=None, comp=place) % erb(d=2,gs=None) +
              SOS(grb=3, ras=None,erk=None, state='up') %Grb2(erb=None,shc=None,gab1=None, sos=3) <>
              SOS(grb=3, ras=None, erk=None, state='up') % Grb2(erb=1,shc=None,gab1=None, sos=3) % Erb2(gap=ANY,gs=1,d=2,  cpp=None, comp=place) % erb(d=2,gs=None),k34, kd34)
@@ -649,7 +692,6 @@ def SHC_binding_v2():
         # SHC <-> SHC~P
         Rule(place+'_shc_phos', SHC(erb=ANY, grb=None, state='up') <> SHC(erb=ANY, grb=None, state='p'), k23, kd23)
 
-        # SHC <-> SHC~P
 
 ########################################################
 def secondary_Grb2_binding():
@@ -657,7 +699,7 @@ def secondary_Grb2_binding():
     " Grb2 binds SHC~P, and dissocaties under all conditions except when RAS is bound to SOS "
     
     Parameter('k16_scndry',  1.67e-05)     # k16
-    Parameter('kd24_scndry',  0.55)         # kd24 = 0.55 or kd63 = 0.275; kd63 appears in 6 of the 29 backward reactions, no apparent pattern observed :(
+    Parameter('kd24_scndry',  0.55)
     Parameter('k41',  5e-05)         # k17
     Parameter('kd41', 0.0429)
     Parameter('k33',  5e-05)         # k17
@@ -667,9 +709,9 @@ def secondary_Grb2_binding():
     alias_model_components()
   
     
-#    # Grb2 binds SHC
-#    Rule('shc_grb_binding', SHC(erb=ANY, grb=None, state='p') + Grb2(erb=None, shc=None,gab1=None) >>
-#         SHC(erb=ANY, grb=1, state='p') % Grb2(erb=None, shc=1,gab1=None), kf_bind_shc_grb2)
+#    # free Grb2 binds free SHC~P
+    Rule('shc_grb_binding', SHC(erb=None, grb=None, state='p') + Grb2(erb=None, sos=None, shc=None,gab1=None) <>
+         SHC(erb=None, grb=1, state='p') % Grb2(erb=None, sos=None, shc=1,gab1=None), k16_scndry, kd24_scndry)
 
 
     # Shc~P + Grb2:SOS <-> Shc~P:Grn2:SOS
@@ -685,13 +727,15 @@ def secondary_Grb2_binding():
                  
             Rule(place+'_shc_grbsos_unbinding_'+erb.name, erb(cpp=None,gs=3,comp=place) % SHC(grb=1, erb=3, state='p') %
                  Grb2(erb=None,sos=2, shc=1, gab1=None) % SOS(grb=2, ras=None, erk=None, state='up') <> erb(cpp=None,gs=3,comp=place) %
-                 SHC(grb=None, erb=3, state='p') + Grb2(erb=None,sos=2, shc=None,gab1=None) % SOS(grb=2, erk=None, ras=None, state='up'), k41, kd41)
+                 SHC(grb=None, erb=3, state='p') + Grb2(erb=None,sos=2, shc=None,gab1=None) % SOS(grb=2, erk=None, ras=None, state='up'), kd41, k41)
 
 ########################################################
 def RAS_binds_sos():
     
     "4 typical reactions:(1) dimer + RAS_GDP <-> dimer:RAS_GDP (2) dimer + RAS_GTP <-> dimer:RAS_GDP \
     (3) dimer + RAS_GDP <-> dimer:RAS_GTP (4) dimer + RAS_active_GTP <-> dimer:RAS_GTP "
+    " The following reactions are missing from the above pattern "
+    "endosomal dimers + RASGTP/RAS_actvie GTP <> "
     
     Parameter('k18',2.e-5)    # k18
     Parameter('kd18', 1.3)     # kd18
@@ -714,17 +758,19 @@ def RAS_binds_sos():
                  RAS(sos=None, pi3k=None, raf=None, state='gdp') <>  erb(cpp=None, gap=ANY, comp=place) % GAP() % SOS(grb=ANY,erk=None, ras=1, state='up') %
                  RAS(sos=1, pi3k=None, raf=None, state='gdp'), k18, kd18)
 
-            Rule(place+'_Ras_gtp_gdp_'+erb.name, erb(cpp=None, gap=ANY, comp=place) % GAP() % SOS(grb=ANY,erk=None, ras=None, state='up') +
-                 RAS(sos=None, pi3k=None, raf=None, state='gtp') <> erb(cpp=None, gap=ANY, comp=place) % GAP() % SOS(grb=ANY, erk=None, ras=1, state='up') %
-                 RAS(sos=1, pi3k=None,raf=None,state='gdp'), k19, kd19)
 
             Rule(place+'_Ras_gdp_gtp_'+erb.name, erb(cpp=None, gap=ANY, comp=place) % GAP() % SOS(grb=ANY,erk=None, ras=None, state='up') +
                  RAS(sos=None, pi3k=None, raf=None, state='gdp') <> erb(cpp=None, gap=ANY, comp=place) % GAP() % SOS(grb=ANY,erk=None, ras=1, state='up') %
                  RAS(sos=1, pi3k=None, raf=None, state='gtp'), k21, kd21)
 
-            Rule(place+'_Ras_agtp_gtp'+erb.name, erb(cpp=None, gap=ANY,comp=place) % GAP() % SOS(grb=ANY,erk=None, ras=None, state='up') +
-                 RAS(sos=None, pi3k=None, raf=None,state='active_gtp') <> erb(cpp=None, gap=ANY, comp=place) % GAP() % SOS(grb=ANY,erk=None, ras=1, state='up') %
+    for erb in receptors[:2]:
+        Rule('Ras_agtp_gtp'+erb.name, erb(cpp=None, gap=ANY,comp='pm') % GAP() % SOS(grb=ANY,erk=None, ras=None, state='up') +
+                 RAS(sos=None, pi3k=None, raf=None,state='active_gtp') <> erb(cpp=None, gap=ANY, comp='pm') % GAP() % SOS(grb=ANY,erk=None, ras=1, state='up') %
                  RAS(sos=1, pi3k=None, raf=None,state='gtp'), k20, kd20)
+
+        Rule('Ras_gtp_gdp_'+erb.name, erb(cpp=None, gap=ANY, comp='pm') % GAP() % SOS(grb=ANY,erk=None, ras=None, state='up') +
+                RAS(sos=None, pi3k=None, raf=None, state='gtp') <> erb(cpp=None, gap=ANY, comp='pm') % GAP() % SOS(grb=ANY, erk=None, ras=1, state='up') %
+                RAS(sos=1, pi3k=None,raf=None,state='gdp'), k19, kd19)
 
 ########################################################
 def RTK_phos():
@@ -733,23 +779,36 @@ def RTK_phos():
     dephoshphorylated dimer product "
     "Reaction occurs ony for receptor dimers in the endo compartment "
     " In the case of Erb1 type dimers, EGF returns in the unphosphorylated product"
+    " Also in ERb1 homodimers, ATP returns to the fold as well :) "
 
-    Parameter('k94', 5e-05)     # k94  a subset have rc k94b and kd94b ..the pattern is Erb1/3 and Erb1/4 dimers
+    Parameter('k94', 5e-05)     # k94  a subset have rc k94b.the pattern is Erb1/3 and Erb1/4 dimers
+    Parameter('k94b', 5e-05)    # Unnecesary parameter
     Parameter('kd94', 0.01)      # kd94
     Parameter('kd95', 33)           # kd95
 
     alias_model_components()
 
     # check if catalyze can be used for these reactions
-    for erb in receptors:
+    for erb in receptors[:2]:
         Rule('bind_RTK_erb1_'+erb.name, RTK(erb=None) + Erb1(d=1, state='p', rtk=None, gap=None, comp='endo')
              % erb(d=1, state='p', gap=None,rtk=None, comp='endo') <> RTK(erb=2)% Erb1(d=1, state='p', rtk=2, gap=None, comp='endo') %
              erb(d=1, gap=None, state='p',rtk=None, comp='endo'), k94, kd94)
-             
+
+    for erb in receptors[2:]:
+        Rule('bind_RTK_erb1_'+erb.name, RTK(erb=None) + Erb1(d=1, state='p', rtk=None, gap=None, comp='endo')
+                  % erb(d=1, state='p', gap=None,rtk=None, comp='endo') <> RTK(erb=2)% Erb1(d=1, state='p', rtk=2, gap=None, comp='endo') %
+                  erb(d=1, gap=None, state='p',rtk=None, comp='endo'), k94b, kd94)
+    
+    for erb in receptors:
         Rule('kcat_RTK_erb1_'+erb.name, RTK(erb=2) % Erb1(lig=None, d=1, state='p', rtk=2, gap=None, comp='endo') %
              erb(d=1, gap=None, state='p',rtk=None, comp='endo') >> RTK(erb=None) + EGF(rec=3, comp='endo') %
              Erb1(lig=3,d=1, state='up', rtk=None, gap=None, comp='endo') % erb(d=1, state='up', gap=None,rtk=None, comp='endo'), kd95)
-             
+    
+    # Special rule for the return of ATP in EGF
+    Rule('kcat_RTK_erb1_erb1', RTK(erb=2) % Erb1(lig=ANY, d=1, state='p', rtk=2, gap=None, atp=None, comp='endo') %
+         Erb1(lig=ANY, d=1, gap=None, state='p',rtk=None, atp=None, comp='endo')>> RTK(erb=None) +
+         ATP(erb=2, gab1=None) % ATP(erb=3, gab1=None) % Erb1(lig=ANY,d=1, state='up', rtk=None, atp=2, gap=None, comp='endo') % Erb1(lig=ANY, d=1, state='up', atp=3, gap=None,rtk=None, comp='endo'), kd95)
+#
     for erb in receptors[1:]:
         Rule('bind_RTK_erb2_'+erb.name, RTK(erb=None) + Erb2(d=1, state='p', rtk=None, gap=None, comp='endo') %
              erb(d=1, state='p',gap=None,rtk=None, comp='endo') <> RTK(erb=2)% Erb2(d=1, state='p', rtk=2, gap=None, comp='endo') %
@@ -866,7 +925,7 @@ def bind_Gab1():
 
     Parameter('k105', 6.67e-05)         # k105
     Parameter('kd105', 0.1)              # kd105
-    Parameter('k122_gab', 1.87e-8)      # k122
+    Parameter('k122_gab', 1.8704e-8)      # k122
     Parameter('kd122_gab', 1.0)          # kd122
     Parameter('kd123_gab', 0.177828)          # kd123
 
@@ -928,7 +987,9 @@ def bind_PI3K():
     " PI3K binds scaffolding protein Gab1~P "
 
     Parameter('k66', 1.5e-5)   # k66  # K67 and kd67 also used for a subset of rxns, no pattern observed :(
-    Parameter('kd66', 0.2)      # kd66
+    Parameter('kd66', 0.2)
+    Parameter('k67', 5e-5)   # k66  # K67 and kd67 also used for a subset of rxns, no pattern observed :(
+    Parameter('kd67', 0.02)
 
     alias_model_components()
 
@@ -988,8 +1049,10 @@ def PIP2_PIP3():
 
 ########################################################
 def PI3K_binds_RAS():
-    "v751-764 , check v764 "
+    "v751-764 "
+    " ==========check v764 =============== "
     " Ras GDP/GTP + dimer:PI3K <> PI3K:Ras_GDP "
+    " v764 is incorrect since the substrate is Shp2 boud instead of PI3K"
 
     Parameter('k112',0.0047)    # k112
     Parameter('kd112', 0.1) # kd112
@@ -1001,8 +1064,22 @@ def PI3K_binds_RAS():
     Rule('pi3k_gdp_gdp', PI3K(gab1=ANY, pip2=None, ras=None) + RAS(sos=None,raf=None, pi3k=None, state='gdp') <>
          PI3K(gab1=ANY, ras=1, pip2=None) % RAS(sos=None,pi3k=1, raf=None, state='gdp'), k112, kd112)
 
-    Rule('pi3k_gtp_gdp', PI3K(gab1=ANY, pip2=None, ras=None) + RAS(sos=None,pi3k=None, raf=None, state='gtp') <>
-         PI3K(gab1=ANY, ras=1, pip2=None) % RAS(sos=None,pi3k=1, raf=None, state='gdp'), k113, kd113)
+    " To account for the incorrect reaction v764, we need to specify receptor subtype in the rule below "
+    for erb in receptors:
+        Rule('Erb1_'+erb.name+'_pi3k_gtp_gdp', Erb1()%erb()% PI3K(gab1=ANY, pip2=None, ras=None) +
+             RAS(sos=None,pi3k=None, raf=None, state='gtp') <>
+         Erb1()%erb()% PI3K(gab1=ANY, ras=1, pip2=None) % RAS(sos=None,pi3k=1, raf=None, state='gdp'), k113, kd113)
+    
+    for erb in receptors[1:3]:
+        Rule('Erb2_'+erb.name+'_pi3k_gtp_gdp', Erb2()%erb()% PI3K(gab1=ANY, pip2=None, ras=None) +
+             RAS(sos=None,pi3k=None, raf=None, state='gtp') <>
+             Erb2()%erb()% PI3K(gab1=ANY, ras=1, pip2=None) % RAS(sos=None,pi3k=1, raf=None, state='gdp'), k113, kd113)
+
+    # Since Shpt does not have an additional bidning site for RAS, I use a hack of bind RAS with GRb2's empty SOS bidning site "
+    Rule('magic_v764', Erb4()%Erb2()% Grb2(sos=None) % Gab1(state='p', pi3k=None, shp2=3) % Shp2(gab1=3) +
+         RAS(sos=None,raf=None, pi3k=None, state='gtp') <>
+         Erb4()%Erb2()% Grb2(sos=None)% Gab1(state='p',pi3k=2, shp2=None)% PI3K(gab1=2, ras=1, pip2=None) %
+         RAS(sos=None,raf=None, pi3k=1, state='gdp'), k113, kd113)
 
 ########################################################
 def AKT_rxns():
@@ -1149,15 +1226,17 @@ def MAPK_pathway():
     
     catalyze_state(Pase3(), 'erk', ERK(mek=None,sos=None, gab1=None), 'pase3', 'state', 'pp', 'p', (k56, kd56, kd57))
 
-    # ERK#PP phosphorylates SOS in ErbB1 homodimers
-    Rule('sos_binds_erk', ERK(mek=None, gab1=None, pase3=None, state='pp', sos=None) +  Erb1(cpp=None, rtk=None) % Erb1(cpp=None, rtk=None) % SOS(ras=None, erk=None, state='up') <>
-        ERK(mek=None, gab1=None, pase3=None, state='pp', sos=1) %  Erb1(cpp=None, rtk=None) % Erb1(cpp=None,rtk=None) % SOS(ras=None, erk=1, state='up'), k64, kd64)
+    # ERK#PP phosphorylates SOS in ErbB1 homodimers "only 
+    Rule('sos_binds_erk', ERK(mek=None, gab1=None, pase3=None, state='pp', sos=None) +  Erb1(cpp=None, rtk=None, comp='pm') % Erb1(cpp=None, rtk=None, comp='pm') % SOS(ras=None, erk=None, state='up') <>
+        ERK(mek=None, gab1=None, pase3=None, state='pp', sos=1) %  Erb1(cpp=None, rtk=None, comp='pm') % Erb1(cpp=None,rtk=None, comp='pm') % SOS(ras=None, erk=1, state='up'), k64, kd64)
          
     # ERK#PP phosphorylaes free SOS
     Rule('freeSos_binds_erk', ERK(mek=None, gab1=None, pase3=None, state='pp', sos=None) + SOS(ras=None, erk=None, grb=None, state='up') <>
         ERK(mek=None, gab1=None, pase3=None, state='pp', sos=1) % SOS(ras=None, erk=1, grb=None, state='up'), k64, kd64)
+        
+    Rule('free_Sos_p_catalysis', ERK(sos=1, state='pp') % SOS(erk=1,state='up',grb=None) >> ERK(sos=None, state='pp') + SOS(grb=None, erk=None,state='p'), kd65)
 
-    Rule('Sos_p_catalysis', ERK(sos=1, state='pp') % SOS(erk=1,state='up') >> ERK(sos=None, state='pp') + SOS( erk=None,state = 'p'), kd65)
+    Rule('Sos_p_catalysis', ERK(sos=1, state='pp') % SOS(erk=1,state='up') % Erb1(cpp=None, rtk=None, comp='pm') % Erb1(cpp=None, rtk=None, comp='pm')   >> ERK(sos=None, state='pp') + SOS(erk=None,state='p') % Erb1(cpp=None, rtk=None, comp='pm') % Erb1(cpp=None, rtk=None, comp='pm'), kd65)
 
 
 ##########################################
@@ -1236,8 +1315,8 @@ def R_deg_v2():
     # ====================================================================================================
 
     # Degrade 2(EGF:Erb1:ATP) v660
-    Rule('degrade_noATP_bound_Erb1_homodimers', Erb1(d=1, gap=None, atp=ANY,comp='endo', state='up', rtk=None)% Erb1(d=1, gap=None,  atp=ANY,comp='endo', state='up', rtk=None)
-             >> None, k62b)
+    Rule('degrade_ATP_bound_Erb1_homodimers', Erb1(d=1, gap=None, atp=ANY,comp='endo', state='up', rtk=None)%
+         Erb1(d=1, gap=None,  atp=ANY,comp='endo', state='up', rtk=None) >> None, k62b)
 
     # degrade receptor dimers in endo that are not bound to ATP, rtk or phosphorylated
     for erb in receptors[1:]:
@@ -1268,8 +1347,8 @@ def declare_observables():
     alias_model_components()
     
     Observable('pErbB1', Erb1(d=ANY,state='p'))
-    Observable('pERK', ERK(state='p') + ERK(state='pp'))
-    Observable('pAKT', AKT(state='p') + AKT(state='pp'))
+    Observable('pERK', ERK(state='pp'))
+    Observable('pAKT', AKT(state='pp'))
 
 
 if __name__ == '__main__':
