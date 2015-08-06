@@ -55,6 +55,7 @@ def get_pysb_species():
         temp = [re.sub(r'([^(]+).*state=\'gdp\'.*', r'\1:GDP', i) for i in temp]
         temp = [re.sub(r'([^(]+).*state=\'gtp\'.*', r'\1:GTP', i) for i in temp]
         temp = [re.sub(r'([^(]+).*state=\'active_gtp\'.*', r'\1_activated:GTP', i) for i in temp]
+        temp = [re.sub(r'([^(]+).*state=\'full_act\'.*', r'\1-FullActive', i) for i in temp]
         temp = [re.sub(r'(Raf).*state=\'p_ser\'.*', r'\1:P:Ser', i) for i in temp]
         # Strip remaining sites and parens, leaving just name and suffix.
         temp = [re.sub(r'([^(]+).*', r'\1', i) for i in temp]
@@ -74,7 +75,10 @@ def get_pysb_species():
         s = re.sub(r'AKT#P#P', r'AKT:P:P', s)
         s = re.sub(r'HRG:ErbB1:ErbB([34])', r'(HRG:ErbB\1:ErbB1)', s)
         s = re.sub(r'HRG:ErbB2:ErbB([34])', r'(HRG:ErbB\1):ErbB2', s)
-        s = re.sub(r'^EGF:ErbB1:ErbB1:ATP:ATP$', r'2(EGF:ErbB1:ATP)-FullActive', s)
+        if '-FullActive' in s:
+            s = s.replace('-FullActive', '')
+            s = s + '-FullActive'
+        s = re.sub(r'^EGF:ErbB1:ErbB1:ATP:ATP(-FullActive|)', r'2(EGF:ErbB1:ATP)\1', s)
         names.append(s)
 
     for i, comp in enumerate(species_str):
@@ -99,7 +103,7 @@ def get_sbml_species():
         # Degradation sinks.
         'c13', 'c520', 'c86',
         # MEK#P#P:ERK "_i" species that are missing _i in label.
-        'c80', 'c82',
+        'c80', 'c82', 'c96', 'c98',
         )
     species = [s for s in model.species
                if not any(i in s.label for i in ignore_patterns)
@@ -151,48 +155,47 @@ for tag, i1, i2, j1, j2 in sm.get_opcodes():
                 sbml = '%s - %s' % (sbml_names[si], sbml_species[si].name)
                 pysb = '%s - s%d' % (pysb_names[sj], sj)
                 print fmt % (sbml, '=', pysb)
+species_match_percent = species_matches / len(sbml_names) * 100
 
-pysb_to_sbml = {p.index: s.name for p, s in zip(pysb_species, sbml_species)}
-sink_index = next(i for i, s in enumerate(pysb_model.species)
-                  if str(s) == '__sink()')
-pysb_to_sbml[sink_index] = '(degraded)'
-for i, r in enumerate(chen_2009.model.reactions_bidirectional):
-    r['index'] = i
-pysb_reactions = [
-    ' -> '.join(sorted([
-            ' + '.join(sorted(pysb_to_sbml[s] for s in r[field]))
-            for field in 'reactants', 'products'
-            ], key=lambda x: 999 if x == '(degraded)' else -len(x)))
-    for r in chen_2009.model.reactions_bidirectional]
-pysb_reactions, pysb_reactions_index = zip(
-    *sorted(zip(pysb_reactions, range(len(pysb_reactions)))))
-sinks = [s for s in sbml_model.species if s.name in ('c13', 'c520', 'c86')]
-sbml_reactions = sorted(
-    ' -> '.join([
+if species_match_percent == 100.0:
+    pysb_to_sbml = {p.index: s.name for p, s in zip(pysb_species, sbml_species)}
+    sink_index = next(i for i, s in enumerate(pysb_model.species)
+                      if str(s) == '__sink()')
+    pysb_to_sbml[sink_index] = '(degraded)'
+    for i, r in enumerate(chen_2009.model.reactions_bidirectional):
+        r['index'] = i
+    pysb_reactions = [
+        ' -> '.join(sorted([
+                ' + '.join(sorted(pysb_to_sbml[s] for s in r[field]))
+                for field in 'reactants', 'products'
+                ], key=lambda x: 999 if x == '(degraded)' else -x.count('+')))
+        for r in chen_2009.model.reactions_bidirectional]
+    pysb_reactions, pysb_reactions_index = zip(
+        *sorted(zip(pysb_reactions, range(len(pysb_reactions)))))
+    sinks = [s for s in sbml_model.species if s.name in ('c13', 'c520', 'c86')]
+    sbml_reactions, sbml_reactions_names = zip(*sorted(
+        (' -> '.join([
             ' + '.join(sorted(s.name if s not in sinks else '(degraded)' for s in getattr(r, field)))
             for field in 'reactants', 'products'
-            ])
-    for r in sbml_model.reactions
-    if all(s in sbml_species or s in sinks for s in r.reactants + r.products))
-sm = difflib.SequenceMatcher(None, sbml_reactions, pysb_reactions)
-for tag, i1, i2, j1, j2 in sm.get_opcodes():
-    if tag in ('delete', 'replace'):
-        # Reactions in sbml model but not pysb model.
-        for si in range(i1, i2):
-            ss = '%s - %s' % (sbml_reactions[si], sbml_model.reactions[si].name)
-            print fmt % (ss, '', '')
-    if tag in ('insert', 'replace'):
-        # Reactions in pysb model but not in sbml model.
-        for sj in range(j1, j2):
-            ss = '%s - r%d' % (
-                pysb_reactions[sj],
-                pysb_reactions_index[sj])
-            print fmt % ('', '', ss)
-    if tag == 'equal':
-        # Reactions in both.
-        reaction_matches += i2 - i1
+        ]), r.name)
+        for r in sbml_model.reactions
+        if all(s in sbml_species or s in sinks for s in r.reactants + r.products)))
+    sm = difflib.SequenceMatcher(None, sbml_reactions, pysb_reactions)
+    for tag, i1, i2, j1, j2 in sm.get_opcodes():
+        if tag in ('delete', 'replace'):
+            # Reactions in sbml model but not pysb model.
+            for si in range(i1, i2):
+                ss = '%s - %s' % (sbml_reactions[si], sbml_reactions_names[si])
+                print fmt % (ss, '', '')
+        if tag in ('insert', 'replace'):
+            # Reactions in pysb model but not in sbml model.
+            for sj in range(j1, j2):
+                ss = '%s - r%d' % (pysb_reactions[sj], pysb_reactions_index[sj])
+                print fmt % ('', '', ss)
+        if tag == 'equal':
+            # Reactions in both.
+            reaction_matches += i2 - i1
 
-species_match_percent = species_matches / len(sbml_names) * 100
 print
 print "Species matches: %d / %d -- %.2f%% %s" % (
     species_matches, len(sbml_names), species_match_percent,
@@ -201,11 +204,14 @@ print "Species matches: %d / %d -- %.2f%% %s" % (
 print "SBML species missed: %d" % (len(sbml_names) - species_matches)
 print "PySB surplus species: %d" % (len(pysb_names) - species_matches)
 
-reaction_match_percent = reaction_matches / len(sbml_reactions) * 100
-print
-print "Reaction matches: %d / %d -- %.2f%% %s" % (
-    reaction_matches, len(sbml_reactions), reaction_match_percent,
-    u'\U0001f37b' if reaction_match_percent == 100 else ''
-    )
-print "SBML reactions missed: %d" % (len(sbml_reactions) - reaction_matches)
-print "PySB surplus reactions: %d" % (len(pysb_reactions) - reaction_matches)
+if species_match_percent == 100.0:
+    reaction_match_percent = reaction_matches / len(sbml_reactions) * 100
+    print
+    print "Reaction matches: %d / %d -- %.2f%% %s" % (
+        reaction_matches, len(sbml_reactions), reaction_match_percent,
+        u'\U0001f37b' if reaction_match_percent == 100 else ''
+        )
+    print "SBML reactions missed: %d" % (len(sbml_reactions) - reaction_matches)
+    print "PySB surplus reactions: %d" % (len(pysb_reactions) - reaction_matches)
+else:
+    print "\nSkipping reaction comparison until species match is 100%"
