@@ -140,20 +140,20 @@ for tag, i1, i2, j1, j2 in sm.get_opcodes():
     if tag in ('delete', 'replace'):
         # Species in sbml model but not pysb model.
         for si in range(i1, i2):
-            ss = '%s - %s' % (sbml_names[si], sbml_species[si].name)
+            ss = '%s : %s' % (sbml_names[si], sbml_species[si].name)
             print fmt % (ss, '', '')
     if tag in ('insert', 'replace'):
         # Species in pysb model but not in sbml model.
         for sj in range(j1, j2):
-            ss = '%s - s%d' % (pysb_names[sj], sj)
+            ss = '%s : s%d' % (pysb_names[sj], sj)
             print fmt % ('', '', ss)
     if tag == 'equal':
         # Species in both.
         species_matches += i2 - i1
         if print_matches:
             for si, sj in zip(range(i1, i2), range(j1, j2)):
-                sbml = '%s - %s' % (sbml_names[si], sbml_species[si].name)
-                pysb = '%s - s%d' % (pysb_names[sj], sj)
+                sbml = '%s : %s' % (sbml_names[si], sbml_species[si].name)
+                pysb = '%s : s%d' % (pysb_names[sj], sj)
                 print fmt % (sbml, '=', pysb)
 species_match_percent = species_matches / len(sbml_names) * 100
 
@@ -185,16 +185,21 @@ if species_match_percent == 100.0:
         if tag in ('delete', 'replace'):
             # Reactions in sbml model but not pysb model.
             for si in range(i1, i2):
-                ss = '%s - %s' % (sbml_reactions[si], sbml_reactions_names[si])
+                ss = '%s : %s' % (sbml_reactions[si], sbml_reactions_names[si])
                 print fmt % (ss, '', '')
         if tag in ('insert', 'replace'):
             # Reactions in pysb model but not in sbml model.
             for sj in range(j1, j2):
-                ss = '%s - r%d' % (pysb_reactions[sj], pysb_reactions_index[sj])
+                ss = '%s : r%d' % (pysb_reactions[sj], pysb_reactions_index[sj])
                 print fmt % ('', '', ss)
         if tag == 'equal':
             # Reactions in both.
             reaction_matches += i2 - i1
+            if print_matches:
+                for si, sj in zip(range(i1, i2), range(j1, j2)):
+                    sbml = '%s : %s' % (sbml_reactions[si], sbml_reactions_names[si])
+                    pysb = '%s : r%d' % (pysb_reactions[sj], pysb_reactions_index[sj])
+                    print fmt % (sbml, '=', pysb)
 
 print
 print "Species matches: %d / %d -- %.2f%% %s" % (
