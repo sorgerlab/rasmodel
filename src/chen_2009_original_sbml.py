@@ -159,7 +159,13 @@ label_edits = {
     'c523': '2(ErbB2)#P:GAP:Grb2:Gab1#P#P:Pase9t',
     }
 
-def get_model():
+def load_model():
+    """Load model from SBML and return it, also store it in global `model`."""
+
+    global model
+
+    if 'model' in globals():
+        return model
 
     model_filename = os.path.join(os.path.dirname(__file__),
                                   'chen_2009_original_sbml_norules.xml')

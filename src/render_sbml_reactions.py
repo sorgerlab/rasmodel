@@ -90,7 +90,7 @@ argparser.add_argument('--simplify-adapters', action='store_true',
 args = argparser.parse_args()
 
 
-model = chen_2009_original_sbml.get_model()
+model = chen_2009_original_sbml.load_model()
 model.export_globals()
 
 

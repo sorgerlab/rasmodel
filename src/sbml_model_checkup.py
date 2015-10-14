@@ -3,7 +3,7 @@
 import itertools
 import chen_2009_original_sbml
 
-model = chen_2009_original_sbml.get_model()
+model = chen_2009_original_sbml.load_model()
 
 # determine redundant species (same name)
 sa = sorted(model.species, key=lambda s: (s.label, s.compartment))
