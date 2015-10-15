@@ -716,8 +716,8 @@ def SHC_binding():
                  SOS(ras=None, erk=None, state='up') % SHC(erb=None, grb=ANY) <> SOS(ras=None, erk=None, state='up') %
                  SHC(erb=1, grb=ANY) % ErbB2(gap=ANY,gs=1,d=2, cpp=None, comp=place) % erb(d=2,gs=None),k32, kd32)
         
-        # Phosphorylation of recepotr bound SHC, SHC <-> SHC~P
-        Rule(place+'_shc_phos', SHC(erb=ANY, grb=None, state='up') <> SHC(erb=ANY, grb=None, state='p'), k23, kd23)
+    # Phosphorylation of recepotr bound SHC, SHC <-> SHC~P
+    Rule('shc_bound_phos', SHC(erb=ANY, grb=None, state='up') <> SHC(erb=ANY, grb=None, state='p'), k23, kd23)
 
 ########################################################
 def secondary_Grb2_binding():
@@ -978,10 +978,11 @@ def R_deg_v2():
     
     # degrade Grb2 bound dimers in endo compartment
     for erb in receptors[:2]:
-        Rule('degrade_grb2noSos_bound_dimers'+erb.name, erb(comp='endo') % Grb2(erb=ANY, shc=None, sos = None) >> None, k60c)
-        Rule('degrade_grb2_bound_dimers'+erb.name, erb(comp='endo', cpp=None) % Grb2(erb=ANY, shc=None, sos = ANY)
-             % SOS(ras=None, state='up', erk=None) >> None, k60c)
-        Rule('degrade_shc_p_grb2noSos_bound_dimers'+erb.name, erb(comp='endo') % Grb2(erb=None, shc=ANY, sos = None) >> None, k60c)
+        Rule('degrade_grb2noSos_bound_dimers'+erb.name, erb(comp='endo', gs=1) % Grb2(erb=1, shc=None, sos=None) >> None, k60c)
+        Rule('degrade_grb2_bound_dimers'+erb.name, erb(comp='endo', cpp=None, gs=1) % Grb2(erb=1, shc=None, sos=2) %
+             SOS(grb=2, ras=None, state='up', erk=None) >> None, k60c)
+        Rule('degrade_shc_p_grb2noSos_bound_dimers'+erb.name, erb(comp='endo', gs=1) % SHC(erb=1, grb=2) %
+             Grb2(shc=2, sos=None) >> None, k60c)
     
     # The next section has degradation reactions missing in the sbml model
     # ====================================================================
@@ -1015,9 +1016,6 @@ def R_deg_v2():
              Rule('degrade_noATP_bound_ErbB1_'+ erb.name, ErbB1(d=1, gap=None, comp='endo', atp=None, state='up', rtk=None) %
                   erb(d=1, gap=None, comp='endo', atp=None, state='up', rtk=None) >> None, k62b)
          
-    Rule('degrade_noATP_bound_ErbB2_homodimers', ErbB2(d=1, gap=None, comp='endo', atp=None, state='up', rtk=None) %
-     ErbB2(d=1, gap=None, comp='endo', atp=None, state='up', rtk=None)  >> None, k62b)
-    
     for erb in receptors[1:]:
         Rule('degrade_noATP_bound_ErbB2_'+ erb.name, ErbB2(d=1, gap=None, comp='endo', atp=None, state='up', rtk=None) %
              erb(d=1, gap=None, comp='endo', atp=None, state='up', rtk=None) >> None, k62b)
