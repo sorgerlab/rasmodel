@@ -8,6 +8,7 @@ from pysb import *
 from REM import ErbB_modules
 from REM import PI3K_modules
 from REM import MAPK_modules
+from REM.utils import merge_parameters
 
 Model()
 
@@ -54,5 +55,10 @@ ErbB_modules.declare_observables()
 PI3K_modules.declare_observables()
 MAPK_modules.declare_observables()
 
-
-
+merge_parameters(model, 'k103', [k103_ls, k103_magic])
+merge_parameters(model, 'kd103', [kd103_ls, kd103_magic])
+merge_parameters(model, 'k122', [k122_gab, k122_ls, k122_priming])
+merge_parameters(model, 'kd122', [kd122_gab, kd122_ls, kd122_priming])
+merge_parameters(model, 'k16', [k16_scndry])
+merge_parameters(model, 'kd123', [kd123_gab, kd123_ls])
+merge_parameters(model, 'kd24', [kd24_scndry])

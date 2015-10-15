@@ -273,6 +273,25 @@ if species_match_percent == 100.0:
                                              pysb_reactions[sj]['index'],
                                              pysb_reactions[sj]['rule'][0])
                     print fmt % (sbml, '=', pysb)
+    reaction_match_percent = reaction_matches / len(sbml_reactions) * 100
+else:
+    reaction_match_percent = 0
+
+if reaction_match_percent == 100.0:
+    pysb_parameters = pysb_model.parameters_rules()
+    sbml_parameters = {}
+    sbml_model.export_globals(sbml_parameters)
+    parameter_mismatches = []
+    for pysb_parameter in pysb_parameters:
+        try:
+            sbml_parameter = sbml_parameters[pysb_parameter.name]
+        except KeyError:
+            parameter_mismatches.append((pysb_parameter, None))
+            continue
+        if pysb_parameter.value != sbml_parameter.value:
+            parameter_mismatches.append((pysb_parameter, sbml_parameter))
+    num_param_matches = len(pysb_parameters) - len(parameter_mismatches)
+    parameter_match_percent = num_param_matches / len(pysb_parameters) * 100
 
 print
 print "Species matches: %d / %d -- %.2f%% %s" % (
@@ -283,7 +302,6 @@ print "SBML species missed: %d" % (len(sbml_species) - species_matches)
 print "PySB surplus species: %d" % (len(pysb_species) - species_matches)
 
 if species_match_percent == 100.0:
-    reaction_match_percent = reaction_matches / len(sbml_reactions) * 100
     print
     print "Reaction matches: %d / %d -- %.2f%% %s" % (
         reaction_matches, len(sbml_reactions), reaction_match_percent,
@@ -293,3 +311,10 @@ if species_match_percent == 100.0:
     print "PySB surplus reactions: %d" % (len(pysb_reactions) - reaction_matches)
 else:
     print "\nSkipping reaction comparison until species match is 100%"
+
+if reaction_match_percent == 100.0:
+    print
+    print "Parameter value matches: %d / %d -- %.2f%% %s" % (
+        num_param_matches, len(pysb_parameters), parameter_match_percent,
+        u'\U0001f37b' if parameter_match_percent == 100 else ''
+        )

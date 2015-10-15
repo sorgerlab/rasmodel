@@ -49,7 +49,7 @@ def MAPK_pathway():
     Parameter('k29', 1.17e-06) # k29
     
     Parameter('k42', 6e-5)    # k42
-    Parameter('kd42', 0.014)    # kd42
+    Parameter('kd42', 0.0141589)    # kd42
     Parameter('kd43', 31.6228)  # kd43
     
     Parameter('k44', 1.07e-5)    # k44
@@ -59,26 +59,26 @@ def MAPK_pathway():
     
     Parameter('k48', 2.37e-5)    # k48
     Parameter('kd48', 0.79)    # kd48
-    Parameter('k50', 4.74e-8)    # k48
-    Parameter('kd50', 0.2529)    # kd48
-    Parameter('kd49', 0.11)  # kd49
+    Parameter('k50', 4.74801e-8)    # k48
+    Parameter('kd50', 0.252982)    # kd48
+    Parameter('kd49', 0.112387)  # kd49
     
-    Parameter('k52', 2.37e-5)    # k48
-    Parameter('kd44', 0.79)    # kd48
-    Parameter('kd53', 0.11)  # kd49
-    Parameter('kd55', 70.16)  # kd49
+    Parameter('k52', 8.85125e-6)    # k48
+    Parameter('kd44', 0.01833)    # kd48
+    Parameter('kd53', 0.28)  # kd49
+    Parameter('kd55', 70.1662)  # kd49
     
     
-    Parameter('k56', 3.97e-4)    # k56
+    Parameter('k56', 3.97392e-4)    # k56
     Parameter('kd56', 5.0)    # kd56
     Parameter('kd57', 0.0076)  # kd57
     
     Parameter('k58', 8.33e-7)    # k56
-    Parameter('kd58', 56.7)    # kd56
+    Parameter('kd58', 56.7862)    # kd56
     
-    Parameter('k64',1)
-    Parameter('kd64', 0.1)
-    Parameter('kd65', 1)
+    Parameter('k64',1.67e-05)
+    Parameter('kd64', 0.3)
+    Parameter('kd65', 0.2)
     
     alias_model_components()
     
@@ -126,7 +126,7 @@ def MAPK_pathway():
      # MEK~P phosphorylates ERk
     catalyze_state(MEK(raf=None, pase2=None, state='pp'), 'erk', ERK(pase3=None, sos=None, gab1=None), 'mek', 'state', 'up', 'p', (k52, kd44, kd53))
      
-    catalyze_state(MEK(raf=None, pase2=None, state='pp'), 'erk', ERK(pase3=None, sos=None, gab1=None), 'mek', 'state', 'p', 'pp', (k52, k44, kd55))
+    catalyze_state(MEK(raf=None, pase2=None, state='pp'), 'erk', ERK(pase3=None, sos=None, gab1=None), 'mek', 'state', 'p', 'pp', (k52, kd44, kd55))
      
      
      # ERK~P dephosphorylated by Pase3

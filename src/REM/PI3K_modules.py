@@ -64,7 +64,7 @@ def bind_Gab1():
     # ==============
     Parameter('k105', 6.67e-05)         # k105
     Parameter('kd105', 0.1)              # kd105
-    Parameter('k122_gab', 1.87e-8)      # k122
+    Parameter('k122_gab', 1.8704e-8)      # k122
     Parameter('kd122_gab', 1.0)          # kd122
     Parameter('kd123_gab', 0.177828)          # kd123
 
@@ -97,7 +97,7 @@ def Shp2_catalysis():
     Parameter('Shp2_0', 1e+6)       # c463
     # Rate constant
     # ==============
-    Parameter('k107', 3.3e-5)   # k107
+    Parameter('k107', 3.33e-5)   # k107
     Parameter('kd107',0.1)       # kd107
     Parameter('kd108', 5)           # kd108
 
@@ -114,7 +114,7 @@ def Erk_catalysis():
     "v723-v750"
     " Erk~PP binds and phosphorylates Gab1~P via 2-step catalysis"
     
-    Parameter('k110', 3.3e-4)    # k110
+    Parameter('k110', 3.33e-4)    # k110
     Parameter('kd110', 0.1)       # kd110
     Parameter('kd111', 6.57)         # kd111
 
@@ -136,7 +136,7 @@ def Pase_9t_catalysis():
     Parameter('Pase9t_0', 0)        # c521 // zero ic
     # Rate constant
     # ==============
-    Parameter('k117', 8.3e-8)     # k117
+    Parameter('k117', 8.33e-8)     # k117
     Parameter('kd117', 0.1)        # kd117
     Parameter('kd118', 0.03)          # k118
 
@@ -174,8 +174,18 @@ def bind_PI3K():
 
     # Rules
     # ======
-    Rule('bind_gab1_pI3k', Gab1(state='p', shp2=None, erk=None, pi3k=None) + PI3K(gab1=None, ras=None, pip2=None) <>
-         Gab1(state='p', shp2=None, erk=None, pi3k=1) % PI3K(gab1=1, ras=None, pip2=None), k66, kd66)
+    # This was almost a nice single rule, except a few of the species need a
+    # different rate.
+    for erb, other_erbs in (ErbB1, receptors), (ErbB2, receptors[1:]):
+        for other_erb in other_erbs:
+            rates = (k66, kd66)
+            if ((erb is ErbB2 and (other_erb is ErbB2 or other_erb is ErbB3)) or
+                (erb is ErbB1 and other_erb is ErbB3)):
+                rates = (k67, kd67)
+            Rule('_'.join((erb.name, other_erb.name, 'bind_gab1_pI3k')),
+                 erb() % other_erb() % Gab1(state='p', shp2=None, erk=None, pi3k=None) + PI3K(gab1=None, ras=None, pip2=None) <>
+                 erb() % other_erb() % Gab1(state='p', shp2=None, erk=None, pi3k=1) % PI3K(gab1=1, ras=None, pip2=None),
+                 *rates)
 
 ########################################################
 def PIP2_PIP3():
@@ -195,7 +205,7 @@ def PIP2_PIP3():
     Parameter('k106', 1.33e-5)
     Parameter('kd106', 0.1)
     Parameter('kd68', 0.2)
-    Parameter('k106b', 2.63e-8)
+    Parameter('k106b', 2.63418e-8)
     Parameter('kd106b', 0.1)
     Parameter('kd68b', 20.5)
     
@@ -208,15 +218,16 @@ def PIP2_PIP3():
     
     # Rules
     # =====
-    catalyze(ErbB1(gap=ANY) % PI3K(gab1=ANY, ras=None), 'pip2', PIP2(), 'pi3k', PIP3(akt=None, pdk=None, bnd=None), (k106, k106, kd68))
+    catalyze(ErbB1(gap=ANY) % PI3K(gab1=ANY, ras=None), 'pip2', PIP2(), 'pi3k', PIP3(akt=None, pdk=None, bnd=None), (k106b, kd106b, kd68))
     
     " Unlike ErbB1, could not write generic rule for ErbB2 dimers since ErbB2:ErbB4 ES complex is not broken down to E + P "
     for erb in receptors[1:]:
         Rule('bind_Pip2_Erb2_'+erb.name,ErbB2(gap=ANY) % erb(gap=None) % PI3K(gab1=ANY, ras=None, pip2=None) + PIP2(pi3k=None) <>
-             ErbB2(gap=ANY) % erb(gap=None) % PI3K(gab1=ANY, ras=None, pip2=1) % PIP2(pi3k=1), k106b, k106b)
+             ErbB2(gap=ANY) % erb(gap=None) % PI3K(gab1=ANY, ras=None, pip2=1) % PIP2(pi3k=1), k106, kd106)
     for erb in receptors[1:3]:
+        forward_rate = kd68 if erb is ErbB2 else kd68b
         Rule('catalyze_pip3_erb2_'+erb.name, ErbB2(gap=ANY) % erb(gap=None) % PI3K(gab1=ANY, ras=None, pip2=1) % PIP2(pi3k=1) >>
-             ErbB2(gap=ANY) % erb(gap=None) % PI3K(gab1=ANY, ras=None, pip2=None) + PIP3(akt=None, pdk=None, bnd=None),kd68b )
+             ErbB2(gap=ANY) % erb(gap=None) % PI3K(gab1=ANY, ras=None, pip2=None) + PIP3(akt=None, pdk=None, bnd=None), forward_rate)
 
     pip2_number = 6;
     for i in range(1, 1 + pip2_number -1):
@@ -227,7 +238,7 @@ def PIP2_PIP3():
         reactant = ErbB2() % ErbB3() % PI3K(ras=None, gab1=999, pip2=range(1,i+1)) % pip2_common
         product = ErbB2() % ErbB3() %PI3K(ras=None, gab1=999, pip2=range(1, i+2)) % pip2_common % PIP2(pi3k=i+1)
 
-        Rule('bind_pip2_pi3k'+num_pip, reactant + PIP2(pi3k=None) <> product, k106b, kd106b)
+        Rule('bind_pip2_pi3k'+num_pip, reactant + PIP2(pi3k=None) <> product, k106, kd106)
         Rule('release_pip2'+num_pip, product  >> reactant + PIP3(akt=None, pdk=None, bnd=None), kd68b)
 
 ########################################################
@@ -238,10 +249,10 @@ def PI3K_binds_RAS():
     # Initial amount
     # ==============
 
-    Parameter('k112',0.0047)    # k112
+    Parameter('k112',0.0047067)    # k112
     Parameter('kd112', 0.1) # kd112
     Parameter('k113', 0)    # k113 *****
-    Parameter('kd113', 177) # kd113
+    Parameter('kd113', 177.828) # kd113
 
     alias_model_components()
     
@@ -281,22 +292,22 @@ def AKT_rxns():
     Parameter('RAF_0', 71131.2)     # c41
     # Rate constants
     # ==============
-    Parameter('k69',3.3e-5)   # k69
+    Parameter('k69',3.33e-5)   # k69
     Parameter('kd69',0.1)   # kd69
-    Parameter('k70',6.6e-7)   # k70
+    Parameter('k70',6.67e-7)   # k70
     Parameter('kd70',0.1)   # kd70
     Parameter('kd71', 25.2)
-    Parameter('kd72', 5)
-    Parameter('kd76', 142)   # kd76
-    Parameter('k74',6.36e-7)    #k74
-    Parameter('kd74',0.355)    # kd74
+    Parameter('kd72', 5.01187)
+    Parameter('kd76', 142.262)   # kd76
+    Parameter('k74',6.36184e-7)    #k74
+    Parameter('kd74',0.355656)    # kd74
     Parameter('k73',0.00374845)     # k73
     Parameter('kd73',0.5)     # kd73
     Parameter('kd75',0.00633957)        # kd75
     Parameter('k109', 5e-6)     # k109
     Parameter('kd109',0.1)    # kd109
     Parameter('kd104', 0.2)      # kd104
-    Parameter('k114', 4.98e-6)        # k114
+    Parameter('k114', 4.98816e-6)        # k114
     Parameter('kd114',0.1)             # kd114
     Parameter('kd115', 1.0)      # kd115
     
