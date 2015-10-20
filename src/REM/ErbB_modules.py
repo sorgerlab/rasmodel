@@ -123,7 +123,7 @@ def ligand_binding():
     Parameter('ErbB4_0', 794)           # c143
     Parameter('EGF_0', 5e-9)            # c1
     Parameter('HRG_0', 0)               # c514
-    Parameter('dummy_init', 1e-19)
+    Parameter('dummy_init', 0)
     # Rate constants
     Parameter('k1', 1e+7)
     Parameter('kd1', 0.0033)
@@ -546,7 +546,7 @@ def Grb2_binding():
     # =============
     Parameter('Grb2_0', 1264.91)    # c22 //// Grb2:SOS has non-zero initial condition (c30)
     Parameter('SOS_0', 0)           # c24 // zero ic
-    Parameter('Grb2SOS_0', 8.89e7)  # c30
+    Parameter('Grb2SOS_0', 8.8914e7)  # c30
     # Rate constants
     # ==============
     Parameter('k16', 1.67e-05)     # k16

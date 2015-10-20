@@ -38,7 +38,7 @@ def get_pysb_species():
     # Split complexes on % to produce monomers.
     monomers_in_species = [i.split(" % ") for i in species_str]
 
-    names = []
+    labels = []
     for mlist in monomers_in_species:
         # Fix some minor spelling/case differences in some proteins.
         mlist = [s.replace('SHC', 'Shc') for s in mlist]
@@ -79,14 +79,23 @@ def get_pysb_species():
             s = s.replace('-FullActive', '')
             s = s + '-FullActive'
         s = re.sub(r'^EGF:ErbB1:ErbB1:ATP:ATP(-FullActive|)', r'2(EGF:ErbB1:ATP)\1', s)
-        names.append(s)
+        labels.append(s)
 
     for i, comp in enumerate(species_str):
         if "comp='endo'" in comp:
             # For species in the endo compartment, prepend endo prefix to name
             # and apply one special case name fixup.
-            names[i] = re.sub(r'(EGF:ErbB1:ErbB[234])$', r'(\1)', names[i])
-            names[i] = 'endo|' + names[i]
+            labels[i] = re.sub(r'(EGF:ErbB1:ErbB[234])$', r'(\1)', labels[i])
+            labels[i] = 'endo|' + labels[i]
+
+    ics = [''] * len(species)
+    for ic_species, ic_parameter in model.initial_conditions:
+        if ic_parameter.value != 0 and str(ic_species) != '__source()':
+            idx = next(i for i, s in enumerate(species)
+                       if s.is_equivalent_to(ic_species))
+            ics[idx] = ' @ %.17g' % ic_parameter.value
+
+    names = [label + ic for ic, label in zip(ics, labels)]
 
     # Sort names and species by names.
     names, species = zip(*sorted(zip(names, species)))
@@ -108,7 +117,10 @@ def get_sbml_species():
     species = [s for s in model.species
                if not any(i in s.label for i in ignore_patterns)
                and s.name not in ignore_names]
-    names = [s.label for s in species]
+    labels = [s.label for s in species]
+    ics = [' @ %.17g' % s.initial_amount if s.initial_amount != 0 else ''
+           for s in species]
+    names = [label + ic for label, ic in zip(labels, ics)]
 
     # Sort names and species by names.
     names, species = zip(*sorted(zip(names, species)))

@@ -320,7 +320,7 @@ def AKT_rxns():
     Initial(Pase4(akt=None), Pase4_0)
     Initial(PTEN(pip=None), PTEN_0)
     Initial(Shp(pip=None), Shp_0)
-    Initial(RAF(akt=None, pase1=None, mek=None, ras=None, state='p'), RAF_0)
+    Initial(RAF(akt=None, pase1=None, mek=None, ras=None, state='up'), RAF_0)
     
     # Rules
     # =====
