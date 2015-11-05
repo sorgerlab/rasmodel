@@ -238,3 +238,69 @@ def load_model():
         raise RuntimeError('duplicate names: ' + ', '.join(duplicates))
 
     return model
+
+
+def pysb_model():
+    """Return a PySB direct conversion of the SBML model."""
+
+    import pysb
+    sbml_model = load_model()
+
+    model = pysb.Model('chen_2009_original_sbml', _export=False)
+    for s in sbml_model.species:
+        monomer = pysb.Monomer(s.name, _export=False)
+        model.add_component(monomer)
+        if s.initial_amount != 0:
+            parameter = pysb.Parameter(s.name + '_0', s.initial_amount,
+                                       _export=False)
+            model.add_component(parameter)
+            model.initial(monomer, parameter)
+    for p in set([p for r in sbml_model.reactions for p in r.kf, r.kr]):
+        parameter = pysb.Parameter(p.name, p.value, _export=False)
+        model.add_component(parameter)
+    for r in sbml_model.reactions:
+        assert 1 <= len(r.reactants) <= 2
+        assert len(r.products) == 1
+        lterms = [model.monomers[s.name]() for s in r.reactants]
+        lhs = sum(lterms[1:], lterms[0]())
+        rhs = model.monomers[r.products[0].name]()
+        kf = model.parameters[r.kf.name]
+        kr = model.parameters[r.kr.name]
+        if len(lterms) == 2 and r.reactants[0] == r.reactants[1]:
+            expr_name = kf.name + '_symmetric'
+            try:
+                kf = model.expressions[expr_name]
+            except KeyError:
+                kf = pysb.Expression(expr_name, kf * 2, _export=False)
+                model.add_component(kf)
+        if kr.get_value() == 0:
+            rule = pysb.Rule(r.name, lhs >> rhs, kf, _export=False)
+        else:
+            rule = pysb.Rule(r.name, lhs <> rhs, kf, kr, _export=False)
+        model.add_component(rule)
+    sbml_perb11_names = ['c483', 'c136', 'c23', 'c7', 'c25', 'c88', 'c27', 'c89', 'c29', 'c90', 'c34', 'c91', 'c35', 'c92', 'c36', 'c93', 'c37', 'c94', 'c68', 'c67', 'c66', 'c65', 'c21', 'c20', 'c18', 'c19', 'c5', 'c8', 'c15', 'c17', 'c32', 'c63', 'c33', 'c64', 'c95', 'c97', 'c99', 'c419', 'c100', 'c420', 'c486', 'c104', 'c448', 'c415', 'c489', 'c431', 'c264', ]
+    sbml_perb12_names = ['c427', 'c130', 'c189', 'c195', 'c198', 'c204', 'c207', 'c213', 'c216', 'c222', 'c225', 'c231', 'c243', 'c249', 'c252', 'c258', 'c234', 'c240', 'c237', 'c255', 'c246', 'c228', 'c219', 'c210', 'c201', 'c192', 'c148', 'c162', 'c165', 'c151', 'c180', 'c183', 'c171', 'c174', 'c445', 'c261', 'c449', 'c416', 'c464', 'c433', 'c265', ]
+    sbml_perb13_names = ['c428', 'c131', 'c190', 'c196', 'c199', 'c205', 'c208', 'c214', 'c217', 'c223', 'c226', 'c232', 'c244', 'c250', 'c253', 'c259', 'c235', 'c241', 'c238', 'c256', 'c247', 'c229', 'c220', 'c211', 'c202', 'c193', 'c149', 'c163', 'c166', 'c152', 'c181', 'c184', 'c172', 'c175', 'c446', 'c262', 'c450', 'c281', 'c465', 'c435', 'c409', 'c266', 'c411', ]
+    sbml_perb14_names = ['c429', 'c132', 'c191', 'c197', 'c200', 'c206', 'c209', 'c215', 'c218', 'c224', 'c227', 'c233', 'c245', 'c251', 'c254', 'c260', 'c236', 'c242', 'c239', 'c257', 'c248', 'c230', 'c221', 'c212', 'c203', 'c194', 'c150', 'c164', 'c167', 'c153', 'c182', 'c185', 'c173', 'c176', 'c447', 'c263', 'c451', 'c282', 'c466', 'c438', 'c410', 'c267', 'c412', ]
+    sbml_perk_names = ['c59', 'c61', 'c95', 'c97', 'c101', 'c431', 'c433', 'c435', 'c438', 'c474', 'c477', 'c480']
+    sbml_pakt_names = ['c497', 'c498', 'c472']
+    pErbB11_cp = model.monomers[sbml_perb11_names[0]]()
+    for n in sbml_perb11_names[1:]:
+        pErbB11_cp += model.monomers[n]()
+    pErbB1n_cp = model.monomers[sbml_perb12_names[0]]()
+    for n in sbml_perb12_names[1:] + sbml_perb13_names + sbml_perb14_names:
+        pErbB1n_cp += model.monomers[n]()
+    pERK_cp = model.monomers[sbml_perk_names[0]]()
+    for n in sbml_perk_names[1:]:
+        pERK_cp += model.monomers[n]()
+    pAKT_cp = model.monomers[sbml_pakt_names[0]]()
+    for n in sbml_pakt_names[1:]:
+        pAKT_cp += model.monomers[n]()
+    pErbB11 = pysb.Observable('pErbB11', pErbB11_cp, _export=False)
+    pErbB1n = pysb.Observable('pErbB1n', pErbB1n_cp, _export=False)
+    pErbB1 = pysb.Expression('pErbB1', pErbB11 * 2 + pErbB1n, _export=False)
+    pERK = pysb.Observable('pERK', pERK_cp, _export=False)
+    pAKT = pysb.Observable('pAKT', pAKT_cp, _export=False)
+    for c in pErbB11, pErbB1n, pErbB1, pERK, pAKT:
+        model.add_component(c)
+    return model
