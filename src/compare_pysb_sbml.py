@@ -7,6 +7,7 @@ import argparse
 import sys
 import chen_2009_original_sbml
 from REM import chen_2009
+import pysb
 from pysb.bng import generate_equations
 
 def get_pysb_species():
@@ -145,8 +146,15 @@ def get_pysb_reactions():
         return ' + '.join(sorted(labels))
 
     def format_param(parameter):
-        if parameter is not None and parameter.value != 0:
-            return parameter.name
+        if parameter is not None and parameter.get_value() != 0:
+            pname = parameter.name
+            # Fixup for BNG symmetry corrections.
+            if pname.endswith('_symmetric'):
+                orig_param = parameter.expr / 2
+                if not isinstance(orig_param, pysb.Parameter):
+                    raise RuntimeError("Unexpected expression structure")
+                pname = orig_param.name
+            return pname
         else:
             return '<0>'
 
@@ -295,12 +303,14 @@ if reaction_match_percent == 100.0:
     sbml_model.export_globals(sbml_parameters)
     parameter_mismatches = []
     for pysb_parameter in pysb_parameters:
+        # Fixup for BNG symmetry corrections.
+        pname = pysb_parameter.name.replace('_symmetric', '')
         try:
-            sbml_parameter = sbml_parameters[pysb_parameter.name]
+            sbml_parameter = sbml_parameters[pname]
         except KeyError:
             parameter_mismatches.append((pysb_parameter, None))
             continue
-        if pysb_parameter.value != sbml_parameter.value:
+        if pysb_parameter.get_value() != sbml_parameter.value:
             parameter_mismatches.append((pysb_parameter, sbml_parameter))
     num_param_matches = len(pysb_parameters) - len(parameter_mismatches)
     parameter_match_percent = num_param_matches / len(pysb_parameters) * 100
@@ -330,3 +340,43 @@ if reaction_match_percent == 100.0:
         num_param_matches, len(pysb_parameters), parameter_match_percent,
         u'\U0001f37b' if parameter_match_percent == 100 else ''
         )
+
+# I should probably have generated this list by running the regex from the
+# original simulation script against the original species names, but deadlines
+# are approaching! -JLM
+# Note that this list has already been converted to PySB model species indexes!
+sbml_perbb1_species = set([
+    85, 86, 110, 111, 119, 120, 121, 122, 153, 154, 156, 157, 158, 159, 160,
+    161, 162, 163, 166, 167, 169, 170, 172, 173, 175, 176, 188, 189, 202, 205,
+    206, 207, 208, 209, 210, 211, 212, 213, 216, 217, 218, 219, 220, 221, 222,
+    223, 224, 225, 226, 227, 228, 229, 231, 232, 234, 235, 236, 237, 238, 239,
+    240, 241, 246, 247, 251, 252, 253, 254, 255, 256, 257, 258, 263, 264, 270,
+    271, 272, 273, 274, 275, 279, 280, 281, 282, 283, 284, 285, 286, 287, 288,
+    289, 290, 291, 292, 293, 294, 295, 296, 297, 298, 299, 300, 307, 308, 309,
+    310, 311, 312, 313, 314, 315, 316, 317, 318, 319, 320, 321, 322, 327, 328,
+    329, 330, 337, 338, 339, 340, 344, 345, 346, 347, 348, 349, 350, 351, 352,
+    353, 354, 355, 356, 357, 358, 359, 368, 369, 370, 371, 373, 374, 379, 380,
+    381, 382, 383, 384, 387, 388, 392, 393, 395, 396, 408, 409, 411, 412, 414,
+    415, 419, 420, 425, 426, 427, 428, 431, 432
+    ])
+# Should also be comparing coefficients to original model but again, no time...
+pysb_perbb1_species = (
+    set(pysb_model.observables['pErbB1_total'].species) -
+    set(pysb_model.observables['pErbB11_exceptions'].species) -
+    set(pysb_model.observables['pErbB12_exceptions'].species)
+    )
+print
+if pysb_perbb1_species != sbml_perbb1_species:
+    print "pErbB1 observable is WRONG:"
+    print "  missing:", ', '.join(str(i) for i in sbml_perbb1_species - pysb_perbb1_species)
+    print "  extra:", ', '.join(str(i) for i in pysb_perbb1_species - sbml_perbb1_species)
+else:
+    print "pErbB1 observable is correct"
+
+# For debugging/testing.
+sbml2pysb = {x[0].name: x[1].index
+             for x in sorted(zip(sbml_species, pysb_species),
+                             key=lambda x: int(x[0].name[1:]))}
+pysb2sbml = {x[1].index: x[0].name
+             for x in sorted(zip(sbml_species, pysb_species),
+                             key=lambda x: x[1].index)}

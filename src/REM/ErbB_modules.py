@@ -306,9 +306,15 @@ def receptor_dimerization():
     Parameter('kd120', 0.1)
     Parameter('k120b', 5.92538e-11)
     Parameter('kd120b', 0.1)
-    
+
     alias_model_components()
     
+    # Note that we have to "uncorrect" for BNG's correction for symmetric
+    # reactions to match the original model.
+    Expression('k2_symmetric', k2 * 2)
+
+    alias_model_components()
+
     # Rules
     # =====
     for place in comprtmnts:
@@ -323,7 +329,7 @@ def receptor_dimerization():
         Rule(place+'_bind_egf_E1_atp_egf_ErbB1', ATP(erb=2,gab1=None) % ErbB1(lig=ANY,atp=2,d=None,state='up', comp=place) +
              ATP(erb=3,gab1=None) % ErbB1(lig=ANY, d=None,atp=3,state='up', comp=place) <>
              ATP(erb=2,gab1=None) % ErbB1(lig=ANY, atp=2, d=1,state='up', comp=place) % ErbB1(lig=ANY, d=1, atp=3,state='up', comp=place) %
-             ATP(erb=3,gab1=None) , k2, kd2)
+             ATP(erb=3,gab1=None), k2_symmetric, kd2)
             
         # HRG:ErbB[3-4] + ErbB2 <-> ErbB2:ErbB[3-4]
         bind_table([[   ErbB2(atp=None, state='up', comp=place)],
@@ -354,12 +360,22 @@ def secondary_dimerization():
     
     alias_model_components()
     
+    # Note that we have to "uncorrect" for BNG's correction for symmetric
+    # reactions to match the original model.
+    Expression('k102_symmetric', k102 * 2)
+    Expression('k96_symmetric', k96 * 2)
+
+    alias_model_components()
+
     " secondary dimerization does not take place in endo compartment. DO NOT loop over compartments "
     # 2(EGF:ErbB1)~P <-> EGF:ErbB1~P + EGF:ErbB1~P
+    # Note that we have to "uncorrect" for BNG's correction for symmetric
+    # reactions to match the original model.
     Rule('Unbind_EGF_ErbB1_P_', ErbB1(lig=ANY, state='p',atp=None,d=1,gap=None,rtk=None, comp='pm')
              % ErbB1(lig=ANY, state='p',atp=None,d=1,gap=None, rtk=None, comp='pm') <>
              ErbB1(lig=ANY, state='p',atp=None,d=None,gap=None, rtk=None, comp='pm') +
-             ErbB1(lig=ANY, state='p',atp=None,d=None, gap=None, rtk=None, comp='pm'), kd102, k102)
+             ErbB1(lig=ANY, state='p',atp=None,d=None, gap=None, rtk=None, comp='pm'),
+             kd102, k102_symmetric)
     
     # EGF:ErbB1~P + ErbB[2-4]~P <-> ErbB1:ErbB[2-4]~P
     for erb in receptors[1:]:
@@ -369,9 +385,10 @@ def secondary_dimerization():
                  erb(lig=None, state='p', d=1, atp=None,gap=None, rtk=None, comp='pm'), k102, kd102)
     
     # ErbB2~P + Erb[1-4]~P <-> (ErbB2:ErbB[1-4]~P
+    # "Uncorrect" for ErbB2:2 reaction here too.
     common = {'state': 'p', 'gap': None, 'rtk': None, 'comp': 'pm'}
-    bind_table([[                 ErbB2(**common), ErbB3(lig=None, **common), ErbB4(lig=None, **common)],
-                [ErbB2(**common), (k96, kd96),     (k103, kd103),             (k103, kd103)]],
+    bind_table([[                 ErbB2(**common),       ErbB3(lig=None, **common), ErbB4(lig=None, **common)],
+                [ErbB2(**common), (k96_symmetric, kd96), (k103, kd103),             (k103, kd103)]],
                'd', 'd')
 
 ########################################################
@@ -486,13 +503,13 @@ def trans_phosphorylation():
         " In the PySB model, this is addressed by having a new state called full active. Hence the change of state in the phoshorylation\
         state is: 'up' <-> 'full_active' -> 'p'  "
         # 2(EGF:ErbB1:ATP) + ATP <-> 2(EGF:ErbB1:ATP)_full_active 2(EGF:ErbB1)~P
-        Rule('ErbB1_tp_bind_ErbB1_'+ place, ErbB1(lig=ANY,d=1, state='up', atp=3, comp=place)% ATP(erb=3, gab1=None) %
-             ErbB1(lig=ANY,d=1, state='up', atp=4)% ATP(erb=4, gab1=None) + ATP(erb=None, gab1=None) <>
-             ATP(erb=2,gab1=None) % ATP(erb=3, gab1=None) % ErbB1(lig=ANY,d=1, state='full_act', atp=3, comp=place)
-             % ErbB1(lig=ANY,d=1, state='full_act', atp=2) , k122, kd122)
+        Rule('ErbB1_tp_bind_ErbB1_'+ place, MatchOnce(ErbB1(lig=ANY,d=1, state='up', atp=3, comp=place)% ATP(erb=3, gab1=None) %
+             ErbB1(lig=ANY,d=1, state='up', atp=4)% ATP(erb=4, gab1=None)) + ATP(erb=None, gab1=None) <>
+             MatchOnce(ATP(erb=2,gab1=None) % ATP(erb=3, gab1=None) % ErbB1(lig=ANY,d=1, state='full_act', atp=3, comp=place)
+             % ErbB1(lig=ANY,d=1, state='full_act', atp=2)) , k122, kd122)
         # 2(EGF:ErbB1:ATP)_full_active -> 2(EGF:ErbB1)~P + ATP
-        Rule('ErbB1_tp_cat_ErbB1_'+ place, ErbB1(lig=ANY,d=1, state='full_act', atp=2, comp=place) %
-                  ErbB1(lig=ANY,d=1, state='full_act', atp=3)% ATP(erb=2,gab1=None)% ATP(erb=3,gab1=None) >>
+        Rule('ErbB1_tp_cat_ErbB1_'+ place, MatchOnce(ErbB1(lig=ANY,d=1, state='full_act', atp=2, comp=place) %
+                  ErbB1(lig=ANY,d=1, state='full_act', atp=3)% ATP(erb=2,gab1=None)% ATP(erb=3,gab1=None)) >>
                   ErbB1(lig=ANY,d=1, state='p', atp=None, comp=place) % ErbB1(lig=ANY,d=1, state='p', atp=None)
                   + ATP(erb=None,gab1=None) , kd123)
 
@@ -526,15 +543,15 @@ def GAP_binding():
             rates = (k8b, kd8b)
             if erb is ErbB1 or (erb is ErbB2 and place == 'pm'):
                 rates = (k8, kd8)
-            Rule(place+'_gap_bind_ErbB1_'+erb.name, ErbB1(state='p', d=1, gap=None,gs=None, rtk=None, comp=place) %
-                 erb(state='p',d=1, gap=None,gs=None, rtk=None) + GAP(rec=None) <>
-                 ErbB1(state='p', d=1, gap=2,gs=None, rtk=None, comp=place) % erb(state='p',d=1, gap=None,gs=None, rtk=None) %
-                 GAP(rec=2), *rates)
+            Rule(place+'_gap_bind_ErbB1_'+erb.name, MatchOnce(ErbB1(state='p', d=1, gap=None,gs=None, rtk=None, comp=place) %
+                 erb(state='p',d=1, gap=None,gs=None, rtk=None)) + GAP(rec=None) <>
+                 MatchOnce(ErbB1(state='p', d=1, gap=2,gs=None, rtk=None, comp=place) % erb(state='p',d=1, gap=None,gs=None, rtk=None) %
+                 GAP(rec=2)), *rates)
         
         # ErbB2:Erb[2-4] + GAP <-> GAP:ErbB2:Erb[2-4]
         for erb in receptors[1:]:
-            Rule(place+'_gap_bind_ErbB2_'+erb.name, ErbB2(state='p', d=1, gap=None,gs=None, rtk=None, comp=place) %
-                 erb(state='p',d=1,gap=None,gs=None, rtk=None) + GAP(rec=None) <>
+            Rule(place+'_gap_bind_ErbB2_'+erb.name, MatchOnce(ErbB2(state='p', d=1, gap=None,gs=None, rtk=None, comp=place) %
+                 erb(state='p',d=1,gap=None,gs=None, rtk=None)) + GAP(rec=None) <>
                  ErbB2(state='p', d=1, gap=2,gs=None, rtk=None, comp=place) % erb(state='p',d=1,gap=None,gs=None, rtk=None) %
                  GAP(rec=2), k8, kd8)
 
@@ -847,8 +864,8 @@ def RTK_phos():
     
     # ERbB1~P:ErbB[1-2]~P + RTK_phosphatase <-> ERbB1~P:ErbB[1-2]~P : RTK_phosphatase
     for erb in receptors[:2]:
-        Rule('bind_RTK_ErbB1_'+erb.name, RTK(erb=None) + ErbB1(d=1, state='p', rtk=None, gap=None, comp='endo')
-             % erb(d=1, state='p', gap=None,rtk=None, comp='endo') <>
+        Rule('bind_RTK_ErbB1_'+erb.name, RTK(erb=None) + MatchOnce(ErbB1(d=1, state='p', rtk=None, gap=None, comp='endo')
+             % erb(d=1, state='p', gap=None,rtk=None, comp='endo')) <>
              RTK(erb=2)% ErbB1(d=1, state='p', rtk=2, gap=None, comp='endo') %
              erb(d=1, gap=None, state='p',rtk=None, comp='endo'), k94, kd94)
     
@@ -876,8 +893,8 @@ def RTK_phos():
 
     for erb in receptors[1:]:
             #ERbB2~P:ErbB[2-4]~P + RTK_phosphatase <-> ERbB2~P:ErbB[2-4]~P : RTK_phosphatase
-        Rule('bind_RTK_ErbB2_'+erb.name, RTK(erb=None) + ErbB2(d=1, state='p', rtk=None, gap=None, comp='endo') %
-         erb(d=1, state='p',gap=None,rtk=None, comp='endo') <>
+        Rule('bind_RTK_ErbB2_'+erb.name, RTK(erb=None) + MatchOnce(ErbB2(d=1, state='p', rtk=None, gap=None, comp='endo') %
+         erb(d=1, state='p',gap=None,rtk=None, comp='endo')) <>
          RTK(erb=2)% ErbB2(d=1, state='p', rtk=2, gap=None, comp='endo') %
          erb(d=1, gap=None, state='p',rtk=None, comp='endo'), k94, kd94)
         # ERbB2~P:ErbB[2-4]~P : RTK_phosphatase >> ERbB2:ErbB[2-4] + RTK+ptase
@@ -1113,5 +1130,18 @@ def R_deg_v2():
 def declare_observables():
     alias_model_components()
     
-    Observable('pErbB1', ErbB1(d=ANY,state='p'))
+    # Original model missed the ErbB1/2..Gab1#P#P species when enumerating the
+    # phosphorylated ErbB1 dimer species. We'll account for that by creating an
+    # observable with the correct pattern, observables for the missed species,
+    # and an expression with the difference of the two.
+    Observable('pErbB1_total', ErbB1(d=ANY, state='p'))
+    erbb1p_grb2_gab1pp = (ErbB1(state='p', gs=1) % Grb2(erb=1, gab1=2) %
+                          Gab1(grb2=2, state='pp'))
+    Observable('pErbB11_exceptions', erbb1p_grb2_gab1pp(d=3) % ErbB1(d=3))
+    Observable('pErbB12_exceptions', erbb1p_grb2_gab1pp(d=3) % ErbB2(d=3))
+    alias_model_components()
+    # ErbB1:1 observable pattern isn't symmetric, so we need to explicitly
+    # multiply it by 2 to account for the two ErbB1 molecules in those species.
+    Expression('pErbB1',
+               pErbB1_total - pErbB11_exceptions * 2 - pErbB12_exceptions)
 

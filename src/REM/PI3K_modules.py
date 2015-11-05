@@ -236,7 +236,7 @@ def PIP2_PIP3():
         for d in range(2, i+1):
             pip2_common %= PIP2(pi3k=d)
         reactant = ErbB2() % ErbB3() % PI3K(ras=None, gab1=999, pip2=range(1,i+1)) % pip2_common
-        product = ErbB2() % ErbB3() %PI3K(ras=None, gab1=999, pip2=range(1, i+2)) % pip2_common % PIP2(pi3k=i+1)
+        product = MatchOnce(ErbB2() % ErbB3() %PI3K(ras=None, gab1=999, pip2=range(1, i+2)) % pip2_common % PIP2(pi3k=i+1))
 
         Rule('bind_pip2_pi3k'+num_pip, reactant + PIP2(pi3k=None) <> product, k106, kd106)
         Rule('release_pip2'+num_pip, product  >> reactant + PIP3(akt=None, pdk=None, bnd=None), kd68b)
