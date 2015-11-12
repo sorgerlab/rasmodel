@@ -5,7 +5,7 @@ from pysb.util import alias_model_components
 
 def monomers():
     Monomer('BRAF', ['ras', 'd', 'vem', 'erk'])
-    Monomer('KRAS', ['raf'])
+    Monomer('KRAS', ['raf', 'state'], {'state': ['gdp', 'gtp']})
     Monomer('Vem', ['raf'])
 
     # IC values
@@ -15,11 +15,11 @@ def monomers():
     Parameter('Vem_0', 1000)
 
     alias_model_components()
-    
+
     # Initial conditions
     # ------------------
     Initial(BRAF(d=None, ras=None, erk=None, vem=None), BRAF_0)
-    Initial(KRAS(raf=None), KRAS_0)
+    Initial(KRAS(raf=None, state='gtp'), KRAS_0)
     Initial(Vem(raf=None), Vem_0)
 
 
@@ -55,15 +55,15 @@ def BRAF_dynamics():
 
     # KRAS binding BRAF monomers
     Rule('KRAS_binding_BRAF_monomers',
-         BRAF(ras=None, d=None) + KRAS(raf=None) <>
-         BRAF(ras=1, d=None) % KRAS(raf=1), kdf, kdr)
+         BRAF(ras=None, d=None) + KRAS(raf=None, state='gtp') <>
+         BRAF(ras=1, d=None) % KRAS(raf=1, state='gtp'), kdf, kdr)
     
     # KRAS binding BRAF dimers
     Rule('KRAS_binding_BRAF_dimers',
          BRAF(ras=None, d=1) % BRAF(ras=None, d=1) +
-         KRAS(raf=None) + KRAS(raf=None) <>
+         KRAS(raf=None, state='gtp') + KRAS(raf=None, state='gtp') <>
          BRAF(ras=2, d=1) % BRAF(ras=3, d=1) %
-         KRAS(raf=2) % KRAS(raf=3), kbf, kbr)
+         KRAS(raf=2, state='gtp') % KRAS(raf=3, state='gtp'), kbf, kbr)
 
     # KRAS:BRAF dimerization
     Rule('KRASBRAF_dimerization',

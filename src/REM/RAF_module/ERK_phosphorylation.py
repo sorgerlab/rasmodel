@@ -40,7 +40,7 @@ def by_BRAF_mut():
 
     Parameter('k_bmf', 1)
     Parameter('k_bmr', 0.1)
-    Parameter('k_bme', 3)
+    Parameter('k_bme', 1)
 
     alias_model_components()
 
