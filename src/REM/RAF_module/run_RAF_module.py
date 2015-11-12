@@ -4,6 +4,11 @@ from pysb import *
 
 Model()
 
+# import EGFR_to_RAS
+# EGFR_to_RAS.monomers()
+# EGFR_to_RAS.KRAS_activation()
+# EGFR_to_RAS.declare_observables()
+
 import BRAF_module
 BRAF_module.monomers()
 BRAF_module.BRAF_dynamics()
@@ -19,20 +24,23 @@ ERK_phosphorylation.declare_observables()
 import numpy as np
 from pysb.integrate import Solver
 
-Ras_range = 2 * np.logspace(0, 3, num=20)
-Vemurafenib_range = 2 * np.logspace(0, 3, num=40)
+Ras_range = 2 * np.linspace(0, 1000, num=20)
+sos_range = 2 * np.linspace(0, 1000, num=5)
+Vemurafenib_range = 2 * np.linspace(0, 1000, num=20)
 
 RAF_WT_level = []
 RAF_V600E_level = []
 ERK_P_level = []
 
 for r in Ras_range:
+    # for s in sos_range:
     wt_holder_row = []
     v600e_holder_row = []
     erk_holder_row = []
     for v in Vemurafenib_range:
 
         model.parameters['KRAS_0'].value = r
+        # model.parameters['SOS_0'].value = s
         model.parameters['Vem_0'].value = v
 
         ts = np.linspace(0, 100, 100)

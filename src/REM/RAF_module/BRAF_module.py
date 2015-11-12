@@ -42,6 +42,7 @@ def BRAF_dynamics():
     Parameter('kgr', 1)
     Parameter('khf', 1)  # 100)
     Parameter('khr', 1)  # 1)
+    Parameter('koff', 1)
 
     alias_model_components()
 
@@ -57,7 +58,7 @@ def BRAF_dynamics():
     Rule('KRAS_binding_BRAF_monomers',
          BRAF(ras=None, d=None) + KRAS(raf=None, state='gtp') <>
          BRAF(ras=1, d=None) % KRAS(raf=1, state='gtp'), kdf, kdr)
-    
+
     # KRAS binding BRAF dimers
     Rule('KRAS_binding_BRAF_dimers',
          BRAF(ras=None, d=1) % BRAF(ras=None, d=1) +
@@ -94,6 +95,11 @@ def BRAF_dynamics():
     Rule('Vemurafenib_binds_BRAF_monomer',
          BRAF(vem=None, d=None) + Vem(raf=None) <>
          BRAF(vem=1, d=None) % Vem(raf=1), kef, ker)
+
+    # # Release KRAS:GDP from BRAF
+    # Rule('KRAS_GDP_dissoc_BRAF',
+    #      KRAS(state='gdp', raf=1) % BRAF(ras=1) >>
+    #      KRAS(state='gdp', raf=None) + BRAF(ras=None), koff)
 
 
 def observables():    
