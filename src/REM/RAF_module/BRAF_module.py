@@ -5,13 +5,11 @@ from pysb.util import alias_model_components
 
 def monomers():
     Monomer('BRAF', ['ras', 'd', 'vem', 'erk'])
-    Monomer('KRAS', ['raf', 'state'], {'state': ['gdp', 'gtp']})
     Monomer('Vem', ['raf'])
 
     # IC values
     # --------
     Parameter('BRAF_0', 1e3)
-    Parameter('KRAS_0', 100)
     Parameter('Vem_0', 1000)
 
     alias_model_components()
@@ -19,11 +17,10 @@ def monomers():
     # Initial conditions
     # ------------------
     Initial(BRAF(d=None, ras=None, erk=None, vem=None), BRAF_0)
-    Initial(KRAS(raf=None, state='gtp'), KRAS_0)
     Initial(Vem(raf=None), Vem_0)
 
 
-def BRAF_dynamics():    
+def BRAF_dynamics():
     # Parameters
     # -----------
     Parameter('kaf', 0.0001)
@@ -96,10 +93,10 @@ def BRAF_dynamics():
          BRAF(vem=None, d=None) + Vem(raf=None) <>
          BRAF(vem=1, d=None) % Vem(raf=1), kef, ker)
 
-    # # Release KRAS:GDP from BRAF
-    # Rule('KRAS_GDP_dissoc_BRAF',
-    #      KRAS(state='gdp', raf=1) % BRAF(ras=1) >>
-    #      KRAS(state='gdp', raf=None) + BRAF(ras=None), koff)
+    # Release KRAS:GDP from BRAF
+    Rule('KRAS_GDP_dissoc_BRAF',
+         KRAS(state='gdp', raf=1) % BRAF(ras=1) >>
+         KRAS(state='gdp', raf=None) + BRAF(ras=None), koff)
 
 
 def observables():    
