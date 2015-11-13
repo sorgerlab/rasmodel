@@ -47,4 +47,10 @@ while t0 < tf
 end
     
 y_obs = m.get_observables(yout);
+
+plot(tout, y_obs.ERK_P)
+axis([2e4 1e5 0 80])
+xlabel('time (a.u)', 'Fontsize', 20)
+ylabel('ERK~P', 'Fontsize', 20)
+title('Addition of Vemurafenib (1e3 a.u) at t = 5e4 a.u', 'Fontsize', 15)
     
