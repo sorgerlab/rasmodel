@@ -49,7 +49,7 @@ for r in Ras_range:
         # model.parameters['SOS_0'].value = s
         model.parameters['Vem_0'].value = v
 
-        ts = np.linspace(0, 100000, 100)
+        ts = np.linspace(0, 1e5, 100)
         solver = Solver(model, ts)
         solver.run()
 
