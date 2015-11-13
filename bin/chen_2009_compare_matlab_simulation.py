@@ -1,4 +1,4 @@
-from REM.chen_2009 import model
+from rasmodel.chen_2009 import model
 from pysb.integrate import Solver
 from pysb.bng import generate_equations
 import matplotlib.pyplot as plt
@@ -8,6 +8,7 @@ import sympy
 import scipy
 import scipy.io
 import os.path
+import pkg_resources
 
 
 plt.figure()
@@ -23,8 +24,8 @@ solver.run()
 pysb_sim = merge_arrays((solver.yobs, solver.yexpr), flatten=True)
 
 ## Load MATLAB simulation results.
-matlab_sim = scipy.io.loadmat(os.path.join(os.path.dirname(__file__),
-                                           'matlab_sim.mat'))
+f = pkg_resources.resource_stream('rasmodel.chen_2009', 'data/matlab_sim.mat')
+matlab_sim = scipy.io.loadmat(f)
 
 ## Plot results and differences.
 for i, (pobs, mobs, color) in enumerate([('pErbB1', 'Y_perbb1', 'b'),

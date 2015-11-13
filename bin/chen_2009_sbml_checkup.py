@@ -1,9 +1,9 @@
 """Debugging/cleanup checks."""
 
 import itertools
-import chen_2009_original_sbml
+import rasmodel.chen_2009.original_sbml as sbml
 
-model = chen_2009_original_sbml.load_model()
+model = sbml.load_model()
 
 # determine redundant species (same name)
 sa = sorted(model.species, key=lambda s: (s.label, s.compartment))

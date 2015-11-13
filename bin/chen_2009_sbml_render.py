@@ -4,7 +4,7 @@ import os
 import itertools
 import argparse
 import pygraphviz
-import chen_2009_original_sbml
+import rasmodel.chen_2009.original_sbml as sbml
 
 def neighbor_set(nodes):
     return set(itertools.chain.from_iterable(graph.neighbors(n) for n in nodes))
@@ -90,7 +90,7 @@ argparser.add_argument('--simplify-adapters', action='store_true',
 args = argparser.parse_args()
 
 
-model = chen_2009_original_sbml.load_model()
+model = sbml.load_model()
 model.export_globals()
 
 
@@ -572,7 +572,7 @@ if args.simplify_adapters:
 
 
 # Write output to .dot file in same directory as this script.
-dot_path = os.path.join(os.path.dirname(__file__), 'chen_2009_original.dot')
+dot_path = os.path.join(os.path.dirname(__file__), 'chen_2009_sbml.dot')
 graph.write(dot_path)
 # Call graphviz to render a PDF.
 pdf_path = dot_path.replace('.dot', '.pdf')
