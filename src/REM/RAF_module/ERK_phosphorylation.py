@@ -6,15 +6,15 @@ from pysb.util import alias_model_components
 
 
 def monomers():
-    Monomer('ERK', ['s', 'state'], {'state': ['up', 'p']})
+    Monomer('ERK', ['s', 'sos', 'state'], {'state': ['up', 'p']})
     Monomer('DUSP', ['erk'])
 
-    Parameter('ERK_0', 1e3)
+    Parameter('ERK_0', 1e2)  # 1e3
     Parameter('DUSP_0', 1e2)
 
     alias_model_components()
 
-    Initial(ERK(s=None, state='up'), ERK_0)
+    Initial(ERK(s=None, sos=None,  state='up'), ERK_0)
     Initial(DUSP(erk=None), DUSP_0)
     
 
@@ -74,8 +74,20 @@ def DUSP_phospatase():
 
     alias_model_components()
 
-    catalyze_state(DUSP(), 'erk', ERK(), 's', 'state', 'p', 'up',
+    catalyze_state(DUSP(), 'erk', ERK(sos=None), 's', 'state', 'p', 'up',
                    (k_dspf, k_dspr, k_dspe))
+
+
+def ERK_feedback():
+
+    Parameter('k_epsf', 1)
+    Parameter('k_epsr', 0.1)
+    Parameter('k_epse', 1)
+
+    alias_model_components()
+
+    catalyze_state(ERK(state='p', s=None), 'sos', SOS(ras=None, phos=None),
+                   'erk', 'state', 'up', 'p', (k_epsf, k_epsr, k_epse))
 
 
 def declare_observables():
