@@ -83,6 +83,23 @@ def KRAS_activation():
          kf5)
 
 
+def SOS_dephosphorylation():
+
+    Monomer('SOS_phos', ['sos'])
+
+    Parameter('SOS_phos_0', 100)
+    Parameter('k_spf', 1)
+    Parameter('k_spr', 0.1)
+    Parameter('k_spe', 1e-4)
+
+    alias_model_components()
+
+    Initial(SOS_phos(sos=None), SOS_phos_0)
+
+    catalyze_state(SOS_phos(), 'sos', SOS(ras=None, erk=None), 'phos',
+                   'state', 'p', 'up', (k_spf, k_spr, k_spe))
+
+
 def declare_observables():
 
     # Observables
