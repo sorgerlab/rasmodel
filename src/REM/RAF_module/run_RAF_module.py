@@ -4,7 +4,8 @@ from pysb import *
 
 Model()
 
-import EGFR_to_RAS
+# import EGFR_to_RAS
+import EGFR_to_RAS_dim as EGFR_to_RAS
 EGFR_to_RAS.monomers()
 EGFR_to_RAS.KRAS_activation()
 EGFR_to_RAS.SOS_dephosphorylation()
