@@ -3,6 +3,7 @@ import collections
 import re
 import inspect
 import os
+import pkg_resources
 import lxml.etree
 
 
@@ -167,9 +168,9 @@ def load_model():
     if 'model' in globals():
         return model
 
-    model_filename = os.path.join(os.path.dirname(__file__),
-                                  'chen_2009_original_sbml_norules.xml')
-    f = open(model_filename)
+    parent_package = __name__.rpartition('.')[0]
+    f = pkg_resources.resource_stream(parent_package,
+                                      'data/original_sbml_norules.xml')
 
     model = Model([], [], [])
     species_id_map = {}

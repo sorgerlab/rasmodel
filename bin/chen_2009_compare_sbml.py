@@ -5,8 +5,8 @@ import difflib
 import re
 import argparse
 import sys
-import chen_2009_original_sbml
-from REM import chen_2009
+import rasmodel.chen_2009
+import rasmodel.chen_2009.original_sbml
 import pysb
 from pysb.bng import generate_equations
 
@@ -17,7 +17,7 @@ def get_pysb_species():
     # specifically mean the sbml version of the Chen 2009 model (as opposed to
     # the pysb version of it) and not any sbml model in general.
 
-    model = chen_2009.model
+    model = rasmodel.chen_2009.model
 
     # This is a rough total ordering of the protein names as used in the sbml
     # model species labels. E.g. EGF always comes before ErbB1. The sbml naming
@@ -105,7 +105,7 @@ def get_pysb_species():
 
 
 def get_sbml_species():
-    model = chen_2009_original_sbml.model
+    model = rasmodel.chen_2009.original_sbml.model
     # We will ignore species whose labels contain these strings.
     ignore_patterns = ('_i', '_h', 'Inh')
     # We will ignore these individually named species.
@@ -130,7 +130,7 @@ def get_sbml_species():
 
 
 def get_pysb_reactions():
-    model = chen_2009.model
+    model = rasmodel.chen_2009.model
 
     pysb_to_sbml = {p.index: s.name for p, s in zip(pysb_species, sbml_species)}
     sink_index = next(i for i, s in enumerate(model.species)
@@ -181,7 +181,7 @@ def get_pysb_reactions():
 
 
 def get_sbml_reactions():
-    model = chen_2009_original_sbml.model
+    model = rasmodel.chen_2009.original_sbml.model
 
     sinks = tuple(s for s in model.species if s.name in ('c13', 'c520', 'c86'))
 
@@ -220,11 +220,11 @@ argparser.add_argument('-m', '--print-matches', action='store_true',
                        "always printed)")
 args = argparser.parse_args(sys.argv[1:])
 
-pysb_model = chen_2009.model
+pysb_model = rasmodel.chen_2009.model
 generate_equations(pysb_model)
 
-chen_2009_original_sbml.load_model()
-sbml_model = chen_2009_original_sbml.model
+rasmodel.chen_2009.original_sbml.load_model()
+sbml_model = rasmodel.chen_2009.original_sbml.model
 
 pysb_species_names, pysb_species = get_pysb_species()
 sbml_species_names, sbml_species = get_sbml_species()
