@@ -27,9 +27,9 @@ ERK_phosphorylation.declare_observables()
 import numpy as np
 from pysb.integrate import Solver
 
-Ras_range = 2 * np.linspace(0, 2000, num=10)
+Ras_range = 2 * np.linspace(0, 1e5, num=10)
 sos_range = 2 * np.linspace(0, 1000, num=10)
-Vemurafenib_range = 2 * np.linspace(0, 1000, num=10)
+Vemurafenib_range = 2 * np.linspace(0, 1e5, num=10)
 
 RAF_WT_level = []
 RAF_V600E_level = []
@@ -79,18 +79,18 @@ import matplotlib.pyplot as plt
 fig, (ax1, ax2) = plt.subplots(1, 2)
 
 # wt_c = ax1.pcolor(Vemurafenib_range, Ras_range, wt, vmin=0)
-# mut_c = ax1.pcolor(Vemurafenib_range, sos_range, v600e, vmin=0)
+mut_c = ax1.pcolor(Vemurafenib_range, Ras_range, v600e, vmin=0)
 # kras_act = ax1.pcolor(Vemurafenib_range, sos_range, kras, vmin=0)
-sos_act = ax1.pcolor(Vemurafenib_range, Ras_range, sos, vmin=0)
+# sos_act = ax1.pcolor(Vemurafenib_range, Ras_range, sos, vmin=0)
 erk_p = ax2.pcolor(Vemurafenib_range, Ras_range, erkp, vmin=0)
 
 ax1.set_xlabel('Vemurafenib')
 ax2.set_xlabel('Vemurafenib')
 ax1.set_ylabel('KRAS')
-ax1.set_title('active SOS')
+ax1.set_title('active BRAF')
 ax2.set_title('ERK_P')
 
-plt.colorbar(sos_act, ax=ax1)
+plt.colorbar(mut_c, ax=ax1)
 plt.colorbar(erk_p, ax=ax2)
 
 plt.show()
