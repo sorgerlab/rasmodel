@@ -2,11 +2,20 @@ t0 = 0;
 tf = 1e5;
 tspan = [t0 tf];
 
-m = run_timecourse_test();
+m = run_timecourse();
 m.parameters.Vem_0 = 0;
 % Parameters to control negative feedback
-:qm.parameters.k_spe = 1e-3;
-m.parameters.k_dspe = 50;
+m.parameters.k_spe = 1e-4;  % k_spe = 1e-3 and k_dspe = 50 work well too
+m.parameters.k_dspe = 10;
+m.parameters.kf5 = 0.5; % Important parameter to control extent of adaptive response 
+
+% Simulate mutants
+% ================
+% KRAS mutation
+% m.parameters.kf5 = 0.05;
+
+% BRAF overexpression
+m.parameters.BRAF_0 = 1e5;
 
 
 options = odeset('Events', @add_vemurafenib, 'RelTol', 1e-4, 'AbsTol', 1e-6);
@@ -54,5 +63,5 @@ plot(tout, y_obs.ERK_P/m.parameters.ERK_0)
 axis([4e4 8e4 0 1])
 xlabel('time (a.u)', 'Fontsize', 20)
 ylabel('ERK~P', 'Fontsize', 20)
-title('Addition of Vemurafenib (1e3 a.u) at t = 5e4 a.u', 'Fontsize', 15)
+title('Addition of Vemurafenib (2e5 a.u) at t = 5e4 a.u', 'Fontsize', 15)
     

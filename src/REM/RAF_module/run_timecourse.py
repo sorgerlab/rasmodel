@@ -30,9 +30,9 @@ ERK_phosphorylation.declare_observables()
 # MEK_ERK_phosphorylation.ERK_feedback()
 # MEK_ERK_phosphorylation.declare_observables()
 
-import CRAF_module
-CRAF_module.monomers()
-CRAF_module.CRAF_binds_KRAS()
+# import CRAF_module
+# CRAF_module.monomers()
+# CRAF_module.CRAF_binds_KRAS()
 
 
 from pysb.export import export
