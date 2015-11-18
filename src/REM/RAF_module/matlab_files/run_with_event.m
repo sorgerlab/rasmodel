@@ -2,12 +2,12 @@ t0 = 0;
 tf = 1e5;
 tspan = [t0 tf];
 
-m = run_timecourse();
+m = run_timecourse_test();
 m.parameters.Vem_0 = 0;
-m.parameters.ERK_0 = 1e2;
-m.parameters.DUSP_0 = 1e2;
-m.parameters.k_spe = 1e-4;
-m.parameters.SOS_phos_0 = 100;
+% Parameters to control negative feedback
+:qm.parameters.k_spe = 1e-3;
+m.parameters.k_dspe = 50;
+
 
 options = odeset('Events', @add_vemurafenib, 'RelTol', 1e-4, 'AbsTol', 1e-6);
 
@@ -39,7 +39,7 @@ while t0 < tf
     end
     
     if ie == 1
-        initial_values(8) = 1e3;
+        initial_values(8) = 2e5;
     end
     t0 = t(nt);
     
@@ -51,7 +51,7 @@ end
 y_obs = m.get_observables(yout);
 
 plot(tout, y_obs.ERK_P/m.parameters.ERK_0)
-axis([2e4 1e5 0 1])
+axis([4e4 8e4 0 1])
 xlabel('time (a.u)', 'Fontsize', 20)
 ylabel('ERK~P', 'Fontsize', 20)
 title('Addition of Vemurafenib (1e3 a.u) at t = 5e4 a.u', 'Fontsize', 15)
