@@ -97,7 +97,7 @@ def SOS_dephosphorylation():
     Parameter('SOS_phos_0', 100)
     Parameter('k_spf', 1)
     Parameter('k_spr', 0.1)
-    Parameter('k_spe', 1e-4)
+    Parameter('k_spe', 1)
 
     alias_model_components()
 
