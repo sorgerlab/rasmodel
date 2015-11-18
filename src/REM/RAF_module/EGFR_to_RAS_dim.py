@@ -21,7 +21,7 @@ def monomers():
     Parameter('EGFR_0', 1e5)
     Parameter('Grb2_0', 1e5)
     Parameter('SOS_0', 1e3)
-    Parameter('KRAS_0', 2e3)
+    Parameter('KRAS_0', 2e5)
 
     alias_model_components()
 
@@ -45,9 +45,9 @@ def KRAS_activation():
     Parameter('kf3', 1)
     Parameter('kr3', 0.1)
     Parameter('kf4', 1)
-    Parameter('kr4', 0.1)
-    Parameter('ke4', 1)
-    Parameter('kf5', 5)
+    Parameter('kr4', 0.001)
+    Parameter('ke4', 50)
+    Parameter('kf5', 1)
     Parameter('kr5', 1e-9)
     Parameter('k_dimf', 1)
     Parameter('k_dimr', 0.1)
