@@ -9,7 +9,7 @@ def monomers():
 
     # IC values
     # --------
-    Parameter('BRAF_0', 1e3)
+    Parameter('BRAF_0', 1e5)
     Parameter('Vem_0', 1000)
 
     alias_model_components()
@@ -23,21 +23,21 @@ def monomers():
 def BRAF_dynamics():
     # Parameters
     # -----------
-    Parameter('kaf', 0.0001)
+    Parameter('kaf', 1e-6)
     Parameter('kar', 1)
     Parameter('kbf', 1)
-    Parameter('kbr', 1e-9)
+    Parameter('kbr', 1e-11)
     Parameter('kcf', 1)
     Parameter('kcr', 0.0001)
     Parameter('kdf', 1)
     Parameter('kdr', 0.1)
-    Parameter('kef', 1)
+    Parameter('kef', 1e-2)
     Parameter('ker', 0.1)
-    Parameter('kff', 0.001)
+    Parameter('kff', 1e-5)
     Parameter('kfr', 1)
-    Parameter('kgf', 1e-7)
+    Parameter('kgf', 1e-11)
     Parameter('kgr', 1)
-    Parameter('khf', 1)  # 100)
+    Parameter('khf', 1e-2)  # 100)
     Parameter('khr', 1)  # 1)
     Parameter('koff', 1)
 
