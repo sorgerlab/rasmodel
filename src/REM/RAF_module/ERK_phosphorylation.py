@@ -70,7 +70,7 @@ def DUSP_phospatase():
 
     Parameter('k_dspf', 1)
     Parameter('k_dspr', 0.001)
-    Parameter('k_dspe', 10)
+    Parameter('k_dspe', 50)
 
     alias_model_components()
 
