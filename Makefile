@@ -1,5 +1,5 @@
 # Added these in for building of the model file
-CODEDIR = src
+CODEDIR = bin
 DOCDIR = doc
 DOCMODEL = $(DOCDIR)/doc_model
 OUTPUTDIR = output

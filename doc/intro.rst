@@ -67,8 +67,30 @@ To extract and run the PySB model, `PySB <http://pysb.org>`_ is required, along
 with its various dependencies (including Numpy, Scipy, SymPy, Matplotlib,
 BioNetGen, and optionally `KaSim <http://github.com/Kappa-Dev/KaSim>`_).
 
-Contact
--------
+Team members and contacts
+-------------------------
+
+RAS Model (REM)
+~~~~~~~~~~~~~~~
+* John Bachman
+* Benjamin Gyori
+* Jeremy Muhlich
+* Kartik Subramanian
+
+Additional INDRA developers
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+* Daniel Carlin
+* William Chen
+
+Principal investigators
+~~~~~~~~~~~~~~~~~~~~~~~
+* Peter Sorger
+* Dexter Pratt
+
+Natural language parsers
+~~~~~~~~~~~~~~~~~~~~~~~~
+* TRIPS - James Allen, IHMC / University of Rochester
+* REACH - Mihai Surdeanu, University of Arizona
 
 If you have questions or would like to contribute, please contact
 `John Bachman <http://github.com/johnbachman>`_.
