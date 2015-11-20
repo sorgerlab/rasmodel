@@ -1,0 +1,308 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>BNGL format &mdash; Ras model 0.1 documentation</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+    <link rel="top" title="Ras model 0.1 documentation" href="../index.html"/>
+        <link rel="up" title="Assembled model" href="index.html"/>
+        <link rel="next" title="Kappa format" href="kappa.html"/>
+        <link rel="prev" title="PySB format" href="pysb.html"/> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> Ras model
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.1
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../intro.html">Ras Executable Model Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../doc_model/index.html">Documented model</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Assembled model</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="pysb.html">PySB format</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="">BNGL format</a></li>
+<li class="toctree-l2"><a class="reference internal" href="kappa.html">Kappa format</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sbml.html">SBML format</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../results/index.html">Model outputs</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../index.html">Ras model</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="index.html">Assembled model</a> &raquo;</li>
+      
+    <li>BNGL format</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../_sources/assembled/bngl.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="bngl-format">
+<h1>BNGL format<a class="headerlink" href="#bngl-format" title="Permalink to this headline">¶</a></h1>
+<p><a class="reference download internal" href="../_downloads/ras_model.bngl"><code class="xref download docutils literal"><span class="pre">Download</span> <span class="pre">the</span> <span class="pre">model</span> <span class="pre">in</span> <span class="pre">BNGL</span></code></a></p>
+<div class="highlight-python"><div class="highlight"><pre>begin parameters
+  bind_HRASclosed_GDP_kf                        1.000000e+07
+  bind_HRASclosed_GDP_kr                        1.754386e+02
+  equilibrate_HRASclosedGDP_to_HRASopenGDP_kf   1.480000e+01
+  equilibrate_HRASclosedGDP_to_HRASopenGDP_kr   1.800000e-05
+  bind_HRASclosed_GTP_kf                        1.000000e+07
+  bind_HRASclosed_GTP_kr                        8.000000e+01
+  equilibrate_HRASclosedGTP_to_HRASopenGTP_kf   1.670000e+01
+  equilibrate_HRASclosedGTP_to_HRASopenGTP_kr   1.800000e-05
+  k_HRAS_gtpase                                 1.000000e+00
+  k_recycle_gtp_from_gdp                        1.000000e+07
+  KRAS_0                                        1.000000e-08
+  NRAS_0                                        1.000000e-08
+  HRAS_0                                        1.000000e-08
+  GTP_0                                         4.680000e-04
+  GDP_0                                         4.680000e-05
+  Pi_0                                          1.000000e-08
+  SOS1_0                                        1.000000e-08
+  SOS2_0                                        1.000000e-08
+  RASGRF1_0                                     1.000000e-08
+  RASGRF2_0                                     1.000000e-08
+  RASA1_0                                       1.000000e-08
+  NF1_0                                         1.000000e-08
+  RASA2_0                                       1.000000e-08
+  RASA3_0                                       1.000000e-08
+  mGTP_0                                        0.000000e+00
+  mGDP_0                                        0.000000e+00
+end parameters
+
+begin molecule types
+  KRAS(gtp,gef,p_loop,s1s2~closed~open,CAAX,oncogenic~n~y)
+  NRAS(gtp,gef,p_loop,s1s2~closed~open,CAAX,oncogenic~n~y)
+  HRAS(gtp,gef,p_loop,s1s2~closed~open,CAAX,oncogenic~n~y)
+  GTP(p,label~n~y)
+  GDP(p,label~n~y)
+  Pi()
+  SOS1(rasgef)
+  SOS2(rasgef)
+  RASGRF1(rasgef)
+  RASGRF2(rasgef)
+  RASA1(SH2_1,SH3,SH2_2,PH,C2,rasgap)
+  NF1(rasgap,CRALTRIO)
+  RASA2(C2_1,C2_2,rasgap,PH,BTK)
+  RASA3(C2_1,C2_2,rasgap,PH,BTK)
+end molecule types
+
+begin observables
+  Molecules HRAS_GTP_          HRAS(gtp!1).GTP(p!1)
+  Molecules HRAS_mGTP_         HRAS(gtp!1).GTP(p!1,label~y)
+  Molecules HRAS_GTP_closed_   HRAS(gtp!1,s1s2~closed).GTP(p!1)
+  Molecules HRAS_GTP_open_     HRAS(gtp!1,s1s2~open).GTP(p!1)
+  Molecules HRAS_GDP_          HRAS(gtp!1).GDP(p!1)
+  Molecules HRAS_mGDP_         HRAS(gtp!1).GDP(p!1,label~y)
+  Molecules HRAS_GDP_closed_   HRAS(gtp!1,s1s2~closed).GDP(p!1)
+  Molecules HRAS_GDP_open_     HRAS(gtp!1,s1s2~open).GDP(p!1)
+  Molecules HRAS_nf_           HRAS(gtp)
+  Molecules GTP_               GTP()
+  Molecules GDP_               GDP()
+  Molecules Pi_                Pi()
+end observables
+
+begin species
+  KRAS(gtp,gef,p_loop,s1s2~closed,CAAX,oncogenic~n)   KRAS_0
+  NRAS(gtp,gef,p_loop,s1s2~closed,CAAX,oncogenic~n)   NRAS_0
+  HRAS(gtp,gef,p_loop,s1s2~closed,CAAX,oncogenic~n)   HRAS_0
+  GTP(p,label~n)                                      GTP_0
+  GDP(p,label~n)                                      GDP_0
+  Pi()                                                Pi_0
+  SOS1(rasgef)                                        SOS1_0
+  SOS2(rasgef)                                        SOS2_0
+  RASGRF1(rasgef)                                     RASGRF1_0
+  RASGRF2(rasgef)                                     RASGRF2_0
+  RASA1(SH2_1,SH3,SH2_2,PH,C2,rasgap)                 RASA1_0
+  NF1(rasgap,CRALTRIO)                                NF1_0
+  RASA2(C2_1,C2_2,rasgap,PH,BTK)                      RASA2_0
+  RASA3(C2_1,C2_2,rasgap,PH,BTK)                      RASA3_0
+  GTP(p,label~y)                                      mGTP_0
+  GDP(p,label~y)                                      mGDP_0
+end species
+
+begin reaction rules
+  bind_HRASclosed_GDP:                       HRAS(gtp,s1s2~closed) + GDP(p) &lt;-&gt; HRAS(gtp!1,s1s2~closed).GDP(p!1)    bind_HRASclosed_GDP_kf, bind_HRASclosed_GDP_kr
+  equilibrate_HRASclosedGDP_to_HRASopenGDP:  HRAS(gtp!99,gef,s1s2~closed).GDP(p!99) &lt;-&gt; HRAS(gtp!99,gef,s1s2~open).GDP(p!99)    equilibrate_HRASclosedGDP_to_HRASopenGDP_kf, equilibrate_HRASclosedGDP_to_HRASopenGDP_kr
+  bind_HRASclosed_GTP:                       HRAS(gtp,s1s2~closed) + GTP(p) &lt;-&gt; HRAS(gtp!1,s1s2~closed).GTP(p!1)    bind_HRASclosed_GTP_kf, bind_HRASclosed_GTP_kr
+  equilibrate_HRASclosedGTP_to_HRASopenGTP:  HRAS(gtp!99,gef,s1s2~closed).GTP(p!99) &lt;-&gt; HRAS(gtp!99,gef,s1s2~open).GTP(p!99)    equilibrate_HRASclosedGTP_to_HRASopenGTP_kf, equilibrate_HRASclosedGTP_to_HRASopenGTP_kr
+  HRAS_converts_GTP_GDP:                     HRAS(gtp!1,gef,s1s2~open).GTP(p!1,label~n) -&gt; HRAS(gtp!1,gef,s1s2~open).GDP(p!1,label~n) + Pi()    k_HRAS_gtpase
+  HRAS_converts_mGTP_mGDP:                   HRAS(gtp!1,gef,s1s2~open).GTP(p!1,label~y) -&gt; HRAS(gtp!1,gef,s1s2~open).GDP(p!1,label~y) + Pi()    k_HRAS_gtpase
+  recycle_gtp_from_gdp_rule:                 GDP(p,label~n) + Pi() -&gt; GTP(p,label~n)    k_recycle_gtp_from_gdp
+  recycle_mgtp_from_mgdp_rule:               GDP(p,label~y) + Pi() -&gt; GTP(p,label~y)    k_recycle_gtp_from_gdp
+end reaction rules
+</pre></div>
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="kappa.html" class="btn btn-neutral float-right" title="Kappa format" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="pysb.html" class="btn btn-neutral" title="PySB format" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2015, Sorger Lab.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'0.1',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

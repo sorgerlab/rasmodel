@@ -1,0 +1,293 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Ras regulation by RasGAPs &mdash; Ras model 0.1 documentation</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+    <link rel="top" title="Ras model 0.1 documentation" href="../../index.html"/>
+        <link rel="up" title="Ras" href="index.html"/>
+        <link rel="next" title="Raf" href="../raf/index.html"/>
+        <link rel="prev" title="Ras regulation by GEFs" href="ras_gefs.html"/> 
+
+  
+  <script src="../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> Ras model
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.1
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../intro.html">Ras Executable Model Overview</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">Documented model</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">Ras</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="ras_gtpase.html">Ras proteins are GTPases</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ras_gefs.html">Ras regulation by GEFs</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="">Ras regulation by RasGAPs</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#rasa1">RASA1</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#nf1">NF1</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#rasa2">RASA2</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#rasa3">RASA3</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../raf/index.html">Raf</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../initial_conditions.html">Default initial conditions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../observables.html">Observables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../references.html">References</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../assembled/index.html">Assembled model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../results/index.html">Model outputs</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../../index.html">Ras model</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="../index.html">Documented model</a> &raquo;</li>
+      
+          <li><a href="index.html">Ras</a> &raquo;</li>
+      
+    <li>Ras regulation by RasGAPs</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../../_sources/doc_model/ras/ras_gaps.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="ras-regulation-by-rasgaps">
+<h1>Ras regulation by RasGAPs<a class="headerlink" href="#ras-regulation-by-rasgaps" title="Permalink to this headline">¶</a></h1>
+<p>GTP hydrolysis by Ras is slow but is accelerated by RasGAPs.</p>
+<blockquote>
+<div><a class="reference internal" href="../references.html#pmid9247124" id="id1">[PMID9247124]</a>: The GTP-binding proteins return to the inactive state by virtue
+of the GTPase reaction, which is usually very slow but can be accelerated
+by the action of GAPs, in the case of the Ras/Ras-GAPs and Ran/Ran-GAP
+interactions by several orders of magnitude <a class="reference internal" href="../references.html#pmid1569940" id="id2">[PMID1569940]</a> <a class="reference internal" href="../references.html#pmid8262937" id="id3">[PMID8262937]</a>
+<a class="reference internal" href="../references.html#pmid7548002" id="id4">[PMID7548002]</a>.</div></blockquote>
+<p>There are several GAPs for the Ras subfamily.</p>
+<blockquote>
+<div><a class="reference internal" href="../references.html#pmid9247124" id="id5">[PMID9247124]</a>: Five mammalian GAPs for Ras have been described. The first,
+p120GAP, is the prototype of this class of proteins and was the first one
+to be isolated 20, 21 and 22. Apart from being a regulator of Ras, its
+N-terminal domain contains a number of signalling modules such as SH2, SH3,
+PH, Calb domains and is believed to be a signal transduction molecule that
+may act independently of Ras 23 and 24.</div></blockquote>
+<div class="section" id="rasa1">
+<h2>RASA1<a class="headerlink" href="#rasa1" title="Permalink to this headline">¶</a></h2>
+<p>The domain information for RASA1 was taken from <a class="reference external" href="http://www.uniprot.org/uniprot/P20936">Uniprot (ID: P20936)</a>.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="c">#  p120GAP = RASA1.</span>
+<span class="c"># CaLB (calcium lipid binding domain) is also known as a C2 domain.</span>
+<span class="n">Monomer</span><span class="p">(</span><span class="s">&#39;RASA1&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;SH2_1&#39;</span><span class="p">,</span> <span class="s">&#39;SH3&#39;</span><span class="p">,</span> <span class="s">&#39;SH2_2&#39;</span><span class="p">,</span> <span class="s">&#39;PH&#39;</span><span class="p">,</span> <span class="s">&#39;C2&#39;</span><span class="p">,</span> <span class="s">&#39;rasgap&#39;</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="nf1">
+<h2>NF1<a class="headerlink" href="#nf1" title="Permalink to this headline">¶</a></h2>
+<blockquote>
+<div><a class="reference internal" href="../references.html#pmid9247124" id="id6">[PMID9247124]</a>: The second Ras-specific GAP is neurofibromin (NF1), which is
+the product of the neurofibromatosis gene [PMID25] and has also been shown to
+stimulate the GTPase of Ras 26, 27 and 28.  This gene has been found to be
+frequently mutated in patients with the disease neurofibromatosis type I
+29, 30 and 31 but also, albeit less frequently, in solid tumors [PMID32].</div></blockquote>
+<p><a class="reference external" href="http://www.uniprot.org/uniprot/P21359">Uniprot (ID: P21359)</a>.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">Monomer</span><span class="p">(</span><span class="s">&#39;NF1&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;rasgap&#39;</span><span class="p">,</span> <span class="s">&#39;CRALTRIO&#39;</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="rasa2">
+<h2>RASA2<a class="headerlink" href="#rasa2" title="Permalink to this headline">¶</a></h2>
+<blockquote>
+<div><a class="reference internal" href="../references.html#pmid9247124" id="id7">[PMID9247124]</a>: GAP1m, a mammalian homologue of the Drosophila GAP1 gene [PMID33],
+has been described, and a close homologue GAPIII [PMID34], both of which
+contain, in addition to the GRD (GAP-related domain), C2 domains and a PH
+domain.</div></blockquote>
+<p><a class="reference external" href="http://www.uniprot.org/uniprot/Q15283">Uniprot (ID: Q15283)</a>.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="c"># GAP1m = RASA2</span>
+<span class="n">Monomer</span><span class="p">(</span><span class="s">&#39;RASA2&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;C2_1&#39;</span><span class="p">,</span> <span class="s">&#39;C2_2&#39;</span><span class="p">,</span> <span class="s">&#39;rasgap&#39;</span><span class="p">,</span> <span class="s">&#39;PH&#39;</span><span class="p">,</span> <span class="s">&#39;BTK&#39;</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="rasa3">
+<h2>RASA3<a class="headerlink" href="#rasa3" title="Permalink to this headline">¶</a></h2>
+<p>NOTE: As it turned out GAPIII and GAP1IP4BP are the same protein.</p>
+<blockquote>
+<div><a class="reference internal" href="../references.html#pmid9247124" id="id8">[PMID9247124]</a>: Recently an inositol-4-phosphate (IP4) binding protein GAP1IP4BP
+has been purified, cloned, and found to contain a Ras-GAP catalytic domain.
+In contrast to the other GAP mentioned, which are specific for Ras,
+GAP1IP4BP stimulates the GTPase of both Ras and Rap [PMID35].</div></blockquote>
+<p><a class="reference external" href="http://www.uniprot.org/uniprot/Q14644">Uniprot (ID: Q14644)</a>.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="c"># GAPIII = GAP1IP4BP = RASA3</span>
+<span class="n">Monomer</span><span class="p">(</span><span class="s">&#39;RASA3&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;C2_1&#39;</span><span class="p">,</span> <span class="s">&#39;C2_2&#39;</span><span class="p">,</span> <span class="s">&#39;rasgap&#39;</span><span class="p">,</span> <span class="s">&#39;PH&#39;</span><span class="p">,</span> <span class="s">&#39;BTK&#39;</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../raf/index.html" class="btn btn-neutral float-right" title="Raf" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="ras_gefs.html" class="btn btn-neutral" title="Ras regulation by GEFs" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2015, Sorger Lab.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../',
+            VERSION:'0.1',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

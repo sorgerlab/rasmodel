@@ -1,0 +1,260 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Kappa format &mdash; Ras model 0.1 documentation</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+    <link rel="top" title="Ras model 0.1 documentation" href="../index.html"/>
+        <link rel="up" title="Assembled model" href="index.html"/>
+        <link rel="next" title="SBML format" href="sbml.html"/>
+        <link rel="prev" title="BNGL format" href="bngl.html"/> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> Ras model
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.1
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../intro.html">Ras Executable Model Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../doc_model/index.html">Documented model</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Assembled model</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="pysb.html">PySB format</a></li>
+<li class="toctree-l2"><a class="reference internal" href="bngl.html">BNGL format</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="">Kappa format</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sbml.html">SBML format</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../results/index.html">Model outputs</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../index.html">Ras model</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="index.html">Assembled model</a> &raquo;</li>
+      
+    <li>Kappa format</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../_sources/assembled/kappa.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="kappa-format">
+<h1>Kappa format<a class="headerlink" href="#kappa-format" title="Permalink to this headline">¶</a></h1>
+<p><a class="reference download internal" href="../_downloads/ras_model.ka"><code class="xref download docutils literal"><span class="pre">Download</span> <span class="pre">the</span> <span class="pre">model</span> <span class="pre">in</span> <span class="pre">Kappa</span></code></a></p>
+<div class="highlight-python"><div class="highlight"><pre>&#39;bind_HRASclosed_GDP&#39; HRAS(gtp,s1s2~closed),GDP(p) -&gt; HRAS(gtp!1,s1s2~closed),GDP(p!1) @ 10000000.0
+&#39;bind_HRASclosed_GDP_rev&#39; HRAS(gtp!1,s1s2~closed),GDP(p!1) -&gt; HRAS(gtp,s1s2~closed),GDP(p) @ 175.438596491
+&#39;equilibrate_HRASclosedGDP_to_HRASopenGDP&#39; HRAS(gtp!99,gef,s1s2~closed),GDP(p!99) -&gt; HRAS(gtp!99,gef,s1s2~open),GDP(p!99) @ 14.8
+&#39;equilibrate_HRASclosedGDP_to_HRASopenGDP_rev&#39; HRAS(gtp!99,gef,s1s2~open),GDP(p!99) -&gt; HRAS(gtp!99,gef,s1s2~closed),GDP(p!99) @ 1.8e-05
+&#39;bind_HRASclosed_GTP&#39; HRAS(gtp,s1s2~closed),GTP(p) -&gt; HRAS(gtp!1,s1s2~closed),GTP(p!1) @ 10000000.0
+&#39;bind_HRASclosed_GTP_rev&#39; HRAS(gtp!1,s1s2~closed),GTP(p!1) -&gt; HRAS(gtp,s1s2~closed),GTP(p) @ 80.0
+&#39;equilibrate_HRASclosedGTP_to_HRASopenGTP&#39; HRAS(gtp!99,gef,s1s2~closed),GTP(p!99) -&gt; HRAS(gtp!99,gef,s1s2~open),GTP(p!99) @ 16.7
+&#39;equilibrate_HRASclosedGTP_to_HRASopenGTP_rev&#39; HRAS(gtp!99,gef,s1s2~open),GTP(p!99) -&gt; HRAS(gtp!99,gef,s1s2~closed),GTP(p!99) @ 1.8e-05
+&#39;HRAS_converts_GTP_GDP&#39; HRAS(gtp!1,gef,s1s2~open),GTP(p!1,label~n) -&gt; HRAS(gtp!1,gef,s1s2~open),GDP(p!1,label~n),Pi() @ 1.0
+&#39;HRAS_converts_mGTP_mGDP&#39; HRAS(gtp!1,gef,s1s2~open),GTP(p!1,label~y) -&gt; HRAS(gtp!1,gef,s1s2~open),GDP(p!1,label~y),Pi() @ 1.0
+&#39;recycle_gtp_from_gdp_rule&#39; GDP(p,label~n),Pi() -&gt; GTP(p,label~n) @ 10000000.0
+&#39;recycle_mgtp_from_mgdp_rule&#39; GDP(p,label~y),Pi() -&gt; GTP(p,label~y) @ 10000000.0
+
+%obs: &#39;HRAS_GTP_&#39; HRAS(gtp!1),GTP(p!1)
+%obs: &#39;HRAS_mGTP_&#39; HRAS(gtp!1),GTP(p!1,label~y)
+%obs: &#39;HRAS_GTP_closed_&#39; HRAS(gtp!1,s1s2~closed),GTP(p!1)
+%obs: &#39;HRAS_GTP_open_&#39; HRAS(gtp!1,s1s2~open),GTP(p!1)
+%obs: &#39;HRAS_GDP_&#39; HRAS(gtp!1),GDP(p!1)
+%obs: &#39;HRAS_mGDP_&#39; HRAS(gtp!1),GDP(p!1,label~y)
+%obs: &#39;HRAS_GDP_closed_&#39; HRAS(gtp!1,s1s2~closed),GDP(p!1)
+%obs: &#39;HRAS_GDP_open_&#39; HRAS(gtp!1,s1s2~open),GDP(p!1)
+%obs: &#39;HRAS_nf_&#39; HRAS(gtp)
+%obs: &#39;GTP_&#39; GTP()
+%obs: &#39;GDP_&#39; GDP()
+%obs: &#39;Pi_&#39; Pi()
+
+%init:          0 * KRAS(gtp,gef,p_loop,s1s2~closed,CAAX,oncogenic~n)
+%init:          0 * NRAS(gtp,gef,p_loop,s1s2~closed,CAAX,oncogenic~n)
+%init:          0 * HRAS(gtp,gef,p_loop,s1s2~closed,CAAX,oncogenic~n)
+%init:          0 * GTP(p,label~n)
+%init:          0 * GDP(p,label~n)
+%init:          0 * Pi()
+%init:          0 * SOS1(rasgef)
+%init:          0 * SOS2(rasgef)
+%init:          0 * RASGRF1(rasgef)
+%init:          0 * RASGRF2(rasgef)
+%init:          0 * RASA1(SH2_1,SH3,SH2_2,PH,C2,rasgap)
+%init:          0 * NF1(rasgap,CRALTRIO)
+%init:          0 * RASA2(C2_1,C2_2,rasgap,PH,BTK)
+%init:          0 * RASA3(C2_1,C2_2,rasgap,PH,BTK)
+%init:          0 * GTP(p,label~y)
+%init:          0 * GDP(p,label~y)
+</pre></div>
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="sbml.html" class="btn btn-neutral float-right" title="SBML format" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="bngl.html" class="btn btn-neutral" title="BNGL format" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2015, Sorger Lab.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'0.1',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

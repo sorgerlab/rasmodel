@@ -1,0 +1,365 @@
+<?xml version="1.0" encoding="UTF-8"?>
+    <sbml xmlns="http://www.sbml.org/sbml/level2" level="2" version="1">
+        <model name="ras_model">
+            <listOfCompartments>
+                <compartment id="default" name="default" spatialDimensions="3" size="1"/>
+            </listOfCompartments>
+            <listOfSpecies>
+            <species id="s0" metaid="metaid_s0" name="KRAS(gtp=None, gef=None, p_loop=None, s1s2='closed', CAAX=None, oncogenic='n')" compartment="default" initialAmount="1e-08">
+                <annotation>
+                    <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bqbiol="http://biomodels.net/biology-qualifiers/" xmlns:bqmodel="http://biomodels.net/model-qualifiers/">
+                        <rdf:Description rdf:about="#metaid_s0">
+                        </rdf:Description>
+                    </rdf:RDF>
+                </annotation>
+            </species>
+            <species id="s1" metaid="metaid_s1" name="NRAS(gtp=None, gef=None, p_loop=None, s1s2='closed', CAAX=None, oncogenic='n')" compartment="default" initialAmount="1e-08">
+                <annotation>
+                    <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bqbiol="http://biomodels.net/biology-qualifiers/" xmlns:bqmodel="http://biomodels.net/model-qualifiers/">
+                        <rdf:Description rdf:about="#metaid_s1">
+                        </rdf:Description>
+                    </rdf:RDF>
+                </annotation>
+            </species>
+            <species id="s2" metaid="metaid_s2" name="HRAS(gtp=None, gef=None, p_loop=None, s1s2='closed', CAAX=None, oncogenic='n')" compartment="default" initialAmount="1e-08">
+                <annotation>
+                    <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bqbiol="http://biomodels.net/biology-qualifiers/" xmlns:bqmodel="http://biomodels.net/model-qualifiers/">
+                        <rdf:Description rdf:about="#metaid_s2">
+                        </rdf:Description>
+                    </rdf:RDF>
+                </annotation>
+            </species>
+            <species id="s3" metaid="metaid_s3" name="GTP(p=None, label='n')" compartment="default" initialAmount="0.00046799999999999999">
+                <annotation>
+                    <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bqbiol="http://biomodels.net/biology-qualifiers/" xmlns:bqmodel="http://biomodels.net/model-qualifiers/">
+                        <rdf:Description rdf:about="#metaid_s3">
+                        </rdf:Description>
+                    </rdf:RDF>
+                </annotation>
+            </species>
+            <species id="s4" metaid="metaid_s4" name="GDP(p=None, label='n')" compartment="default" initialAmount="4.6799999999999999e-05">
+                <annotation>
+                    <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bqbiol="http://biomodels.net/biology-qualifiers/" xmlns:bqmodel="http://biomodels.net/model-qualifiers/">
+                        <rdf:Description rdf:about="#metaid_s4">
+                        </rdf:Description>
+                    </rdf:RDF>
+                </annotation>
+            </species>
+            <species id="s5" metaid="metaid_s5" name="Pi()" compartment="default" initialAmount="1e-08">
+                <annotation>
+                    <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bqbiol="http://biomodels.net/biology-qualifiers/" xmlns:bqmodel="http://biomodels.net/model-qualifiers/">
+                        <rdf:Description rdf:about="#metaid_s5">
+                        </rdf:Description>
+                    </rdf:RDF>
+                </annotation>
+            </species>
+            <species id="s6" metaid="metaid_s6" name="SOS1(rasgef=None)" compartment="default" initialAmount="1e-08">
+                <annotation>
+                    <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bqbiol="http://biomodels.net/biology-qualifiers/" xmlns:bqmodel="http://biomodels.net/model-qualifiers/">
+                        <rdf:Description rdf:about="#metaid_s6">
+                        </rdf:Description>
+                    </rdf:RDF>
+                </annotation>
+            </species>
+            <species id="s7" metaid="metaid_s7" name="SOS2(rasgef=None)" compartment="default" initialAmount="1e-08">
+                <annotation>
+                    <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bqbiol="http://biomodels.net/biology-qualifiers/" xmlns:bqmodel="http://biomodels.net/model-qualifiers/">
+                        <rdf:Description rdf:about="#metaid_s7">
+                        </rdf:Description>
+                    </rdf:RDF>
+                </annotation>
+            </species>
+            <species id="s8" metaid="metaid_s8" name="RASGRF1(rasgef=None)" compartment="default" initialAmount="1e-08">
+                <annotation>
+                    <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bqbiol="http://biomodels.net/biology-qualifiers/" xmlns:bqmodel="http://biomodels.net/model-qualifiers/">
+                        <rdf:Description rdf:about="#metaid_s8">
+                        </rdf:Description>
+                    </rdf:RDF>
+                </annotation>
+            </species>
+            <species id="s9" metaid="metaid_s9" name="RASGRF2(rasgef=None)" compartment="default" initialAmount="1e-08">
+                <annotation>
+                    <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bqbiol="http://biomodels.net/biology-qualifiers/" xmlns:bqmodel="http://biomodels.net/model-qualifiers/">
+                        <rdf:Description rdf:about="#metaid_s9">
+                        </rdf:Description>
+                    </rdf:RDF>
+                </annotation>
+            </species>
+            <species id="s10" metaid="metaid_s10" name="RASA1(SH2_1=None, SH3=None, SH2_2=None, PH=None, C2=None, rasgap=None)" compartment="default" initialAmount="1e-08">
+                <annotation>
+                    <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bqbiol="http://biomodels.net/biology-qualifiers/" xmlns:bqmodel="http://biomodels.net/model-qualifiers/">
+                        <rdf:Description rdf:about="#metaid_s10">
+                        </rdf:Description>
+                    </rdf:RDF>
+                </annotation>
+            </species>
+            <species id="s11" metaid="metaid_s11" name="NF1(rasgap=None, CRALTRIO=None)" compartment="default" initialAmount="1e-08">
+                <annotation>
+                    <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bqbiol="http://biomodels.net/biology-qualifiers/" xmlns:bqmodel="http://biomodels.net/model-qualifiers/">
+                        <rdf:Description rdf:about="#metaid_s11">
+                        </rdf:Description>
+                    </rdf:RDF>
+                </annotation>
+            </species>
+            <species id="s12" metaid="metaid_s12" name="RASA2(C2_1=None, C2_2=None, rasgap=None, PH=None, BTK=None)" compartment="default" initialAmount="1e-08">
+                <annotation>
+                    <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bqbiol="http://biomodels.net/biology-qualifiers/" xmlns:bqmodel="http://biomodels.net/model-qualifiers/">
+                        <rdf:Description rdf:about="#metaid_s12">
+                        </rdf:Description>
+                    </rdf:RDF>
+                </annotation>
+            </species>
+            <species id="s13" metaid="metaid_s13" name="RASA3(C2_1=None, C2_2=None, rasgap=None, PH=None, BTK=None)" compartment="default" initialAmount="1e-08">
+                <annotation>
+                    <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bqbiol="http://biomodels.net/biology-qualifiers/" xmlns:bqmodel="http://biomodels.net/model-qualifiers/">
+                        <rdf:Description rdf:about="#metaid_s13">
+                        </rdf:Description>
+                    </rdf:RDF>
+                </annotation>
+            </species>
+            <species id="s14" metaid="metaid_s14" name="GTP(p=None, label='y')" compartment="default" initialAmount="0">
+                <annotation>
+                    <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bqbiol="http://biomodels.net/biology-qualifiers/" xmlns:bqmodel="http://biomodels.net/model-qualifiers/">
+                        <rdf:Description rdf:about="#metaid_s14">
+                        </rdf:Description>
+                    </rdf:RDF>
+                </annotation>
+            </species>
+            <species id="s15" metaid="metaid_s15" name="GDP(p=None, label='y')" compartment="default" initialAmount="0">
+                <annotation>
+                    <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bqbiol="http://biomodels.net/biology-qualifiers/" xmlns:bqmodel="http://biomodels.net/model-qualifiers/">
+                        <rdf:Description rdf:about="#metaid_s15">
+                        </rdf:Description>
+                    </rdf:RDF>
+                </annotation>
+            </species>
+            <species id="s16" metaid="metaid_s16" name="GDP(p=1, label='n') ._br_HRAS(gtp=1, gef=None, p_loop=None, s1s2='closed', CAAX=None, oncogenic='n')" compartment="default" initialAmount="0">
+                <annotation>
+                    <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bqbiol="http://biomodels.net/biology-qualifiers/" xmlns:bqmodel="http://biomodels.net/model-qualifiers/">
+                        <rdf:Description rdf:about="#metaid_s16">
+                            <bqbiol:hasPart>
+                                <rdf:Bag>
+                                </rdf:Bag>
+                            </bqbiol:hasPart>
+                        </rdf:Description>
+                    </rdf:RDF>
+                </annotation>
+            </species>
+            <species id="s17" metaid="metaid_s17" name="GDP(p=1, label='y') ._br_HRAS(gtp=1, gef=None, p_loop=None, s1s2='closed', CAAX=None, oncogenic='n')" compartment="default" initialAmount="0">
+                <annotation>
+                    <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bqbiol="http://biomodels.net/biology-qualifiers/" xmlns:bqmodel="http://biomodels.net/model-qualifiers/">
+                        <rdf:Description rdf:about="#metaid_s17">
+                            <bqbiol:hasPart>
+                                <rdf:Bag>
+                                </rdf:Bag>
+                            </bqbiol:hasPart>
+                        </rdf:Description>
+                    </rdf:RDF>
+                </annotation>
+            </species>
+            <species id="s18" metaid="metaid_s18" name="GTP(p=1, label='n') ._br_HRAS(gtp=1, gef=None, p_loop=None, s1s2='closed', CAAX=None, oncogenic='n')" compartment="default" initialAmount="0">
+                <annotation>
+                    <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bqbiol="http://biomodels.net/biology-qualifiers/" xmlns:bqmodel="http://biomodels.net/model-qualifiers/">
+                        <rdf:Description rdf:about="#metaid_s18">
+                            <bqbiol:hasPart>
+                                <rdf:Bag>
+                                </rdf:Bag>
+                            </bqbiol:hasPart>
+                        </rdf:Description>
+                    </rdf:RDF>
+                </annotation>
+            </species>
+            <species id="s19" metaid="metaid_s19" name="GTP(p=1, label='y') ._br_HRAS(gtp=1, gef=None, p_loop=None, s1s2='closed', CAAX=None, oncogenic='n')" compartment="default" initialAmount="0">
+                <annotation>
+                    <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bqbiol="http://biomodels.net/biology-qualifiers/" xmlns:bqmodel="http://biomodels.net/model-qualifiers/">
+                        <rdf:Description rdf:about="#metaid_s19">
+                            <bqbiol:hasPart>
+                                <rdf:Bag>
+                                </rdf:Bag>
+                            </bqbiol:hasPart>
+                        </rdf:Description>
+                    </rdf:RDF>
+                </annotation>
+            </species>
+            <species id="s20" metaid="metaid_s20" name="GDP(p=1, label='n') ._br_HRAS(gtp=1, gef=None, p_loop=None, s1s2='open', CAAX=None, oncogenic='n')" compartment="default" initialAmount="0">
+                <annotation>
+                    <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bqbiol="http://biomodels.net/biology-qualifiers/" xmlns:bqmodel="http://biomodels.net/model-qualifiers/">
+                        <rdf:Description rdf:about="#metaid_s20">
+                            <bqbiol:hasPart>
+                                <rdf:Bag>
+                                </rdf:Bag>
+                            </bqbiol:hasPart>
+                        </rdf:Description>
+                    </rdf:RDF>
+                </annotation>
+            </species>
+            <species id="s21" metaid="metaid_s21" name="GDP(p=1, label='y') ._br_HRAS(gtp=1, gef=None, p_loop=None, s1s2='open', CAAX=None, oncogenic='n')" compartment="default" initialAmount="0">
+                <annotation>
+                    <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bqbiol="http://biomodels.net/biology-qualifiers/" xmlns:bqmodel="http://biomodels.net/model-qualifiers/">
+                        <rdf:Description rdf:about="#metaid_s21">
+                            <bqbiol:hasPart>
+                                <rdf:Bag>
+                                </rdf:Bag>
+                            </bqbiol:hasPart>
+                        </rdf:Description>
+                    </rdf:RDF>
+                </annotation>
+            </species>
+            <species id="s22" metaid="metaid_s22" name="GTP(p=1, label='n') ._br_HRAS(gtp=1, gef=None, p_loop=None, s1s2='open', CAAX=None, oncogenic='n')" compartment="default" initialAmount="0">
+                <annotation>
+                    <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bqbiol="http://biomodels.net/biology-qualifiers/" xmlns:bqmodel="http://biomodels.net/model-qualifiers/">
+                        <rdf:Description rdf:about="#metaid_s22">
+                            <bqbiol:hasPart>
+                                <rdf:Bag>
+                                </rdf:Bag>
+                            </bqbiol:hasPart>
+                        </rdf:Description>
+                    </rdf:RDF>
+                </annotation>
+            </species>
+            <species id="s23" metaid="metaid_s23" name="GTP(p=1, label='y') ._br_HRAS(gtp=1, gef=None, p_loop=None, s1s2='open', CAAX=None, oncogenic='n')" compartment="default" initialAmount="0">
+                <annotation>
+                    <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bqbiol="http://biomodels.net/biology-qualifiers/" xmlns:bqmodel="http://biomodels.net/model-qualifiers/">
+                        <rdf:Description rdf:about="#metaid_s23">
+                            <bqbiol:hasPart>
+                                <rdf:Bag>
+                                </rdf:Bag>
+                            </bqbiol:hasPart>
+                        </rdf:Description>
+                    </rdf:RDF>
+                </annotation>
+            </species>
+        </listOfSpecies>
+        <listOfParameters>
+            <parameter id="bind_HRASclosed_GDP_kf" metaid="metaid_bind_HRASclosed_GDP_kf" name="bind_HRASclosed_GDP_kf" value="10000000"/>
+            <parameter id="bind_HRASclosed_GDP_kr" metaid="metaid_bind_HRASclosed_GDP_kr" name="bind_HRASclosed_GDP_kr" value="175.43859649122808"/>
+            <parameter id="equilibrate_HRASclosedGDP_to_HRASopenGDP_kf" metaid="metaid_equilibrate_HRASclosedGDP_to_HRASopenGDP_kf" name="equilibrate_HRASclosedGDP_to_HRASopenGDP_kf" value="14.800000000000001"/>
+            <parameter id="equilibrate_HRASclosedGDP_to_HRASopenGDP_kr" metaid="metaid_equilibrate_HRASclosedGDP_to_HRASopenGDP_kr" name="equilibrate_HRASclosedGDP_to_HRASopenGDP_kr" value="1.8e-05"/>
+            <parameter id="bind_HRASclosed_GTP_kf" metaid="metaid_bind_HRASclosed_GTP_kf" name="bind_HRASclosed_GTP_kf" value="10000000"/>
+            <parameter id="bind_HRASclosed_GTP_kr" metaid="metaid_bind_HRASclosed_GTP_kr" name="bind_HRASclosed_GTP_kr" value="80"/>
+            <parameter id="equilibrate_HRASclosedGTP_to_HRASopenGTP_kf" metaid="metaid_equilibrate_HRASclosedGTP_to_HRASopenGTP_kf" name="equilibrate_HRASclosedGTP_to_HRASopenGTP_kf" value="16.699999999999999"/>
+            <parameter id="equilibrate_HRASclosedGTP_to_HRASopenGTP_kr" metaid="metaid_equilibrate_HRASclosedGTP_to_HRASopenGTP_kr" name="equilibrate_HRASclosedGTP_to_HRASopenGTP_kr" value="1.8e-05"/>
+            <parameter id="k_HRAS_gtpase" metaid="metaid_k_HRAS_gtpase" name="k_HRAS_gtpase" value="1"/>
+            <parameter id="k_recycle_gtp_from_gdp" metaid="metaid_k_recycle_gtp_from_gdp" name="k_recycle_gtp_from_gdp" value="10000000"/>
+        </listOfParameters>
+        <listOfReactions>
+            <reaction id="r0" metaid="metaid_r0" name="r0" reversible="true">
+                <listOfReactants>
+                    <speciesReference species="s16"/>
+                </listOfReactants>
+                <listOfProducts>
+                    <speciesReference species="s2"/>
+                    <speciesReference species="s4"/>
+                </listOfProducts>
+                <kineticLaw><math xmlns="http://www.w3.org/1998/Math/MathML"><apply><minus/><apply><times/><ci>__s16</ci><ci>bind_HRASclosed_GDP_kr</ci></apply><apply><times/><ci>__s2</ci><ci>__s4</ci><ci>bind_HRASclosed_GDP_kf</ci></apply></apply></math></kineticLaw>
+            </reaction>
+            <reaction id="r1" metaid="metaid_r1" name="r1" reversible="true">
+                <listOfReactants>
+                    <speciesReference species="s17"/>
+                </listOfReactants>
+                <listOfProducts>
+                    <speciesReference species="s2"/>
+                    <speciesReference species="s15"/>
+                </listOfProducts>
+                <kineticLaw><math xmlns="http://www.w3.org/1998/Math/MathML"><apply><plus/><apply><minus/><apply><times/><ci>__s15</ci><ci>__s2</ci><ci>bind_HRASclosed_GDP_kf</ci></apply></apply><apply><times/><ci>__s17</ci><ci>bind_HRASclosed_GDP_kr</ci></apply></apply></math></kineticLaw>
+            </reaction>
+            <reaction id="r2" metaid="metaid_r2" name="r2" reversible="true">
+                <listOfReactants>
+                    <speciesReference species="s18"/>
+                </listOfReactants>
+                <listOfProducts>
+                    <speciesReference species="s2"/>
+                    <speciesReference species="s3"/>
+                </listOfProducts>
+                <kineticLaw><math xmlns="http://www.w3.org/1998/Math/MathML"><apply><minus/><apply><times/><ci>__s18</ci><ci>bind_HRASclosed_GTP_kr</ci></apply><apply><times/><ci>__s2</ci><ci>__s3</ci><ci>bind_HRASclosed_GTP_kf</ci></apply></apply></math></kineticLaw>
+            </reaction>
+            <reaction id="r3" metaid="metaid_r3" name="r3" reversible="true">
+                <listOfReactants>
+                    <speciesReference species="s19"/>
+                </listOfReactants>
+                <listOfProducts>
+                    <speciesReference species="s2"/>
+                    <speciesReference species="s14"/>
+                </listOfProducts>
+                <kineticLaw><math xmlns="http://www.w3.org/1998/Math/MathML"><apply><plus/><apply><minus/><apply><times/><ci>__s14</ci><ci>__s2</ci><ci>bind_HRASclosed_GTP_kf</ci></apply></apply><apply><times/><ci>__s19</ci><ci>bind_HRASclosed_GTP_kr</ci></apply></apply></math></kineticLaw>
+            </reaction>
+            <reaction id="r4" metaid="metaid_r4" name="r4" reversible="false">
+                <listOfReactants>
+                    <speciesReference species="s3"/>
+                </listOfReactants>
+                <listOfProducts>
+                    <speciesReference species="s4"/>
+                    <speciesReference species="s5"/>
+                </listOfProducts>
+                <kineticLaw><math xmlns="http://www.w3.org/1998/Math/MathML"><apply><minus/><apply><times/><ci>__s4</ci><ci>__s5</ci><ci>k_recycle_gtp_from_gdp</ci></apply></apply></math></kineticLaw>
+            </reaction>
+            <reaction id="r5" metaid="metaid_r5" name="r5" reversible="false">
+                <listOfReactants>
+                    <speciesReference species="s14"/>
+                </listOfReactants>
+                <listOfProducts>
+                    <speciesReference species="s5"/>
+                    <speciesReference species="s15"/>
+                </listOfProducts>
+                <kineticLaw><math xmlns="http://www.w3.org/1998/Math/MathML"><apply><minus/><apply><times/><ci>__s15</ci><ci>__s5</ci><ci>k_recycle_gtp_from_gdp</ci></apply></apply></math></kineticLaw>
+            </reaction>
+            <reaction id="r6" metaid="metaid_r6" name="r6" reversible="true">
+                <listOfReactants>
+                    <speciesReference species="s20"/>
+                </listOfReactants>
+                <listOfProducts>
+                    <speciesReference species="s16"/>
+                </listOfProducts>
+                <kineticLaw><math xmlns="http://www.w3.org/1998/Math/MathML"><apply><plus/><apply><minus/><apply><times/><ci>__s16</ci><ci>equilibrate_HRASclosedGDP_to_HRASopenGDP_kf</ci></apply></apply><apply><times/><ci>__s20</ci><ci>equilibrate_HRASclosedGDP_to_HRASopenGDP_kr</ci></apply></apply></math></kineticLaw>
+            </reaction>
+            <reaction id="r7" metaid="metaid_r7" name="r7" reversible="true">
+                <listOfReactants>
+                    <speciesReference species="s21"/>
+                </listOfReactants>
+                <listOfProducts>
+                    <speciesReference species="s17"/>
+                </listOfProducts>
+                <kineticLaw><math xmlns="http://www.w3.org/1998/Math/MathML"><apply><plus/><apply><minus/><apply><times/><ci>__s17</ci><ci>equilibrate_HRASclosedGDP_to_HRASopenGDP_kf</ci></apply></apply><apply><times/><ci>__s21</ci><ci>equilibrate_HRASclosedGDP_to_HRASopenGDP_kr</ci></apply></apply></math></kineticLaw>
+            </reaction>
+            <reaction id="r8" metaid="metaid_r8" name="r8" reversible="true">
+                <listOfReactants>
+                    <speciesReference species="s22"/>
+                </listOfReactants>
+                <listOfProducts>
+                    <speciesReference species="s18"/>
+                </listOfProducts>
+                <kineticLaw><math xmlns="http://www.w3.org/1998/Math/MathML"><apply><plus/><apply><minus/><apply><times/><ci>__s18</ci><ci>equilibrate_HRASclosedGTP_to_HRASopenGTP_kf</ci></apply></apply><apply><times/><ci>__s22</ci><ci>equilibrate_HRASclosedGTP_to_HRASopenGTP_kr</ci></apply></apply></math></kineticLaw>
+            </reaction>
+            <reaction id="r9" metaid="metaid_r9" name="r9" reversible="true">
+                <listOfReactants>
+                    <speciesReference species="s23"/>
+                </listOfReactants>
+                <listOfProducts>
+                    <speciesReference species="s19"/>
+                </listOfProducts>
+                <kineticLaw><math xmlns="http://www.w3.org/1998/Math/MathML"><apply><plus/><apply><minus/><apply><times/><ci>__s19</ci><ci>equilibrate_HRASclosedGTP_to_HRASopenGTP_kf</ci></apply></apply><apply><times/><ci>__s23</ci><ci>equilibrate_HRASclosedGTP_to_HRASopenGTP_kr</ci></apply></apply></math></kineticLaw>
+            </reaction>
+            <reaction id="r10" metaid="metaid_r10" name="r10" reversible="false">
+                <listOfReactants>
+                    <speciesReference species="s5"/>
+                    <speciesReference species="s20"/>
+                </listOfReactants>
+                <listOfProducts>
+                    <speciesReference species="s22"/>
+                </listOfProducts>
+                <kineticLaw><math xmlns="http://www.w3.org/1998/Math/MathML"><apply><minus/><apply><times/><ci>__s22</ci><ci>k_HRAS_gtpase</ci></apply></apply></math></kineticLaw>
+            </reaction>
+            <reaction id="r11" metaid="metaid_r11" name="r11" reversible="false">
+                <listOfReactants>
+                    <speciesReference species="s5"/>
+                    <speciesReference species="s21"/>
+                </listOfReactants>
+                <listOfProducts>
+                    <speciesReference species="s23"/>
+                </listOfProducts>
+                <kineticLaw><math xmlns="http://www.w3.org/1998/Math/MathML"><apply><minus/><apply><times/><ci>__s23</ci><ci>k_HRAS_gtpase</ci></apply></apply></math></kineticLaw>
+            </reaction>
+        </listOfReactions>
+    </model>
+</sbml>
+
