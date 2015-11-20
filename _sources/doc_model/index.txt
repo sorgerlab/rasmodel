@@ -1,5 +1,5 @@
-Documented model
-================
+The RAS Executable Model (REM)
+==============================
 
 .. toctree::
     :maxdepth: 3

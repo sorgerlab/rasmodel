@@ -1,15 +1,10 @@
 Welcome to the RAS executable model!
 ====================================
 
-Contents:
+If you are new to this project, please read the :ref:`overview <overview>` first.
 
-.. toctree::
-    :maxdepth: 2
+Returning visitors can :ref:`jump right into the model <ras_gtpase>`.
 
-    intro
-    doc_model/index
-    assembled/index
-    results/index
 
 REM news
 ========
@@ -29,18 +24,38 @@ At the Dec 15-16 meeting participants will be invited to suggest corrections or
 updates to the model and these updates will be made in near real-time to test
 the performance of the modeling environment.
 
+Team members and contacts
+=========================
+
+RAS Model (REM)
+---------------
+* John Bachman
+* Benjamin Gyori
+* Jeremy Muhlich
+* Kartik Subramanian
+
+Additional INDRA developers
+---------------------------
+* Daniel Carlin
+* William Chen
+
+Principal investigators
+-----------------------
+* Peter Sorger
+* Dexter Pratt
+
+Natural language parsers
+------------------------
+* TRIPS - James Allen, IHMC / University of Rochester
+* REACH - Mihai Surdeanu, University of Arizona
+
+If you have questions or would like to contribute, please contact
+`John Bachman <http://github.com/johnbachman>`_.
+
 License and funding
 ===================
 
 REM is made available under the `MIT License
-<http://opensource.org/licenses/MIT>`_. Users are asked to acknowledge
-DARPA grant W911NF-14-1-0397.
-
-
-Indices and tables
-==================
-
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`
-
+<http://opensource.org/licenses/MIT>`_. Users are asked to acknowledge DARPA
+grant W911NF-14-1-0397, “Programmatic modelling for reasoning across complex
+mechanisms,” Peter Sorger, William Chen and Dexter Pratt PIs.
