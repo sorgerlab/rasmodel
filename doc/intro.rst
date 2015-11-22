@@ -17,11 +17,11 @@ program's overall effort to automate the construction of models from
 the scientific literature, the (manual) development of the Ras model has the
 following motivations:
 
-1. Reference standard for evaluating reading algorithms.
-2. Resource for improving reading algorithms.
-3. Systems biology resource.
-4. Investigation of the manual reading and modeling process.
-5. Opportunity to engage biological domain experts.
+1. Systems biology resource.
+2. Opportunity to engage biological domain experts.
+3. Investigation of the combination of manual and automated reading and modeling process.
+4. Resource for improving reading algorithms.
+5. Reference standard for evaluating reading algorithms.
 
 A "literate" model
 ------------------
