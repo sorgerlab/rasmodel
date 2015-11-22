@@ -2,9 +2,9 @@ Chemical reaction network
 =========================
 
 Download the network diagram:
-:download:`PDF </../output/ras_model_rxns.pdf>`
-:download:`PNG </../output/ras_model_rxns.png>`
+:download:`PDF </../output/rasmodel_rxns.pdf>`
+:download:`PNG </../output/rasmodel_rxns.png>`
 
-.. image:: /../output/ras_model_rxns.png
+.. image:: /../output/rasmodel_rxns.png
     :width: 800px
 

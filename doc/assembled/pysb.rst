@@ -1,6 +1,6 @@
 PySB format
 ===========
 
-:download:`Download the executable model in PySB </../output/ras_model.py>`
+:download:`Download the executable model in PySB </../output/rasmodel.py>`
 
-.. literalinclude:: /../output/ras_model.py
+.. literalinclude:: /../output/rasmodel.py

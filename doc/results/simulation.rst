@@ -8,7 +8,7 @@ First we take care of some preliminaries::
 
     import numpy as np
     from matplotlib import pyplot as plt
-    from ras_model import model
+    from rasmodel import model
     from pysb.integrate import Solver
     from pysb import *
 

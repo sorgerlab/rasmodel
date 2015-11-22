@@ -3,14 +3,15 @@ CODEDIR = bin
 DOCDIR = doc
 DOCMODEL = $(DOCDIR)/doc_model
 OUTPUTDIR = output
-MODEL = $(OUTPUTDIR)/ras_model
+MODEL = $(OUTPUTDIR)/rasmodel
 PYSB_MODEL = $(MODEL).py
 BNG_MODEL = $(MODEL).bngl
 KAPPA_MODEL = $(MODEL).ka
 SBML_MODEL = $(MODEL).sbml
 RXN_NET = $(MODEL)_rxns
 
-all: model bngl kappa sbml rxn_net contact_map influence_map simulation doc
+#all: model bngl kappa sbml rxn_net contact_map influence_map simulation doc
+all: model bngl kappa sbml rxn_net simulation doc
 
 doc: model
 	cd doc; make html
