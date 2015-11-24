@@ -59,3 +59,13 @@ REM is made available under the `MIT License
 <http://opensource.org/licenses/MIT>`_. Users are asked to acknowledge DARPA
 grant W911NF-14-1-0397, “Programmatic modelling for reasoning across complex
 mechanisms,” Peter Sorger, William Chen and Dexter Pratt PIs.
+
+
+.. toctree::
+    :hidden:
+    :maxdepth: 4
+
+    intro
+    The RAS Executable Model <doc_model/index>
+    assembled/index
+    results/index
