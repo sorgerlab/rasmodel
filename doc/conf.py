@@ -38,7 +38,7 @@ source_suffix = '.rst'
 #source_encoding = 'utf-8-sig'
 
 # The master toctree document.
-master_doc = 'home'
+master_doc = 'index'
 
 # General information about the project.
 project = u'Ras model'
@@ -133,7 +133,6 @@ html_static_path = ['_static']
 #html_use_smartypants = True
 
 # Custom sidebar templates, maps document names to template names.
-#html_sidebars = {}
 
 # Additional templates that should be rendered to pages, maps page names to
 # template names.

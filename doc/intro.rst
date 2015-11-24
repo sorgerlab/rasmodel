@@ -1,7 +1,7 @@
 .. _overview:
 
-Ras Executable Model Overview
-=============================
+Overview
+========
 
 The Ras Executable Model (REM) is a model of the signaling pathway of the Ras
 family proteins (K-RAS, N-RAS, H-RAS), including their regulators and
