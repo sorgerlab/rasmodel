@@ -27,30 +27,70 @@ the performance of the modeling environment.
 Team members and contacts
 =========================
 
-RAS Model (REM)
----------------
-* John Bachman
-* Benjamin Gyori
-* Jeremy Muhlich
-* Kartik Subramanian
+============  ==============  ==============  ==================
+**RAS Model (REM)**
+----------------------------------------------------------------
+|john-hs|     |ben-hs|        |jeremy-hs|     |kartik-hs|
+John Bachman  Benjamin Gyori  Jeremy Muhlich  Kartik Subramanian
+============  ==============  ==============  ==================
 
-Additional INDRA developers
+=============  ============
+**Additional INDRA developers**
 ---------------------------
-* Daniel Carlin
-* William Chen
+|daniel-hs|    |will-hs|
+Daniel Carlin  William Chen
+=============  ============
 
-Principal investigators
------------------------
-* Peter Sorger
-* Dexter Pratt
-
-Natural language parsers
-------------------------
-* TRIPS - James Allen, IHMC / University of Rochester
-* REACH - Mihai Surdeanu, University of Arizona
+============  ============
+**Principal investigators**
+--------------------------
+|peter-hs|    |dexter-hs|
+Peter Sorger  Dexter Pratt
+============  ============
 
 If you have questions or would like to contribute, please contact
 `John Bachman <http://github.com/johnbachman>`_.
+
+Natural language parsers
+========================
+* TRIPS - James Allen, IHMC / University of Rochester
+* REACH - Mihai Surdeanu, University of Arizona
+
+.. |john-hs|
+   image:: /images/headshots/john_bachman.jpg
+   :height: 150px
+   :width: 107px
+   :target: .
+.. |ben-hs|
+   image:: /images/headshots/benjamin_gyori.jpg
+   :height: 150px
+   :width: 107px
+.. |jeremy-hs|
+   image:: /images/headshots/jeremy_muhlich.jpg
+   :height: 150px
+   :width: 107px
+.. |kartik-hs|
+   image:: /images/headshots/kartik_subramanian.jpg
+   :height: 150px
+   :width: 107px
+
+.. |daniel-hs|
+   image:: /images/headshots/daniel_carlin.jpg
+   :height: 150px
+   :width: 107px
+.. |will-hs|
+   image:: /images/headshots/william_chen.jpg
+   :height: 150px
+   :width: 107px
+
+.. |peter-hs|
+   image:: /images/headshots/peter_sorger.jpg
+   :height: 150px
+   :width: 107px
+.. |dexter-hs|
+   image:: /images/headshots/dexter_pratt.jpg
+   :height: 150px
+   :width: 107px
 
 License and funding
 ===================
