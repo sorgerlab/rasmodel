@@ -27,19 +27,14 @@ the performance of the modeling environment.
 Team members and contacts
 =========================
 
-============  ==============  ==============  ==================
-**RAS Model (REM)**
-----------------------------------------------------------------
-|john-hs|     |ben-hs|        |jeremy-hs|     |kartik-hs|
-John Bachman  Benjamin Gyori  Jeremy Muhlich  Kartik Subramanian
-============  ==============  ==============  ==================
-
-=============  ============
-**Additional INDRA developers**
----------------------------
-|daniel-hs|    |will-hs|
-Daniel Carlin  William Chen
-=============  ============
+==============  ==================  ==================  ==============
+**Modelers**
+----------------------------------------------------------------------
+|john-hs|       |daniel-hs|         |will-hs|           |ben-hs|
+John Bachman    Daniel Carlin       William Chen        Benjamin Gyori
+|jeremy-hs|     |kartik-hs|         |liz-hs|
+Jeremy Muhlich  Kartik Subramanian  Elizabeth Williams
+==============  ==================  ==================  ==============
 
 ============  ============
 **Principal investigators**
@@ -60,7 +55,6 @@ Natural language parsers
    image:: /images/headshots/john_bachman.jpg
    :height: 150px
    :width: 107px
-   :target: .
 .. |ben-hs|
    image:: /images/headshots/benjamin_gyori.jpg
    :height: 150px
@@ -73,7 +67,6 @@ Natural language parsers
    image:: /images/headshots/kartik_subramanian.jpg
    :height: 150px
    :width: 107px
-
 .. |daniel-hs|
    image:: /images/headshots/daniel_carlin.jpg
    :height: 150px
@@ -82,7 +75,10 @@ Natural language parsers
    image:: /images/headshots/william_chen.jpg
    :height: 150px
    :width: 107px
-
+.. |liz-hs|
+   image:: /images/headshots/elizabeth_williams.jpg
+   :height: 150px
+   :width: 107px
 .. |peter-hs|
    image:: /images/headshots/peter_sorger.jpg
    :height: 150px
