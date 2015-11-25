@@ -5,7 +5,7 @@
     When instantiated with all modules, the model has 436 species, 713 reactions and 212 parameters 
 """
 from pysb import Model
-from ..components import erbb, pi3k, mapk
+from .components import erbb, pi3k, mapk
 from ..utils import merge_parameters
 
 # Create the model.
