@@ -7,7 +7,7 @@ Returning visitors can :ref:`jump right into the model <ras_gtpase>`.
 
 
 REM news
-========
+--------
 
 The RAS executable model (REM) will be rolled out publically at the National
 Cancer Institute’s first `RAS Initiative Symposium
@@ -25,7 +25,7 @@ updates to the model and these updates will be made in near real-time to test
 the performance of the modeling environment.
 
 Team members and contacts
-=========================
+-------------------------
 
 ==============  ==================  ==================  ==============
 **Modelers**
@@ -47,7 +47,7 @@ If you have questions or would like to contribute, please contact
 `John Bachman <http://github.com/johnbachman>`_.
 
 Natural language parsers
-========================
+------------------------
 * TRIPS - James Allen, IHMC / University of Rochester
 * REACH - Mihai Surdeanu, University of Arizona
 
@@ -89,7 +89,7 @@ Natural language parsers
    :width: 107px
 
 License and funding
-===================
+-------------------
 
 REM is made available under the `MIT License
 <http://opensource.org/licenses/MIT>`_. Users are asked to acknowledge DARPA
@@ -103,5 +103,7 @@ mechanisms,” Peter Sorger, William Chen and Dexter Pratt PIs.
 
     intro
     The RAS Executable Model <doc_model/index>
-    assembled/index
     results/index
+
+.. NOTE since there isn't one single "model" anymore I've removed this section for now.
+       assembled/index

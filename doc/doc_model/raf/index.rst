@@ -1,6 +1,9 @@
 Raf
 ===
 
+.. component::
+    :module: rasmodel.components.raf
+
 .. toctree::
     :maxdepth: 2
 
