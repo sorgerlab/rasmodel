@@ -7,7 +7,10 @@ m.parameters.Vem_0 = 0;
 % Parameters to control negative feedback
 m.parameters.k_spe = 1e-4;  % k_spe = 1e-3 and k_dspe = 50 work well too
 m.parameters.k_dspe = 10;
-m.parameters.kf5 = 0.5; % Important parameter to control extent of adaptive response 
+m.parameters.k_pp2e = 10;
+m.parameters.k_mer = 0.1;
+m.parameters.k_mee = 10;
+m.parameters.kf5 = 0.5; % Important parameter to control extent of adaptive response
 
 % Simulate mutants
 % ================
@@ -15,7 +18,7 @@ m.parameters.kf5 = 0.5; % Important parameter to control extent of adaptive resp
 % m.parameters.kf5 = 0.05;
 
 % BRAF overexpression
-m.parameters.BRAF_0 = 1e5;
+% m.parameters.BRAF_0 = 1e6;
 
 
 options = odeset('Events', @add_vemurafenib, 'RelTol', 1e-4, 'AbsTol', 1e-6);
@@ -49,6 +52,7 @@ while t0 < tf
     
     if ie == 1
         initial_values(8) = 2e5;
+        initial_values(13) = 0; %2e5;
     end
     t0 = t(nt);
     
@@ -59,9 +63,17 @@ end
     
 y_obs = m.get_observables(yout);
 
-plot(tout, y_obs.ERK_P/m.parameters.ERK_0)
-axis([4e4 8e4 0 1])
-xlabel('time (a.u)', 'Fontsize', 20)
-ylabel('ERK~P', 'Fontsize', 20)
-title('Addition of Vemurafenib (2e5 a.u) at t = 5e4 a.u', 'Fontsize', 15)
-    
+plot(tout, y_obs.ERK_P)
+
+% hold on
+% plot(erk_out{2, 1}, erk_out{2, 2}, 'k')
+% plot(erk_out{3, 1}, erk_out{3, 2}, 'g')
+% plot(erk_out{4, 1}, erk_out{4, 2}, 'b')
+% plot(erk_out{1, 1}, erk_out{1, 2}, 'r')
+% axis([4e4 6.5e4 0 1])
+% xlabel('time (a.u)', 'Fontsize', 20)
+% ylabel('ERK~P', 'Fontsize', 20)
+% h_legend = legend('KRAS mut', 'BRAF(V600E) ovex', 'Trimatinib', 'BRAF(V600E)') ;
+% set(h_legend,'FontSize',14)
+% title('Addition of Vemurafenib (2e5 a.u) at t = 5e4 a.u', 'Fontsize', 15)
+%     
