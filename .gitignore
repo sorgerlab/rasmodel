@@ -1,5 +1,10 @@
 output/
 
+# Source files extracted from literate documentation.
+rasmodel/components/
+rasmodel/experiments/
+rasmodel/scenarios/
+
 # Ignore Sphinx build files
 doc/_build
 doc/_static

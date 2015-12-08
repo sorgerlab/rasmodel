@@ -6,6 +6,3 @@ The RAS Executable Model (REM)
 
     ras/index
     raf/index
-    initial_conditions
-    observables
-    references

@@ -1,6 +1,9 @@
 Ras
 ===
 
+.. component::
+    :module: rasmodel.components.ras
+
 .. toctree::
     :maxdepth: 2
 

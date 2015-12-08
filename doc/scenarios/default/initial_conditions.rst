@@ -13,6 +13,8 @@ Afterwards, we fill in more specific concentration information below.
 
 ::
 
+    from pysb import Parameter, Initial
+
     # Iterate over every monomer
     for m in model.monomers:
         states_dict = {}
