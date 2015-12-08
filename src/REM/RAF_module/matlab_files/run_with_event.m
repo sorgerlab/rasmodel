@@ -1,5 +1,5 @@
 t0 = 0;
-tf = 1e5;
+tf = 4e4;
 tspan = [t0 tf];
 
 m = run_timecourse();
@@ -10,11 +10,13 @@ m.parameters.k_dspe = 10;
 m.parameters.k_pp2e = 10;
 m.parameters.k_mer = 0.1;
 m.parameters.k_mee = 10;
-m.parameters.kf5 = 0.5; % Important parameter to control extent of adaptive response
+m.parameters.kf5 = 0.25; % Important parameter to control extent of adaptive response
+m.parameters.KRAS_0 = 1e5;
+m.parameters.BRAF_0 = 1e4;
 
 % Simulate mutants
 % ================
-% KRAS mutation
+% NRAS mutation
 % m.parameters.kf5 = 0.05;
 
 % BRAF overexpression
@@ -51,8 +53,8 @@ while t0 < tf
     end
     
     if ie == 1
-        initial_values(8) = 2e5;
-        initial_values(13) = 0; %2e5;
+        initial_values(8) = 2e4;
+        initial_values(13) = 0;%2e5;
     end
     t0 = t(nt);
     
@@ -63,7 +65,10 @@ end
     
 y_obs = m.get_observables(yout);
 
-plot(tout, y_obs.ERK_P)
+plot(tout, y_obs.ERK_P/m.parameters.ERK_0, 'LineWidth', 4)
+axis([1.5e4 3e4 0 1])
+xlabel('time', 'Fontsize', 20)
+ylabel('ERK~P', 'Fontsize', 20)
 
 % hold on
 % plot(erk_out{2, 1}, erk_out{2, 2}, 'k')
