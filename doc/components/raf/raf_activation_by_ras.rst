@@ -4,34 +4,46 @@ Raf activation by Ras
 In its basal state, RAF is present in a 'closed' conformation, wherein the N terminus of the RAF protein interacts with, and inhibits the C terminus. Ligand binding to receptor tyrosine kinase (RTK) results in activation of the RTK, leading to RAS actviation (RAS-GTP). It is not completely understood RAS activates RAF. GTP bound RAS binds to the RAS binding domain (RBD) of  RAF, and prevetns the inhibitory interaction between the C and N termini of RAF. This results in RAF assuming an 'open' conformation. A further step in the activation of RAF is dimerization, which stabilizes its 'open' conformation. 28% of Melanomas have RAS mutations, of which 94% are mutations in NRAS. Hence, we instantiate the model for the vemurfenib resistance scenario using NRAS.
 
 ::
+   from pysb.macros import bind, _macro_rule
    
-    # BRAF dimerization
-    Rule('BRAF_dimerization',
-         BRAF(d=None, ras=None) + BRAF(d=None, ras=None, vem=None) <>
-         BRAF(d=1, ras=None) % BRAF(d=1, ras=None, vem=None), kaf, kar)
+   def ras_activates_raf(ras, raf, klist):  
+    
+        kaf, kar, kdf, kdr, kbf, kbr, kcf, kcr, kf5, koff = klist
 
-    # KRAS binding BRAF monomers
-    Rule('KRAS_binding_BRAF_monomers',
-         BRAF(ras=None, d=None) + KRAS(raf=None, state='gtp') <>
-         BRAF(ras=1, d=None) % KRAS(raf=1, state='gtp'), kdf, kdr)
+	# RAF dimerization
+	bind(raf(ras=None), 'd', raf(ras=None, vem=None), 'd', [kaf, kar])
+	
+	# RAS binding RAF monomers
+	bind(raf(d=None), 'ras', ras(gtp=ANY), 'raf', [kdf, kdr])
 
-    # KRAS binding BRAF dimers
-    Rule('KRAS_binding_BRAF_dimers',
-         BRAF(ras=None, d=1) % BRAF(ras=None, d=1) +
-         KRAS(raf=None, state='gtp') + KRAS(raf=None, state='gtp') <>
-         BRAF(ras=2, d=1) % BRAF(ras=3, d=1) %
-         KRAS(raf=2, state='gtp') % KRAS(raf=3, state='gtp'), kbf, kbr)
+	# RAS binding RAF dimers
+	Rule('RAS_binding_RAF_dimers',
+	     raf(ras=None, d=1) % raf(ras=None, d=1) +
+	     ras(raf=None, gtp=ANY) + ras(raf=None, gtp=ANY) <>
+	     raf(ras=2, d=1) % ras(ras=3, d=1) %
+	     ras(raf=2, gtp=ANY) % ras(raf=3, gtp=ANY), kbf, kbr)
 
-    # KRAS:BRAF dimerization
-    Rule('KRASBRAF_dimerization',
-         BRAF(d=None, ras=ANY) + BRAF(d=None, ras=ANY, vem=None) <>
-         BRAF(d=1, ras=ANY) % BRAF(d=1, ras=ANY, vem=None), kcf, kcr)
-	 
-    # Release KRAS:GDP from BRAF
-    Rule('KRAS_GDP_dissoc_BRAF',
-         KRAS(state='gdp', raf=1) % BRAF(ras=1) >>
-         KRAS(state='gdp', raf=None) + BRAF(ras=None), koff)
-	 
+	# RAS:RAF dimerization
+	bind(raf(ras=ANY), 'd', raf(ras=ANY, vem=None), 'd', [kcf, kcr])
+		
+	# KRAS deactivates itself
+	# Making this step reversible increased combinatorial complexity manifold     
+	Rule('KRAS_inactivation',
+             ras(gtp=1) % GTP(ras=1) >>
+             ras(gtp=1) % GDP(ras=1),
+             kf5)
+
+	# Release RAS:GDP from RAF
+	Rule('RAS_GDP_dissoc_RAF',
+	     GDP(ras=2) % ras(gtp=2, raf=1) % raf(ras=1) >>
+	     GDP(ras=2) % ras(gtp=2, raf=None) + raf(ras=None), koff)
+
+	     
+    # def kras_activates_braf(model):
+    #     KRAS = model.components['KRAS']
+    #     BRAF = model.components['BRAF']
+    #     ras_activates_raf(KRAS, BRAF, ...)
+    
 
 Vemurafenib inhibits RAF
 ========================
@@ -50,30 +62,29 @@ Recent experiments have shown that Vemurafenib is iniffective in binding RAF dim
 
 ::
 
-    # BRAF:Vem dimerization to give 2(BRAF:Vem) g = a * f
-    Rule('BRAF_Vem_dimerization',
-         BRAF(d=None, ras=None, vem=ANY) + BRAF(d=None, ras=None, vem=ANY) <>
-         BRAF(d=1, ras=None, vem=ANY) % BRAF(d=1, ras=None, vem=ANY), kgf, kgr)
+    def vemurafenib_binds_raf(model, raf, klist):
 
-    # KRAS:BRAF:Vem dimerization to give 2( KRAS:BRAF:Vem) h = c * a
-    Rule('KRAS_BRAF_Vem_dimerization',
-         BRAF(d=None, ras=ANY, vem=ANY) + BRAF(d=None, ras=ANY, vem=ANY) <>
-         BRAF(d=1, ras=ANY, vem=ANY) % BRAF(d=1, ras=ANY, vem=ANY), khf, khr)
+	Vemurafenib = model.monomers["Vemurafenib"]
+        kgf, kgr, khf, khr, kef, ker, kff, kfr = klist
+	
+	# RAF:Vem dimerization to give 2(RAF:Vem) g = a * f
+	bind(raf(ras=None, vem=ANY), 'd', raf(ras=None, vem=ANY), 'd', [kgf, kfr], ('kf', 'kr')]
+	
+	# RAS:RAF:Vem dimerization to give 2(RAS:RAF:Vem) h = c * a
+        bind(raf(ras=ANY, vem=ANY), 'd', raf(ras=ANY, vem=ANY) 'd', [khf, khr], ('kf', 'kr'))
+	
+	# 1st Vemurafenib binds
+	_macro_rule('First_binding_Vemurafenib',
+	     raf(vem=None) % raf(vem=None) + Vem(raf=None) <>
+	     raf(vem=1) % raf(vem=None) % Vem(raf=1), [kef, ker], ('kf', 'kr'))
 
-    # 1st Vemurafenib binds
-    Rule('First_binding_Vemurafenib',
-         BRAF(vem=None) % BRAF(vem=None) + Vem(raf=None) <>
-         BRAF(vem=1) % BRAF(vem=None) % Vem(raf=1), kef, ker)
+	# 2nd Vemurafenib binding
+	_macro_rule('Second_binding_vemurafenib',
+	     raf(vem=None) % raf(vem=ANY) + Vem(raf=None) <>
+	     raf(vem=1) % raf(vem=ANY) % Vem(raf=1), [kff, kfr], ('kf', 'kr'))
 
-    # 2nd Vemurafenib binding
-    Rule('Second_binding_vemurafenib',
-         BRAF(vem=None) % BRAF(vem=ANY) + Vem(raf=None) <>
-         BRAF(vem=1) % BRAF(vem=ANY) % Vem(raf=1), kff, kfr)
-
-    # Vemurafenib binds BRAF monomer
-    Rule('Vemurafenib_binds_BRAF_monomer',
-         BRAF(vem=None, d=None) + Vem(raf=None) <>
-         BRAF(vem=1, d=None) % Vem(raf=1), kef, ker)
+	# Vemurafenib binds RAF monomer
+	bind(raf(d=None), 'vem', Vem(), 'raf', [kef, ker], ('kf', 'kr')
 
 
 References
