@@ -3,51 +3,32 @@
 Ras (minimal)
 =============
 
-Model description
------------------
 This passage was processed and assembled automatically by INDRA:
-    
-    SOS1, bound to GRB2 binds RAS. RAS, bound to SOS1, binds GTP.
 
-INDRA-assembled model component
--------------------------------
+  SOS1, bound to GRB2 binds RAS. RAS, bound to SOS1, binds GTP.
+
+
+INDRA-assembled model components
+--------------------------------
 
 ::
 
     def ras_minimal():
-        Monomer('GTP', ['RAS'])
-        Monomer(u'GRB2', [u'SOS1'])
-        Monomer('RAS', [u'SOS1', 'GTP'])
-        Monomer(u'SOS1', [u'GRB2', 'RAS'])
+        Monomer('GTP', ['ras'])
+        Monomer(u'GRB2', [u'sos1'])
+        Monomer('RAS', [u'sos1', 'gtp'])
+        Monomer(u'SOS1', [u'grb2', 'ras'])
 
         Parameter(u'kf_sr_bind_1', 1e-06)
         Parameter(u'kr_sr_bind_1', 1e-06)
         Parameter('kf_rg_bind_1', 1e-06)
         Parameter('kr_rg_bind_1', 1e-06)
-        Parameter('GTP_0', 100.0)
-        Parameter(u'GRB2_0', 100.0)
-        Parameter('RAS_0', 100.0)
-        Parameter(u'SOS1_0', 100.0)
 
-        Rule(u'SOS1_GRB2_RAS_bind', SOS1(GRB2=2, RAS=None) % GRB2(SOS1=2) +
-            RAS(SOS1=None) <> SOS1(GRB2=2, RAS=1) % GRB2(SOS1=2) % RAS(SOS1=1),
-            kf_sr_bind_1, kr_sr_bind_1)
-        Rule(u'RAS_SOS1_GTP_bind', RAS(SOS1=2, GTP=None) % SOS1(RAS=2) +
-            GTP(RAS=None) <> RAS(SOS1=2, GTP=1) % SOS1(RAS=2) % GTP(RAS=1),
-            kf_rg_bind_1, kr_rg_bind_1)
+        Rule(u'SOS1_GRB2_RAS_bind', SOS1(grb2=2, ras=None) % GRB2(sos1=2) + RAS(sos1=None) <> SOS1(grb2=2, ras=1) % GRB2(sos1=2) % RAS(sos1=1), kf_sr_bind_1, kr_sr_bind_1)
+        Rule(u'RAS_SOS1_GTP_bind', RAS(sos1=2, gtp=None) % SOS1(ras=2) + GTP(ras=None) <> RAS(sos1=2, gtp=1) % SOS1(ras=2) % GTP(ras=1), kf_rg_bind_1, kr_rg_bind_1)
 
-
-.. raw:: html
-
-    <script>
-        window.setTimeout(function() {
-        $('div.highlight-python pre > span.c:last-child').each(
-            function () {
-                if ($(this).text() == '#') {
-                    $(this.nextSibling).detach();
-                    $(this).detach();
-                }
-            }
-        );
-        }, 1000);
-    </script>
+        Annotation(GTP, 'http://identifiers.org/chebi/CHEBI:37565', 'is')
+        Annotation(RAS, 'http://identifiers.org/pfam/PF00071.18', 'is')
+        Annotation(RAS, 'http://identifiers.org/chebi/CHEBI:63620', 'is')
+        Annotation(SOS1, 'http://identifiers.org/uniprot/Q07889', 'is')
+        Annotation(SOS1, 'http://identifiers.org/hgnc/HGNC:11187', 'is')
