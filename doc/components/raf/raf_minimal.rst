@@ -1,15 +1,16 @@
 .. _raf_minimal:
 
-Raf (INDRA)
-===========
+Raf (minimal)
+=============
 
 Model description
 -----------------
+This passage was processed and assembled automatically by INDRA:
 
     RAF binds to the RAS-GTP complex. The RAF-RAS complex binds another RAF-RAS complex.
 
-INDRA-assembled model
----------------------
+INDRA-assembled model component
+-------------------------------
 
 ::
 

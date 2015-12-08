@@ -1,17 +1,18 @@
 .. _egfr_minimal:
 
-EGFR (INDRA)
-============
+EGFR (minimal)
+==============
 
 Model description
 -----------------
+This passage was processed and assembled automatically by INDRA:
 
     The receptor tyrosine kinase EGFR binds the growth factor ligand EGF. The EGFR-EGF complex binds another EGFR-EGF complex.
     EGFR, bound to EGFR, transphosphorylates itself on a tyrosine residue.
     The adaptor protein GRB2 can bind EGFR that is phosphorylated on tyrosine. EGFR-bound GRB2 binds SOS1.
 
-INDRA-assembled model
----------------------
+INDRA-assembled model component
+-------------------------------
 
 ::
 

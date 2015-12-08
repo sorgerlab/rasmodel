@@ -1,15 +1,16 @@
-.. _receptor_minimal:
+.. _ras_minimal:
 
-Ras (INDRA)
-===========
+Ras (minimal)
+=============
 
 Model description
 -----------------
-
+This passage was processed and assembled automatically by INDRA:
+    
     SOS1, bound to GRB2 binds RAS. RAS, bound to SOS1, binds GTP.
 
-INDRA-assembled model
----------------------
+INDRA-assembled model component
+-------------------------------
 
 ::
 

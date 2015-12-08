@@ -1,19 +1,20 @@
 .. _mapk_minimal:
 
-MAPK (INDRA)
-============
+MAPK (minimal)
+==============
 
 Model description
 -----------------
-
+This passage was processed and assembled automatically by INDRA:
+    
     RAF, bound to RAF, phosphorylates MEK1 at Ser218 and Ser222.
     MEK1, phosphorylated at Ser218 and Ser222, is activated.
     Active MEK1 phosphorylates ERK2 at Tyr187 and Thr185.
     PP2A dephosphorylates MEK1 at Ser218 and Ser222.
     DUSP6 dephosphorylates ERK2 at Tyr187 and Thr185.
 
-INDRA-assembled model
----------------------
+INDRA-assembled model component
+-------------------------------
 
 ::
 
