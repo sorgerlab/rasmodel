@@ -26,9 +26,11 @@ The domain information for RASA1 was taken from `Uniprot (ID: P20936)
 
 ::
 
-    #  p120GAP = RASA1.
-    # CaLB (calcium lipid binding domain) is also known as a C2 domain.
-    Monomer('RASA1', ['SH2_1', 'SH3', 'SH2_2', 'PH', 'C2', 'rasgap'])
+    def rasgap_monomers():
+
+        #  p120GAP = RASA1.
+        # CaLB (calcium lipid binding domain) is also known as a C2 domain.
+        Monomer('RASA1', ['SH2_1', 'SH3', 'SH2_2', 'PH', 'C2', 'rasgap'])
 
 NF1
 ---
@@ -43,7 +45,8 @@ NF1
 
 ::
 
-    Monomer('NF1', ['rasgap', 'CRALTRIO'])
+        Monomer('NF1', ['rasgap', 'CRALTRIO'])
+    #
 
 RASA2
 -----
@@ -57,8 +60,9 @@ RASA2
 
 ::
 
-    # GAP1m = RASA2
-    Monomer('RASA2', ['C2_1', 'C2_2', 'rasgap', 'PH', 'BTK'])
+        # GAP1m = RASA2
+        Monomer('RASA2', ['C2_1', 'C2_2', 'rasgap', 'PH', 'BTK'])
+    #
 
 RASA3
 -----
@@ -74,7 +78,8 @@ NOTE: As it turned out GAPIII and GAP1IP4BP are the same protein.
 
 ::
 
-    # GAPIII = GAP1IP4BP = RASA3
-    Monomer('RASA3', ['C2_1', 'C2_2', 'rasgap', 'PH', 'BTK'])
+        # GAPIII = GAP1IP4BP = RASA3
+        Monomer('RASA3', ['C2_1', 'C2_2', 'rasgap', 'PH', 'BTK'])
+    #
 
 

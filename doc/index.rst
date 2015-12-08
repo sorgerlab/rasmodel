@@ -102,8 +102,7 @@ mechanisms,” Peter Sorger, William Chen and Dexter Pratt PIs.
     :maxdepth: 4
 
     intro
-    The RAS Executable Model <doc_model/index>
-    results/index
-
-.. NOTE since there isn't one single "model" anymore I've removed this section for now.
-       assembled/index
+    The RAS Executable Model <components/index>
+    scenarios/index
+    experiments/index
+    references

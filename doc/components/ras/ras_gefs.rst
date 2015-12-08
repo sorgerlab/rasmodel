@@ -30,12 +30,13 @@ RasGEFs contain a specific domain responsible for activating Ras proteins.
 
 ::
 
-    # Declare a list of RasGEFs along with their site structure.
-    # The names in the list below are HGNC standard names.
-    # (note: Cdc25Mm = RASGRF1)
-    ras_gef_names = ['SOS1', 'SOS2', 'RASGRF1', 'RASGRF2']
-    for ras_gef_name in ras_gef_names:
-        Monomer(ras_gef_name, ['rasgef'])
+    def rasgef_monomers():
+        # Declare a list of RasGEFs along with their site structure.
+        # The names in the list below are HGNC standard names.
+        # (note: Cdc25Mm = RASGRF1)
+        ras_gef_names = ['SOS1', 'SOS2', 'RASGRF1', 'RASGRF2']
+        for ras_gef_name in ras_gef_names:
+            Monomer(ras_gef_name, ['rasgef'])
 
 Mechanism of GEFs
 -----------------
@@ -193,7 +194,12 @@ The activity of GEF (RASGRF1 in this case) does not depend on whether Ras
 
 Instantiate the RasGEF cycle for HRAS and RASGRF1::
 
-    #ras_gef_exchange_cycle(HRAS, RASGRF1, GTP, GDP)
+    def rasgef_exchange_hras_rasgrf1(model):
+        HRAS = model.monomers['HRAS']
+        RASGRF1 = model.monomers['RASGRF1']
+        GTP = model.monomers['GTP']
+        GDP = model.monomers['GDP']
+        ras_gef_exchange_cycle(HRAS, RASGRF1, GTP, GDP)
 
 [PMID9585556]_: Therefore, we tested the nucleotide specificity of the
 interaction of Cdc25Mm285 (CdcMm285 is the fragment of CdcMm/RasGRF1 containing

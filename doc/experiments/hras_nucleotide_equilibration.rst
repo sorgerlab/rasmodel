@@ -1,14 +1,21 @@
+.. component::
+   :module: rasmodel.experiments.hras_nucleotide_equilibration
+
 Ras binding to GTP and GDP
 ==========================
 
-As a simple test to make sure everything is working, we run a simulation
-showing the binding of HRAS to GTP and GDP coming to steady state.
+As a simple test to make sure everything is working, we run a simulation of a
+subset of the default model showing the binding of HRAS to GTP and GDP coming to
+steady state.
 
-First we take care of some preliminaries::
+First we import the default model::
+
+    from rasmodel.scenarios.default import model
+
+Then we take care of some preliminaries::
 
     import numpy as np
     from matplotlib import pyplot as plt
-    from rasmodel import model
     from pysb.integrate import Solver
     from pysb import *
 

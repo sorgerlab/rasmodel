@@ -7,6 +7,8 @@ we terminate each name with an underscore to identify it as an observable.
 
 ::
 
+    from pysb import Observable
+
     Observable('HRAS_GTP_', HRAS(gtp=1) % GTP(p=1))
     Observable('HRAS_mGTP_', HRAS(gtp=1) % GTP(p=1, label='y'))
     Observable('HRAS_GTP_closed_', HRAS(gtp=1, s1s2='closed') % GTP(p=1))

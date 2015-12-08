@@ -17,20 +17,21 @@ http://www.ncbi.nlm.nih.gov/pmc/articles/PMC3915522/figure/F1/).
     # Preliminaries
     from pysb import *
     from pysb.macros import bind, bind_table, equilibrate
-    Model()
 
-    # Define the site structure for various Ras family members.
-    # All of the Ras proteins have the following structural/regulatory features:
-    for ras_name in ['KRAS', 'NRAS', 'HRAS']:
-        Monomer(ras_name,
-                ['gtp', 'gef', 'p_loop', 's1s2', 'CAAX', 'oncogenic'],
-                {'s1s2': ['closed', 'open'],
-                 'oncogenic': ['n', 'y']})
+    def ras_monomers():
+        # Define the site structure for various Ras family members. All of the
+        # Ras proteins have the following structural/regulatory features:
+        for ras_name in ['KRAS', 'NRAS', 'HRAS']:
+            Monomer(ras_name,
+                    ['gtp', 'gef', 'p_loop', 's1s2', 'CAAX', 'oncogenic'],
+                    {'s1s2': ['closed', 'open'],
+                     'oncogenic': ['n', 'y']})
 
-    # Guanine nucleotides
-    Monomer('GTP', ['p', 'label'], {'label': ['n', 'y']})
-    Monomer('GDP', ['p', 'label'], {'label': ['n', 'y']})
-    Monomer('Pi', []) # inorganic phosphate, used for GDP/GTP recycling
+    def nucleotide_monomers():
+        # Guanine nucleotides
+        Monomer('GTP', ['p', 'label'], {'label': ['n', 'y']})
+        Monomer('GDP', ['p', 'label'], {'label': ['n', 'y']})
+        Monomer('Pi', []) # inorganic phosphate, used for GDP/GTP recycling
 
 Anatomy of Ras regulation:
 
@@ -151,24 +152,41 @@ diffusion-limited on-rate of :math:`10^7\ M^-1\ s^-1` for kf1::
 
     ras_gtp_kf2 = 16.7   # s^-1
 
-We specify the binding of HRAS to GDP according to the measured rates::
+Now we construct a list of these four key rates for HRAS/GTP and HRAS/GDP
+binding. Note that the HRAS/GTP list uses the kr2 rate for HRAS/GDP since
+the rate was not reported for GTP.
 
-    ras_gdp_klist = [ras_gdp_kf1, ras_gdp_kr1, ras_gdp_kf2, ras_gdp_kr2]
-    ras_binds_gxp(HRAS, GDP, ras_gdp_klist)
-
-We specify the binding of HRAS to GTP, using the kr2 rate for HRAS/GDP (since
-the rate was not reported for GTP)::
+::
 
     ras_gtp_klist = [ras_gtp_kf1, ras_gtp_kr1, ras_gtp_kf2, ras_gdp_kr2]
-    ras_binds_gxp(HRAS, GTP, ras_gtp_klist)
+    ras_gdp_klist = [ras_gdp_kf1, ras_gdp_kr1, ras_gdp_kf2, ras_gdp_kr2]
+
+We specify the binding of HRAS to GDP and GTP according to the measured rates::
+
+    def hras_binds_nucleotide(model):
+        HRAS = model.monomers['HRAS']
+        GDP = model.monomers['GDP']
+        GTP = model.monomers['GTP']
+        ras_binds_gxp(HRAS, GDP, ras_gdp_klist)
+        ras_binds_gxp(HRAS, GTP, ras_gtp_klist)
 
 Until we get new information, we will simply use the same rates for KRAS and
 NRAS::
 
-    #ras_binds_gxp(KRAS, GDP, ras_gdp_klist)
-    #ras_binds_gxp(KRAS, GTP, ras_gtp_klist)
-    #ras_binds_gxp(NRAS, GDP, ras_gdp_klist)
-    #ras_binds_gxp(NRAS, GTP, ras_gtp_klist)
+    def kras_binds_nucleotide():
+        KRAS = model.monomers['KRAS']
+        GDP = model.monomers['GDP']
+        GTP = model.monomers['GTP']
+        ras_binds_gxp(KRAS, GDP, ras_gdp_klist)
+        ras_binds_gxp(KRAS, GTP, ras_gtp_klist)
+
+    def nras_binds_nucleotide():
+        NRAS = model.monomers['NRAS']
+        GDP = model.monomers['GDP']
+        GTP = model.monomers['GTP']
+        ras_binds_gxp(NRAS, GDP, ras_gdp_klist)
+        ras_binds_gxp(NRAS, GTP, ras_gtp_klist)
+
 
 Ras converts GTP to GDP
 -----------------------
@@ -192,7 +210,10 @@ of this intermediate, thus there is likely to be very little flux occurring via
 this intermediate. Thus we specify that the reaction occurs only when Ras is
 not bound to a GEF::
 
-    def ras_converts_gtp_to_gdp(ras, kcat):
+    def ras_converts_gtp_to_gdp(model, ras, kcat):
+        GTP = model.monomers['GTP']
+        GDP = model.monomers['GDP']
+        Pi = model.monomers['Pi']
         k = Parameter('k_{0}_gtpase'.format(ras.name), 1.)
         # Instantiate the rule for both labeled and unlabeled GTP/GDP
         Rule('{0}_converts_GTP_GDP'.format(ras.name),
@@ -219,7 +240,9 @@ GTP hydrolysis by wild-type Ras is slow in the absence of RasGAPs.
     # Convert 2.8e-2 min^-1 to units of s^-1
     wt_ras_hydrolysis_rate = 2.8e-2 * 60
 
-    ras_converts_gtp_to_gdp(HRAS, wt_ras_hydrolysis_rate)
+    def hras_hydrolizes_gtp(model):
+        HRAS = model.monomers['HRAS']
+        ras_converts_gtp_to_gdp(model, HRAS, wt_ras_hydrolysis_rate)
 
 
 Recycling of GTP from GDP
@@ -233,15 +256,16 @@ this ensures that GTP/GDP levels and ratios will be held constant over time.
 
 ::
 
-    def recycle_gtp_from_gdp():
+    def recycle_gtp_from_gdp(model):
+        GDP = model.monomers['GDP']
+        GTP = model.monomers['GTP']
+        Pi = model.monomers['Pi']
         k = Parameter('k_recycle_gtp_from_gdp', 1e7)
         # Note that only unbound GDP can be recycled!
         Rule('recycle_gtp_from_gdp_rule',
              GDP(p=None, label='n') + Pi() >> GTP(p=None, label='n'), k)
         Rule('recycle_mgtp_from_mgdp_rule',
              GDP(p=None, label='y') + Pi() >> GTP(p=None, label='y'), k)
-
-    recycle_gtp_from_gdp()
 
 Oncogenic Ras mutants have reduced GTP binding and GTPase activity
 -------------------------------------------------------------------
