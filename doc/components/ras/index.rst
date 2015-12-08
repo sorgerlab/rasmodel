@@ -10,3 +10,4 @@ Ras
     ras_gtpase
     ras_gefs
     ras_gaps
+    ras_minimal

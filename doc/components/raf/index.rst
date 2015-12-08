@@ -8,3 +8,4 @@ Raf
     :maxdepth: 2
 
     raf_activation_by_ras
+    raf_minimal
