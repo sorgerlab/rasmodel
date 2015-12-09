@@ -293,9 +293,3 @@ epub_copyright = u'2015, Sorger Lab'
 
 # Example configuration for intersphinx: refer to the Python standard library.
 intersphinx_mapping = {'http://docs.python.org/': None}
-
-
-# -- Options for litmodel ---------------
-
-# Path where extracted component Python source files should be placed.
-litmodel_output_path = os.path.abspath('..')
