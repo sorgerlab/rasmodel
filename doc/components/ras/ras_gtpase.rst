@@ -21,14 +21,24 @@ http://www.ncbi.nlm.nih.gov/pmc/articles/PMC3915522/figure/F1/).
     def ras_monomers():
         # Define the site structure for various Ras family members. All of the
         # Ras proteins have the following structural/regulatory features:
+        # The sites are as follows:
+        # gtp: binding site for GTP/GDP
+        # gef: binding site for Ras-GEFs
+        # p_loop: p_loop
+        # s1s2: Switch 1 and Switch 2 regions
+        # CAAX: C-terminal region responsible for membrane binding
+        # mutant: Specific point mutation of Ras
         for ras_name in ['KRAS', 'NRAS', 'HRAS']:
             Monomer(ras_name,
-                    ['gtp', 'gef', 'p_loop', 's1s2', 'CAAX', 'oncogenic'],
+                    ['gtp', 'gef', 'p_loop', 's1s2', 'CAAX', 'mutant'],
                     {'s1s2': ['closed', 'open'],
-                     'oncogenic': ['n', 'y']})
+                     'mutant': ['WT', 'G12A', 'G12C', 'G12S', 'G12D',
+                                'G12R', 'G12V', 'G13D', 'Q61L', 'Q61H']})
 
     def nucleotide_monomers():
         # Guanine nucleotides
+        # p: Binding site for binding Ras ('p' for phosphate)
+        # label: Fluorescent label used in some experiments (mant-GTP/GDP)
         Monomer('GTP', ['p', 'label'], {'label': ['n', 'y']})
         Monomer('GDP', ['p', 'label'], {'label': ['n', 'y']})
         Monomer('Pi', []) # inorganic phosphate, used for GDP/GTP recycling
