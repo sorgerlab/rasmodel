@@ -18,8 +18,8 @@ Then we pull in the components for Ras::
 
 We only include the elements involving HRAS, not NRAS or KRAS::
 
-    ras.hras_binds_nucleotide(model)
-    ras.hras_hydrolizes_gtp(model)
+    ras.hras_binds_nucleotides(model)
+    ras.hras_hydrolyzes_gtp(model)
 
 Ensure GTP/GDP levels are maintained::
 
