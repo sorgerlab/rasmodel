@@ -13,10 +13,18 @@ we terminate each name with an underscore to identify it as an observable.
     Observable('HRAS_mGTP_', HRAS(gtp=1) % GTP(p=1, label='y'))
     Observable('HRAS_GTP_closed_', HRAS(gtp=1, s1s2='closed') % GTP(p=1))
     Observable('HRAS_GTP_open_', HRAS(gtp=1, s1s2='open') % GTP(p=1))
+    Observable('HRAS_mGTP_closed_', HRAS(gtp=1, s1s2='closed') %
+                                    GTP(p=1, label='y'))
+    Observable('HRAS_mGTP_open_', HRAS(gtp=1, s1s2='open') %
+                                  GTP(p=1, label='y'))
     Observable('HRAS_GDP_', HRAS(gtp=1) % GDP(p=1))
     Observable('HRAS_mGDP_', HRAS(gtp=1) % GDP(p=1, label='y'))
     Observable('HRAS_GDP_closed_', HRAS(gtp=1, s1s2='closed') % GDP(p=1))
     Observable('HRAS_GDP_open_', HRAS(gtp=1, s1s2='open') % GDP(p=1))
+    Observable('HRAS_mGDP_closed_', HRAS(gtp=1, s1s2='closed') %
+                                    GDP(p=1, label='y'))
+    Observable('HRAS_mGDP_open_', HRAS(gtp=1, s1s2='open') %
+                                  GDP(p=1, label='y'))
     Observable('HRAS_nf_', HRAS(gtp=None))
 
 Observables for overall nucleotide abundances::
