@@ -9,6 +9,7 @@ from sphinx.util.nodes import inline_all_toctrees
 from sphinx.writers.text import TextWriter
 from sphinx.writers.html import HTMLWriter
 from sphinx.util.console import bold, darkgreen
+from sphinx.util.osutil import ensuredir
 from sphinx.locale import _
 from docutils.parsers.rst import Directive
 from docutils.parsers.rst.directives import unchanged_required
@@ -16,9 +17,8 @@ from docutils.nodes import note, paragraph, literal, Text, GenericNodeVisitor
 from docutils.writers import Writer
 
 def setup(app):
-    app.add_config_value('litmodel_output_path', None, False)
     app.add_directive('component', ComponentDirective)
-    app.add_builder(ComponentExportBuilder)
+    app.add_builder(TangleBuilder)
 
 
 class ComponentDirective(Directive):
@@ -54,11 +54,11 @@ class ComponentDirective(Directive):
         return [note_node]
 
 
-class ComponentExportBuilder(Builder):
+class TangleBuilder(Builder):
     """Builder that exports components to actual .py files for import."""
 
-    name = 'modelexport'
-    format = 'modelexport'
+    name = 'tangle'
+    format = 'tangle'
     out_suffix = '.py'
 
     def get_outdated_docs(self):
@@ -89,10 +89,6 @@ class ComponentExportBuilder(Builder):
         # Build a single combined doctree by inlining the toctrees, then iterate
         # over the start_of_file nodes corresponding to the component directives.        
 
-        if self.config['litmodel_output_path'] is None:
-            raise RuntimeError("No configuration value for "
-                               "'litmodel_output_path'")
-
         self.info(bold('preparing documents... '), nonl=True)
         self.prepare_writing()
         self.info('done')
@@ -119,11 +115,11 @@ class ComponentExportBuilder(Builder):
 
     def write_module(self, name, doctree):
         module_rel_path = name.replace('.', '/')
-        # Note that we don't mkdir or create __init__.py files here, so the
-        # output directory hierarchy must already exist. This also means we
-        # can't output anything but "leaf" modules.
-        path = os.path.abspath(os.path.join(
-                self.config['litmodel_output_path'], module_rel_path) + '.py')
+        # Note that we don't create __init__.py files here, so we can't output
+        # anything but "leaf" modules.
+        path = os.path.join(self.outdir, module_rel_path) + '.py'
+        path = os.path.abspath(path)
+        ensuredir(os.path.dirname(path))
         with open(path, 'w') as destination:
             self.docwriter.write(doctree, destination)
 
