@@ -93,7 +93,8 @@ class TangleBuilder(Builder):
         tree = self.env.get_doctree(master)
         # Final arg is the color function. There is no built-in "no change"
         # color function so we use a trivial lambda expression instead.
-        tree = inline_all_toctrees(self, set(), master, tree, lambda x: x)
+        tree = inline_all_toctrees(self, set(), master, tree, lambda x: x,
+                                   [master])
         tree['docname'] = master
         self.env.resolve_references(tree, master, self)
         return tree
