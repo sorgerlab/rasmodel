@@ -14,10 +14,12 @@ from sphinx.locale import _
 from docutils.parsers.rst import Directive
 from docutils.parsers.rst.directives import unchanged_required
 from docutils.nodes import note, paragraph, literal, Text, GenericNodeVisitor
+from docutils.transforms import Transform
 from docutils.writers import Writer
 
 def setup(app):
     app.add_directive('component', ComponentDirective)
+    app.add_transform(LineNumberKeeper)
     app.add_builder(TangleBuilder)
 
 
@@ -52,6 +54,24 @@ class ComponentDirective(Directive):
         note_node += paragraph_node
 
         return [note_node]
+
+
+class LineNumberKeeper(Transform):
+    """Preserve node.line values across copy/deepcopy calls.
+
+    node.copy creates the new returned node by calling the appropriate class
+    constructor and propagating the 'rawsource' and 'attributes' properties,
+    however the 'line' property is not reinitialized. This transform stashes the
+    'line' property of every node in a new attribute 'orig_line', and since
+    'attributes' is preserved across copies, we can access this attribute
+    instead of the line property."""
+
+    default_priority = 400
+
+    def apply(self):
+        for node in self.document.traverse():
+            if node.line is not None:
+                node['orig_line'] = node.line
 
 
 class TangleBuilder(Builder):
@@ -145,8 +165,29 @@ class ComponentTranslator(GenericNodeVisitor):
         GenericNodeVisitor.__init__(self, document)
         self.builder = builder
         self.content = []
+        self.docs_with_visited_code = set()
+        self.nesting_level = 1
+
+    def depart_start_of_file(self, node):
+        if node['docname'] in self.docs_with_visited_code:
+            self.nesting_level -= 1
+            nesting = '<' * self.nesting_level
+            comment = "# %s END %s.rst" % (nesting, node['docname'])
+            #self.content.append(comment)
 
     def visit_literal_block(self, node):
+        docname = None
+        walk_node = node
+        while docname is None and walk_node.parent is not None:
+            docname = walk_node.get('docname')
+            walk_node = walk_node.parent
+        if docname not in self.docs_with_visited_code:
+            nesting = '>' * self.nesting_level
+            comment = "\n# %s BEGIN %s.rst" % (nesting, docname)
+            #self.content.append(comment)
+            self.docs_with_visited_code.add(docname)
+            self.nesting_level += 1
+        self.content.append("\n# SOURCE: %s.rst:%d" % (docname, node['orig_line']))
         self.content.append(node.astext())
 
     def default_visit(self, node):
@@ -156,4 +197,4 @@ class ComponentTranslator(GenericNodeVisitor):
         pass
 
     def get_content(self):
-        return '\n\n'.join(self.content) + '\n'
+        return '\n'.join(self.content) + '\n'
