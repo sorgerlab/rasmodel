@@ -12,7 +12,6 @@ In its basal state, RAF is present in a 'closed' conformation, wherein the N ter
 
    def raf_monomers():
        Monomer('RAF', ['d', 'ras', 'map2k1', 'vem'])
-       Monomer('GDP', ['ras'])
 
        alias_model_components()
 
@@ -36,14 +35,14 @@ In its basal state, RAF is present in a 'closed' conformation, wherein the N ter
        bind(RAF(ras=None), 'd', RAF(ras=None, vem=None), 'd', [kaf, kar])
 
        # RAS binding RAF monomers
-       bind(RAF(d=None), 'ras', RAS(gtp=ANY), 'raf', [kdf, kdr])
+       bind(RAF(d=None), 'ras', RAS(gtp=ANY, sos1=None), 'raf', [kdf, kdr])
 
        # RAS binding RAF dimers
        Rule('RAS_binding_RAF_dimers',
 	    RAF(ras=None, d=1) % RAF(ras=None, d=1) +
-	    RAS(raf=None, gtp=ANY) + RAS(raf=None, gtp=ANY) <>
+	    RAS(raf=None, gtp=ANY, sos1=None) + RAS(raf=None, gtp=ANY, sos1=None) <>
 	    RAF(ras=2, d=1) % RAF(ras=3, d=1) %
-	    RAS(raf=2, gtp=ANY) % RAS(raf=3, gtp=ANY), kbf, kbr)
+	    RAS(raf=2, gtp=ANY, sos1=None) % RAS(raf=3, gtp=ANY, sos1=None), kbf, kbr)
 
        # RAS:RAF dimerization
        bind(RAF(ras=ANY), 'd', RAF(ras=ANY, vem=None), 'd', [kcf, kcr])
@@ -51,14 +50,14 @@ In its basal state, RAF is present in a 'closed' conformation, wherein the N ter
        # KRAS deactivates itself
        # Making this step reversible increased combinatorial complexity manifold
        Rule('KRAS_inactivation',
-	    RAS(gtp=1) % GTP(ras=1) >>
-	    RAS(gtp=1) % GDP(ras=1),
+	    RAS(gtp=1, sos1=None) % GTP(ras=1) >>
+	    RAS(gtp=None, sos1=None) + GTP(ras=None),
 	    kf5)
 
-       # Release RAS:GDP from RAF
-       Rule('RAS_GDP_dissoc_RAF',
-	    GDP(ras=2) % RAS(gtp=2, raf=1) % RAF(ras=1) >>
-	    GDP(ras=2) % RAS(gtp=2, raf=None) + RAF(ras=None), koff)
+       # Release KRAS:GDP from BRAF
+       Rule('RAS_GDP_dissoc_BRAF',
+            RAS(gtp=None, raf=1) % RAF(ras=1) >>
+            RAS(gtp=None, raf=None) + RAF(ras=None), koff)
 
 
 Vemurafenib inhibits RAF
@@ -141,24 +140,24 @@ lkfkflekflnflw
 
 	Rule(u'RAF_phospho_bind_MAP2K1_S218_1',
 	     RAF(vem=None, map2k1=None) +
-	     MAP2K1(S218='u', raf=None) <>
-	     RAF(vem=None, map2k1=1) % MAP2K1(S218='u', raf=1),
+	     MAP2K1(S218='u', raf=None, ppp2ca=None) <>
+	     RAF(vem=None, map2k1=1) % MAP2K1(S218='u', raf=1, ppp2ca=None),
 	     kf_rm_bind_1, kr_rm_bind_1)
 
 	Rule(u'RAF_phospho_MAP2K1_S218_1',
 	     RAF(vem=None, map2k1=1) %
-	     MAP2K1(S218='u', raf=1) >>
-	     RAF(vem=None, map2k1=None) + MAP2K1(S218='p', raf=None),
+	     MAP2K1(S218='u', raf=1, ppp2ca=None) >>
+	     RAF(vem=None, map2k1=None) + MAP2K1(S218='p', raf=None, ppp2ca=None),
 	     kc_rm_phos_1)
 
 	Rule(u'RAF_phospho_bind_MAP2K1_S222_1',
-	     RAF(vem=None, map2k1=None) + MAP2K1(raf=None, S222='u') <>
-	     RAF(vem=None, map2k1=1) % MAP2K1(raf=1, S222='u'),
+	     RAF(vem=None, map2k1=None) + MAP2K1(raf=None, S222='u', ppp2ca=None) <>
+	     RAF(vem=None, map2k1=1) % MAP2K1(raf=1, S222='u', ppp2ca=None),
 	     kf_rm_bind_2, kr_rm_bind_2)
 
 	Rule(u'RAF_phospho_MAP2K1_S222_1',
-	     RAF(vem=None, map2k1=1) % MAP2K1(raf=1, S222='u') >>
-	     RAF(vem=None, map2k1=None) + MAP2K1(raf=None, S222='p'),
+	     RAF(vem=None, map2k1=1) % MAP2K1(raf=1, S222='u', ppp2ca=None) >>
+	     RAF(vem=None, map2k1=None) + MAP2K1(raf=None, S222='p', ppp2ca=None),
 	     kc_rm_phos_2)
 
 
