@@ -1,3 +1,5 @@
+.. _components:
+
 The RAS Executable Model (REM)
 ==============================
 

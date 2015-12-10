@@ -9,12 +9,21 @@ effectors, at a biochemical level of detail. It is a `rule-based
 model <http://www.nature.com/nmeth/journal/v8/n2/full/nmeth0211-130.html>`_
 written in `PySB. <http://www.pysb.org>`_
 
+REM consists of three interlinked levels. :ref:`Model components <components>` consist of PySB modules that implement pathway mechanisms.
+A :ref:`model scenario <scenarios>` corresponds to a specific use case and imports one or more model components in a fit-to-purpose manner to instantiate an executable model.
+Each model scenario can have a set of corresponding :ref:`in-silico experiments <experiments>`, which typically implement simulation and analysis tasks.
+
+.. centered::
+    |rem-archi|
+
+REM is built via a combination of automated assembly using `INDRA (Integrated Network and Dynamical Reasonging Assembler) <https://github.com/sorgerlab/indra>`_, and manual development by a team of modelers.
+
 The Ras Executable Model is being developed as part of `DARPA's Big Mechanism
 program <http://www.darpa.mil/Our_Work/I2O/Programs/Big_Mechanism.aspx>`_ by the
 `Sorger Lab <http://sorrger.med.harvard.edu>`_ at Harvard Medical School and
 collaborators within the Big Mechanism program. In the context of the
 program's overall effort to automate the construction of models from
-the scientific literature, the (manual) development of the Ras model has the
+the scientific literature, the development of the Ras model has the
 following motivations:
 
 1. Systems biology resource.
@@ -68,3 +77,6 @@ the only dependency, which can be installed via Pip with::
 To extract and run the PySB model, `PySB <http://pysb.org>`_ is required, along
 with its various dependencies (including Numpy, Scipy, SymPy, Matplotlib,
 BioNetGen, and optionally `KaSim <http://github.com/Kappa-Dev/KaSim>`_).
+
+.. |rem-archi|
+   image:: /images/rem_architecture.png

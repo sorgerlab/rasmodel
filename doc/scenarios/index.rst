@@ -1,5 +1,7 @@
-Modeling scenarios
-==================
+.. _scenarios:
+
+Model scenarios
+===============
 
 .. toctree::
    :maxdepth: 1

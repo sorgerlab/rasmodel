@@ -1,4 +1,6 @@
-Experimental settings
+.. _experiments:
+
+In-silico Experiments
 =====================
 
 .. toctree::
