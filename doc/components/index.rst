@@ -10,3 +10,9 @@ The RAS Executable Model (REM)
     ras/index
     raf/index
     mapk/index
+
+.. raw:: html
+
+    <script>
+        window.location.replace('ras/ras_gtpase.html');
+    </script>
