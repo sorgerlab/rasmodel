@@ -265,19 +265,3 @@ leukemias (25). To see whether Cdc25Mm285 acts differently on the three
 isoforms, we tested the GEF activity of Cdc25Mm285 on these proteins. As
 summarized in Table 1, Cdc25Mm285 is active on all isoforms, being somewhat
 more active on N-Ras, in accordance with the results of Leonardsen et al. (26).
-
-.. raw:: html
-
-    <script>
-        window.setTimeout(function() {
-        $('div.highlight-python pre > span.c:last-child').each(
-            function () {
-                if ($(this).text() == '#') {
-                    $(this.nextSibling).detach();
-                    $(this).detach();
-                }
-            }
-        );
-        }, 1000);
-    </script>
-

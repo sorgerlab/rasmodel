@@ -479,21 +479,3 @@ upstream of the C terminus that are sufficient to anchor the protein to the
 membrane. However, prenylated H-Ras, N-Ras and K-Ras-4A require a further
 palmitoylation step in which a palmitoyl moiety is attached to upstream
 C-terminal Cys residues before their anchoring in the membrane is stabilized.
-
-
-.. raw:: html
-
-    <script>
-        window.setTimeout(function() {
-        $('div.highlight-python pre > span.c:last-child').each(
-            function () {
-                if ($(this).text() == '#') {
-                    $(this.nextSibling).detach();
-                    $(this).detach();
-                }
-            }
-        );
-        }, 1000);
-    </script>
-
-
