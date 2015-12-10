@@ -166,15 +166,6 @@ class ComponentTranslator(GenericNodeVisitor):
         GenericNodeVisitor.__init__(self, document)
         self.builder = builder
         self.content = []
-        self.docs_with_visited_code = set()
-        self.nesting_level = 1
-
-    def depart_start_of_file(self, node):
-        if node['docname'] in self.docs_with_visited_code:
-            self.nesting_level -= 1
-            nesting = '<' * self.nesting_level
-            comment = "# %s END %s.rst" % (nesting, node['docname'])
-            #self.content.append(comment)
 
     def visit_literal_block(self, node):
         docname = None
@@ -182,12 +173,6 @@ class ComponentTranslator(GenericNodeVisitor):
         while docname is None and walk_node.parent is not None:
             docname = walk_node.get('docname')
             walk_node = walk_node.parent
-        if docname not in self.docs_with_visited_code:
-            nesting = '>' * self.nesting_level
-            comment = "\n# %s BEGIN %s.rst" % (nesting, docname)
-            #self.content.append(comment)
-            self.docs_with_visited_code.add(docname)
-            self.nesting_level += 1
         self.content.append("\n# SOURCE: %s.rst:%d" % (docname, node['orig_line']))
         self.content.append(node.astext())
 
