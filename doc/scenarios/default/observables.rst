@@ -9,23 +9,33 @@ we terminate each name with an underscore to identify it as an observable.
 
     from pysb import Observable
 
-    Observable('HRAS_GTP_', HRAS(gtp=1) % GTP(p=1))
-    Observable('HRAS_mGTP_', HRAS(gtp=1) % GTP(p=1, label='y'))
-    Observable('HRAS_GTP_closed_', HRAS(gtp=1, s1s2='closed') % GTP(p=1))
-    Observable('HRAS_GTP_open_', HRAS(gtp=1, s1s2='open') % GTP(p=1))
-    Observable('HRAS_mGTP_closed_', HRAS(gtp=1, s1s2='closed') %
-                                    GTP(p=1, label='y'))
-    Observable('HRAS_mGTP_open_', HRAS(gtp=1, s1s2='open') %
-                                  GTP(p=1, label='y'))
-    Observable('HRAS_GDP_', HRAS(gtp=1) % GDP(p=1))
-    Observable('HRAS_mGDP_', HRAS(gtp=1) % GDP(p=1, label='y'))
-    Observable('HRAS_GDP_closed_', HRAS(gtp=1, s1s2='closed') % GDP(p=1))
-    Observable('HRAS_GDP_open_', HRAS(gtp=1, s1s2='open') % GDP(p=1))
-    Observable('HRAS_mGDP_closed_', HRAS(gtp=1, s1s2='closed') %
-                                    GDP(p=1, label='y'))
-    Observable('HRAS_mGDP_open_', HRAS(gtp=1, s1s2='open') %
-                                  GDP(p=1, label='y'))
-    Observable('HRAS_nf_', HRAS(gtp=None))
+    # Create the following observables for HRAS, KRAS, NRAS:
+    for ras in [HRAS, KRAS, NRAS]:
+        Observable('%s_GTP_' % ras.name,
+                   ras(gtp=1) % GTP(p=1))
+        Observable('%s_mGTP_' % ras.name,
+                   ras(gtp=1) % GTP(p=1, label='y'))
+        Observable('%s_GTP_closed_' % ras.name,
+                   ras(gtp=1, s1s2='closed') % GTP(p=1))
+        Observable('%s_GTP_open_' % ras.name,
+                   ras(gtp=1, s1s2='open') % GTP(p=1))
+        Observable('%s_mGTP_closed_' % ras.name,
+                   ras(gtp=1, s1s2='closed') % GTP(p=1, label='y'))
+        Observable('%s_mGTP_open_' % ras.name,
+                   ras(gtp=1, s1s2='open') % GTP(p=1, label='y'))
+        Observable('%s_GDP_' % ras.name,
+                   ras(gtp=1) % GDP(p=1))
+        Observable('%s_mGDP_' % ras.name,
+                   ras(gtp=1) % GDP(p=1, label='y'))
+        Observable('%s_GDP_closed_' % ras.name,
+                   ras(gtp=1, s1s2='closed') % GDP(p=1))
+        Observable('%s_GDP_open_' % ras.name,
+                   ras(gtp=1, s1s2='open') % GDP(p=1))
+        Observable('%s_mGDP_closed_' % ras.name,
+                   ras(gtp=1, s1s2='closed') % GDP(p=1, label='y'))
+        Observable('%s_mGDP_open_' % ras.name,
+                   ras(gtp=1, s1s2='open') % GDP(p=1, label='y'))
+        Observable('%s_nf_' % ras.name, ras(gtp=None))
 
 Observables for overall nucleotide abundances::
 
