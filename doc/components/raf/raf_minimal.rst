@@ -14,6 +14,9 @@ INDRA-assembled model components
 
 ::
 
+    from pysb import Monomer, Parameter, Rule, Annotation, ANY
+    from pysb.util import alias_model_components
+
     def raf_minimal():
         Monomer('RAF', ['ras', 'raf'])
         Monomer('GTP', ['ras'])
@@ -24,7 +27,19 @@ INDRA-assembled model components
         Parameter('kf_rr_bind_2', 1e-06)
         Parameter('kr_rr_bind_2', 1e-06)
 
-        Rule('RAF_RAS_GTP_bind', RAF(ras=None) + RAS(gtp=2, raf=None) % GTP(ras=2) <> RAF(ras=1) % RAS(gtp=2, raf=1) % GTP(ras=2), kf_rr_bind_1, kr_rr_bind_1)
-        Rule('RAF_RAS_RAF_RAS_bind', RAF(ras=2, raf=None) % RAS(raf=2) + RAF(ras=3, raf=None) % RAS(raf=3) <> RAF(ras=2, raf=1) % RAS(raf=2) % RAF(ras=3, raf=1) % RAS(raf=3), kf_rr_bind_2, kr_rr_bind_2)
+        alias_model_components()
+
+        Rule('RAF_RAS_GTP_bind', RAF(ras=None) + RAS(gtp=ANY, raf=None) >> 
+            RAF(ras=1) % RAS(gtp=ANY, raf=1), kf_rr_bind_1)
+
+        Rule('RAF_RAS_GTP_dissociate', RAF(ras=1) % RAS(raf=1) >>
+            RAF(ras=None) + RAS(raf=None), kr_rr_bind_1)
+
+        Rule('RAF_RAS_RAF_RAS_bind', RAF(ras=ANY, raf=None) +\
+            RAF(ras=ANY, raf=None) >> RAF(ras=ANY, raf=1) %\
+            RAF(ras=ANY, raf=1), kf_rr_bind_2)
+
+        Rule('RAF_RAS_RAF_RAS_dissociate', RAF(raf=1) % RAF(raf=1) >>
+            RAF(raf=None) + RAF(raf=None), kr_rr_bind_2)
 
         Annotation(RAS, 'http://identifiers.org/pfam/PF00071.18', 'is')

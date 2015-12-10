@@ -19,7 +19,6 @@ INDRA-assembled model components
     from pysb import Monomer, Parameter, Rule, Annotation, ANY
     from pysb.util import alias_model_components
 
-    
     def egfr_minimal():
         Monomer(u'GRB2', [u'egfr', u'sos1'])
         Monomer(u'EGFR', [u'egf', u'egfr', 'Y', u'grb2'], {'Y': ['u', 'p']})
@@ -36,30 +35,38 @@ INDRA-assembled model components
         Parameter(u'kr_gs_bind_1', 1e-06)
         Parameter(u'kf_ee_transphos_1', 0.001)
 
-	alias_model_components()
+        alias_model_components()
 
-        Rule(u'EGFR_EGF_bind',
-	     EGFR(egf=None) + EGF(egfr=None) <>
-	     EGFR(egf=1) % EGF(egfr=1), kf_ee_bind_1, kr_ee_bind_1)
-			      
-        Rule(u'EGFR_EGF_EGFR_EGF_bind',
-	     EGFR(egf=2, egfr=None) % EGF(egfr=2) +
-	     EGFR(egf=3, egfr=None) % EGF(egfr=3) <>
-             EGFR(egf=2, egfr=1) % EGF(egfr=2) % EGFR(egf=3, egfr=1) %
-	     EGF(egfr=3), kf_ee_bind_2, kr_ee_bind_2)
-					
-        Rule(u'GRB2_EGFR_bind',
-	     GRB2(egfr=None) + EGFR(Y='p', grb2=None) <>
-             GRB2(egfr=1) % EGFR(Y='p', grb2=1), kf_ge_bind_1, kr_ge_bind_1)
-				
-        Rule(u'GRB2_EGFR_SOS1_bind',
-	     GRB2(egfr=2, sos1=None) % EGFR(grb2=2) + SOS1(grb2=None) <>
-	     GRB2(egfr=2, sos1=1) % EGFR(grb2=2) % SOS1(grb2=1), kf_gs_bind_1, kr_gs_bind_1)
-				     
+        Rule(u'EGFR_EGF_bind', EGFR(egf=None) + EGF(egfr=None) >>
+            EGFR(egf=1) % EGF(egfr=1), kf_ee_bind_1)
+
+        Rule(u'EGFR_EGF_dissociate', EGFR(egf=1) % EGF(egfr=1) >>
+            EGFR(egf=None) + EGF(egfr=None), kr_ee_bind_1)
+
+        Rule(u'EGFR_EGF_EGFR_EGF_bind', EGFR(egf=ANY, egfr=None) +
+            EGFR(egf=ANY, egfr=None) >> EGFR(egf=ANY, egfr=1) %\
+            EGFR(egf=ANY, egfr=1), kf_ee_bind_2)
+
+        Rule(u'EGFR_EGF_EGFR_EGF_dissociate', EGFR(egfr=1) % EGFR(egfr=1) >>
+            EGFR(egfr=None) + EGFR(egfr=None), kr_ee_bind_2)
+
+        Rule(u'GRB2_EGFR_bind', GRB2(egfr=None) + EGFR(grb2=None) >>
+            GRB2(egfr=1) % EGFR(grb2=1), kf_ge_bind_1)
+
+        Rule(u'GRB2_EGFR_dissociate', GRB2(egfr=1) % EGFR(grb2=1) >>
+            GRB2(egfr=None) + EGFR(grb2=None), kr_ge_bind_1)
+
+        Rule(u'GRB2_EGFR_SOS1_bind', GRB2(egfr=ANY, sos1=None) +\
+            SOS1(grb2=None) >> GRB2(egfr=ANY, sos1=1) % SOS1(grb2=1),
+            kf_gs_bind_1)
+
+        Rule(u'GRB2_EGFR_SOS1_dissociate', GRB2(sos1=1) % SOS1(grb2=1) >>
+            GRB2(sos1=None) + SOS1(grb2=None), kr_gs_bind_1)
+
         Rule(u'EGFR_transphospho_EGFR_Y',
-	     EGFR(egfr=ANY) % EGFR(Y='u') >>
-	     EGFR(egfr=ANY) % EGFR(Y='p'), kf_ee_transphos_1)
-					  
+            EGFR(egfr=ANY) % EGFR(Y='u') >> EGFR(egfr=ANY) % EGFR(Y='p'),
+            kf_ee_transphos_1)
+
 
         Annotation(GRB2, 'http://identifiers.org/uniprot/P62993', 'is')
         Annotation(GRB2, 'http://identifiers.org/hgnc/HGNC:4566', 'is')
