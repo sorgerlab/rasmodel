@@ -167,11 +167,15 @@ ERK phosphorylates SOS and inactivates it
        Parameter('k_epsf', 1e-4)
        Parameter('k_epsr', 0.1)
        Parameter('k_epse', 1)
+       Parameter('k_phos', 1e-5)
 
        alias_model_components()
 
        catalyze_state(MAPK1(Y187='p', T185='p', dusp6=None), 'sos1', SOS1(ras=None),
                    'mapk1', 'state', 'up', 'p', (k_epsf, k_epsr, k_epse))
+
+
+       Rule('SOS_dephos', SOS1(state='p') >> SOS1(state='up'), k_phos)
 
 	     
       
