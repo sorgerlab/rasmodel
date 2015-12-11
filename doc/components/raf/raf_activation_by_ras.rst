@@ -1,12 +1,12 @@
 Raf activation by Ras
 =====================
 
-In its basal state, RAF is present in a 'closed' conformation, wherein the N terminus of the RAF protein interacts with, and inhibits the C terminus. Ligand binding to receptor tyrosine kinase (RTK) results in activation of the RTK, leading to RAS actviation (RAS-GTP). It is not completely understood RAS activates RAF. GTP bound RAS binds to the RAS binding domain (RBD) of  RAF, and prevents the inhibitory interaction between the C and N termini of RAF. This results in RAF assuming an 'open' conformation. A further step in the activation of RAF is dimerization, which stabilizes its 'open' conformation. 28% of Melanomas have RAS mutations, of which 94% are mutations in NRAS. Hence, we instantiate the model for the vemurfenib resistance scenario using NRAS.
+In its basal state, RAF is present in a 'closed' conformation, wherein the N terminus of the RAF protein interacts with, and inhibits the C terminus. Ligand binding to receptor tyrosine kinase (RTK) results in activation of the RTK, leading to RAS actviation (RAS-GTP). It is not completely understood how RAS activates RAF. GTP bound RAS binds to the RAS binding domain (RBD) of  RAF, and prevents the inhibitory interaction between the C and N termini of RAF. This results in RAF assuming an 'open' conformation. A further step in the activation of RAF is dimerization, which stabilizes its 'open' conformation.
 
 ::
 
    from pysb import Monomer, Rule, Parameter, Annotation, ANY
-   from pysb.macros import bind, _macro_rule
+   from pysb.macros import bind, _macro_rule, catalyze_state
    from pysb.util import alias_model_components
 
 
@@ -54,8 +54,8 @@ In its basal state, RAF is present in a 'closed' conformation, wherein the N ter
 	    RAS(gtp=None, sos1=None) + GTP(ras=None),
 	    kf5)
 
-       # Release KRAS:GDP from BRAF
-       Rule('RAS_GDP_dissoc_BRAF',
+       # Release KRAS:GDP from RAF
+       Rule('RAS_GDP_dissoc_RAF',
             RAS(gtp=None, raf=1) % RAF(ras=1) >>
             RAS(gtp=None, raf=None) + RAF(ras=None), koff)
 
@@ -98,7 +98,7 @@ Recent experiments have shown that Vemurafenib is iniffective in binding RAF dim
 	alias_model_components()
 
 	# RAF:Vem dimerization to give 2(RAF:Vem) g = a * f
-	Rule('BRAF_Vem_dimerization',
+	Rule('RAF_Vem_dimerization',
               RAF(d=None, ras=None, vem=ANY) + RAF(d=None, ras=None, vem=ANY) <>
               RAF(d=1, ras=None, vem=ANY) % RAF(d=1, ras=None, vem=ANY), kgf, kgr)
 
@@ -119,8 +119,8 @@ Recent experiments have shown that Vemurafenib is iniffective in binding RAF dim
 	bind(RAF(d=None), 'vem', Vem(), 'raf', [kef, ker])
 
 
-
-lkfkflekflnflw
+BRAFV600E mutants are active as RAS independent monomers. Hence, the rule for MEK phosphorylation is modified such
+that RAF can phosphorylate MAPK1 as long as Vemurafneib is not bound to it.
 
 ::
 
@@ -159,8 +159,22 @@ lkfkflekflnflw
 	     RAF(vem=None, map2k1=1) % MAP2K1(raf=1, S222='u', ppp2ca=None) >>
 	     RAF(vem=None, map2k1=None) + MAP2K1(raf=None, S222='p', ppp2ca=None),
 	     kc_rm_phos_2)
+	     
+ERK phosphorylates SOS and inactivates it
+::
+   def erk_feedback():
 
+       Parameter('k_epsf', 1e-4)
+       Parameter('k_epsr', 0.1)
+       Parameter('k_epse', 1)
 
+       alias_model_components()
+
+       catalyze_state(MAPK1(Y187='p', T185='p', dusp6=None), 'sos1', SOS1(ras=None),
+                   'mapk1', 'state', 'up', 'p', (k_epsf, k_epsr, k_epse))
+
+	     
+      
 
 References
 ----------
@@ -175,12 +189,12 @@ References
 
 .. [PMID15664191] Dougherty MK1, Müller J, Ritt DA, Zhou M, Zhou XZ, Copeland TD, Conrads TP, Veenstra TD, Lu KP, Morrison DK. **Regulation of Raf-1 by direct feedback phosphorylation.** Mol Cell. 2005 Jan 21;17(2):215-24. :pmid:`15664191` :download:`PDF </pdf/15664191.pdf>`
 
-.. [lavoie] Lavoie H, Therrien M. **Regulation of RAF protein kinases in ERK signalling.** :doi:`10.1038/nrm3979` :download:`PDF </pdf/lavoie.pdf>`
+.. [Lavoie] Lavoie H, Therrien M. **Regulation of RAF protein kinases in ERK signalling.** :doi:`10.1038/nrm3979` :download:`PDF </pdf/lavoie.pdf>`
 
-.. [2634358] Yao Z, Torres NM, Tao A, Gao Y, Luo L, Li Q, Stanchina E, Abdel-Wahab O, Solit DB, Poulikakos PI, Rosen N. **BRAF mutants evade ERK-dependent feedback by different mechanisms that determine their sensitivity to pharmacological inhibition.** Cancer Cell. 2015 Sept 1 15;28:270-83. :pmid:`26343582`
+.. [PMID2634358] Yao Z, Torres NM, Tao A, Gao Y, Luo L, Li Q, Stanchina E, Abdel-Wahab O, Solit DB, Poulikakos PI, Rosen N. **BRAF mutants evade ERK-dependent feedback by different mechanisms that determine their sensitivity to pharmacological inhibition.** Cancer Cell. 2015 Sept 1 15;28:270-83. :pmid:`26343582`
 
-.. [2420239] Lito P, Rosen N, Solit DB. ** Tumor adaptation and resistance to RAF inhibitors.** Nature MEdicine. 2013 Nov; 19(11):1401-9. :pmid:`24202393`
+.. [PMID2420239] Lito P, Rosen N, Solit DB. ** Tumor adaptation and resistance to RAF inhibitors.** Nature MEdicine. 2013 Nov; 19(11):1401-9. :pmid:`24202393`
 
-.. [23153539] Lito P, Pratilas CA, Joseph EW, Tadi M, Halilovic E, Zubrowski M, Huan A, Wong WL, Callahan MK, Merghoun T, Wolchok JD, Stanchina E, Chandrarlapaty S, Paulikakos PI, Fagin JA, Rosen N, **Relief of profound feedback inhibition of mitogenic signaling by RAF inhibitors attenuates their activity in BRAFV600E melanomas.** Cancer Cell, 2012 Nov 12;22:668-82. pmid:`23153539`
+.. [PMID23153539] Lito P, Pratilas CA, Joseph EW, Tadi M, Halilovic E, Zubrowski M, Huan A, Wong WL, Callahan MK, Merghoun T, Wolchok JD, Stanchina E, Chandrarlapaty S, Paulikakos PI, Fagin JA, Rosen N, **Relief of profound feedback inhibition of mitogenic signaling by RAF inhibitors attenuates their activity in BRAFV600E melanomas.** Cancer Cell, 2012 Nov 12;22:668-82. pmid:`23153539`
 
-.. [21107323] Nazarian R, Shi H, Wanf Q, Kon X, Koya RC, Lee H, Chen Z, Lee M-K, Attar N, Sazegar H, chodon T, Nelson SF, McArthur G, Sosman JA, Ribas A, Lo RS. ** Melanomas acquire resistance to B-RAF(V600E) inhibition by RTK or N-RAS upregulation.** Nature. 2010 DEc 16;468: 973-7. :pmid:`2110732`
+.. [PMID21107323] Nazarian R, Shi H, Wanf Q, Kon X, Koya RC, Lee H, Chen Z, Lee M-K, Attar N, Sazegar H, chodon T, Nelson SF, McArthur G, Sosman JA, Ribas A, Lo RS. ** Melanomas acquire resistance to B-RAF(V600E) inhibition by RTK or N-RAS upregulation.** Nature. 2010 DEc 16;468: 973-7. :pmid:`2110732`
