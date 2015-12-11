@@ -1,6 +1,3 @@
-.. component::
-   :module: rasmodel.scenarios.vemurafenib_resistance
-	    
 Vemurafenib resistance
 ======================
 
@@ -186,32 +183,3 @@ The following constraints are put on interactions for reducing combinatorial com
    MAP2K1(S218='p', S222='p', mapk1=None, ppp2ca=None)
    r.product_pattern.complex_patterns[0].monomer_patterns[0] =\
    MAP2K1(S218='p', S222='p', mapk1=1, ppp2ca=None)
-   
-
-   
-Default initial conditions for model set to 1e-8
-
-::
-
-   from pysb import Parameter, Initial
-
-   # Iterate over every monomer
-   for m in model.monomers:
-       states_dict = {}
-       # Iterate over every site in the monomer
-       for s in m.sites:
-	   # If it's in the site states dict, assign it the first of the
-	   # listed states
-	   if s in m.site_states:
-	       states_dict[s] = m.site_states[s][0]
-	   # Otherwise (e.g., the site is used only for binding) assign it
-	   # a state None, meaning unbound:
-	   else:
-	       states_dict[s] = None
-
-       # Create the initial condition parameter based on the protein name
-       initial_value = Parameter('{0}_0'.format(m.name), 1.0e-8)
-
-       # Create the initial condition
-       Initial(m(**states_dict), initial_value)
-
