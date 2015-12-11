@@ -18,9 +18,6 @@ model.parameters['HRAS_0'].value = 500.
 # is hydrolyzed to GDP:
 Expression('HRAS_mGXP_', model.observables['HRAS_mGTP_open_'] +
                    model.observables['HRAS_mGDP_open_'])
-Expression('KRAS_mGXP_', model.observables['KRAS_mGTP_open_'] +
-                   model.observables['KRAS_mGDP_open_'])
-
 # We use the parameters calculated for experiments with mGTP at 5C
 model.parameters['bind_HRASclosed_GTP_kf'].value = 1e-2 # nM^-1 s^-1
 model.parameters['bind_HRASclosed_GTP_kr'].value = 1e-2 / (6.1e4 * 1e-9) # s^-1

@@ -32,7 +32,7 @@ Initial(KRAS(gtp=1, gef=None, p_loop=None, s1s2='open', CAAX=None,
 Initial(KRAS(gtp=1, gef=None, p_loop=None, s1s2='open', CAAX=None,
              mutant='G13D') % GTP(p=1, label='n'),
              Parameter('KRAS_G13D_GTP_0', 0.))
-
+#model.parameters['k_recycle_gtp_from_gdp'].value = 0
 plt.ion()
 
 # First simulate the data from Figure 1A (GDP exchange)
@@ -50,6 +50,7 @@ A = fitting.Parameter(100.)
 def expfunc(t):
     return A() * (1 - np.exp(-k()*t))
 res = fitting.fit(expfunc, [A, k], sol.yexpr['KRAS_mGXP_'], t)
+print A(), k()
 
 # G13D, GDP:
 model.parameters['KRAS_WT_GDP_0'].value = 0
@@ -57,6 +58,13 @@ model.parameters['KRAS_G13D_GDP_0'].value = 750.
 sol.run()
 plt.plot(t, sol.yexpr['KRAS_mGXP_'], label='G13D')
 plt.legend(loc='lower right')
+
+k = fitting.Parameter(1.)
+A = fitting.Parameter(100.)
+def expfunc(t):
+    return A() * (1 - np.exp(-k()*t))
+res = fitting.fit(expfunc, [A, k], sol.yexpr['KRAS_mGXP_'], t)
+print A(), k()
 
 # Now simulate the data from Figure 1B (GTP exchange)
 # WT, GTP
@@ -76,3 +84,9 @@ sol.run()
 plt.plot(t, sol.yexpr['KRAS_mGXP_'], label='G13D')
 plt.legend(loc='lower right')
 
+k = fitting.Parameter(1.)
+A = fitting.Parameter(100.)
+def expfunc(t):
+    return A() * (1 - np.exp(-k()*t))
+res = fitting.fit(expfunc, [A, k], sol.yexpr['KRAS_mGXP_'], t)
+print A(), k()
