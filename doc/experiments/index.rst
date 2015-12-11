@@ -1,7 +1,7 @@
-.. _experiments:
+.. _analysis:
 
-In-silico Experiments
-=====================
+Model analysis
+==============
 
 .. toctree::
    :maxdepth: 1

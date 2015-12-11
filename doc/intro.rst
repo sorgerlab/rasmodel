@@ -11,10 +11,9 @@ written in `PySB. <http://www.pysb.org>`_
 
 REM consists of three interlinked levels. :ref:`Model components <components>` consist of PySB modules that implement pathway mechanisms.
 A :ref:`model scenario <scenarios>` corresponds to a specific use case and imports one or more model components in a fit-to-purpose manner to instantiate an executable model.
-Each model scenario can have a set of corresponding :ref:`in-silico experiments <experiments>`, which typically implement simulation and analysis tasks.
+Each model scenario can have a set of corresponding :ref:`model analysis <analysis>` scripts.
 
-.. centered::
-    |rem-archi|
+|rem-archi|
 
 REM is built via a combination of automated assembly using `INDRA (Integrated Network and Dynamical Reasonging Assembler) <https://github.com/sorgerlab/indra>`_, and manual development by a team of modelers.
 
@@ -80,3 +79,4 @@ BioNetGen, and optionally `KaSim <http://github.com/Kappa-Dev/KaSim>`_).
 
 .. |rem-archi|
    image:: /images/rem_architecture.png
+   :width: 400px
