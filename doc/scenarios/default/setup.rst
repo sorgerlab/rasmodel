@@ -25,6 +25,3 @@ We include binding and hydrolkysis for HRAS, NRAS, and KRAS::
     ras.nras_binds_nucleotides(model)
     ras.nras_hydrolyzes_gtp(model)
 
-Ensure GTP/GDP levels are maintained::
-
-    ras.recycle_gtp_from_gdp(model)
