@@ -21,19 +21,30 @@ http://www.ncbi.nlm.nih.gov/pmc/articles/PMC3915522/figure/F1/).
     def ras_monomers():
         # Define the site structure for various Ras family members. All of the
         # Ras proteins have the following structural/regulatory features:
+        # The sites are as follows:
+        # gtp: binding site for GTP/GDP
+        # gef: binding site for Ras-GEFs
+        # gap: binding site for Ras-GAPs
+        # p_loop: p_loop
+        # s1s2: Switch 1 and Switch 2 regions
+        # CAAX: C-terminal region responsible for membrane binding
+        # mutant: Specific point mutation of Ras
         for ras_name in ['KRAS', 'NRAS', 'HRAS']:
             Monomer(ras_name,
-                    ['gtp', 'gef', 'p_loop', 's1s2', 'CAAX', 'oncogenic'],
-                    {'s1s2': ['closed', 'open'],
-                     'oncogenic': ['n', 'y']})
+                    ['gtp', 'gef', 'gap', 'p_loop', 's1s2', 'CAAX', 'mutant'],
+                    {'s1s2': ['open', 'closed'],
+                     'mutant': ['WT', 'G12A', 'G12C', 'G12S', 'G12D',
+                                'G12R', 'G12V', 'G13D', 'Q61L', 'Q61H']})
 
     def nucleotide_monomers():
         # Guanine nucleotides
+        # p: Binding site for binding Ras ('p' for phosphate)
+        # label: Fluorescent label used in some experiments (mant-GTP/GDP)
         Monomer('GTP', ['p', 'label'], {'label': ['n', 'y']})
         Monomer('GDP', ['p', 'label'], {'label': ['n', 'y']})
         Monomer('Pi', []) # inorganic phosphate, used for GDP/GTP recycling
 
-Anatomy of Ras regulation:
+Switch 1 and Switch 2 change conformation upon binding of GTP:
 
     [PMID18568040]_: The structural differences between the RasGDP and the
     RasGTP conformations reside mainly in two highly dynamic regions, termed
@@ -97,14 +108,14 @@ reaction scheme, from [PMID2200519]_:
 
 We formulate a binding mechanism based on this two-step scheme. We denote the
 change in conformation that Ras undergoes by changing the state of the
-switch1/switch2 domains (s1s2) from 'closed' to 'open'.
+switch1/switch2 domains (s1s2) from 'open' to 'closed'.
 
 ::
 
     def ras_binds_gxp(ras, gxp, klist):
         # Alias for Ras bound to GXP. Note that these equilibria are for
         # Ras that is NOT bound to a Ras-GEF.
-        rasgxp = ras(gef=None, gtp=99) % gxp(p=99)
+        rasgxp = ras(gap=None, gef=None, gtp=99) % gxp(p=99)
         # Get the rates from the list:
         (kf1, kr1, kf2, kr2) = klist
 
@@ -112,7 +123,7 @@ The initial binding step:
 
 .. code-block:: python
 
-        bind(ras(gtp=None, s1s2='closed'), 'gtp', gxp(), 'p', [kf1, kr1])
+        bind(ras(gtp=None, s1s2='open'), 'gtp', gxp(), 'p', [kf1, kr1])
     #
 
 Isomerization/conformational change of Ras resulting from nucleotide binding;
@@ -121,7 +132,7 @@ tightly bound:
 
 .. code-block:: python
 
-        equilibrate(rasgxp(s1s2='closed'), rasgxp(s1s2='open'), [kf2, kr2])
+        equilibrate(rasgxp(s1s2='open'), rasgxp(s1s2='closed'), [kf2, kr2])
     #
 
 Rates
@@ -132,8 +143,8 @@ The rates for HRAS + GDP binding were measured at 25C (Table 1,
 step, we assume a diffusion-limited on-rate of :math:`10^7\ M^-1\ s^-1` for
 kf1::
 
-    ras_gdp_kf1 = 1e7   # M^-1 s^-1
-    ras_gdp_K1 = 5.7e4  # M^-1
+    ras_gdp_kf1 = 1e7 * 1e-9   # M^-1 s^-1 to nM^-1 s^-1
+    ras_gdp_K1 = 5.7e4 * 1e-9  # M^-1 to nM^-1 s^-1
     ras_gdp_kr1 = ras_gdp_kf1 / ras_gdp_K1  # s^-1
 
 For the second step, the rates were given explicitly as (Table 1,
@@ -146,8 +157,8 @@ The rates given for HRAS + GTP at 25C were similar, though the off-rate for the
 second state was for some reason not given. As before, we choose a
 diffusion-limited on-rate of :math:`10^7\ M^-1\ s^-1` for kf1::
 
-    ras_gtp_kf1 = 1e7    # M^-1 s^-1
-    ras_gtp_K1 = 1.25e5  # M^-1
+    ras_gtp_kf1 = 1e7 * 1e-9   # M^-1 s^-1 to nM^-1 s^-1
+    ras_gtp_K1 = 1.25e5 * 1e-9 # M^-1 to nM^-1 s^-1
     ras_gtp_kr1 = ras_gtp_kf1 / ras_gtp_K1  # s^-1
 
     ras_gtp_kf2 = 16.7   # s^-1
@@ -163,30 +174,70 @@ the rate was not reported for GTP.
 
 We specify the binding of HRAS to GDP and GTP according to the measured rates::
 
-    def hras_binds_nucleotide(model):
+    def hras_binds_nucleotides(model):
         HRAS = model.monomers['HRAS']
         GDP = model.monomers['GDP']
         GTP = model.monomers['GTP']
         ras_binds_gxp(HRAS, GDP, ras_gdp_klist)
         ras_binds_gxp(HRAS, GTP, ras_gtp_klist)
 
-Until we get new information, we will simply use the same rates for KRAS and
-NRAS::
+Nucleotide exchange experiments on a number of KRAS mutants were published in
+Hunter et al. [PMID26037647]_. These experiments found that the exchange rates
+among a number of mutants were indistinguishable from wild-type KRAS, at 0.002
+:math:`sec^{-1}`, with the exception of G13D, which was considerably faster
+(0.027 :math:`sec^{-1}` for GDP and 0.018 :math:`sec^{-1}` for GTP).  If we use
+the mechanism for nucleotide binding described by Wittinghofer in
+[PMID2200519]_, the exchange rate for GDP is dominated by the reverse rate of
+the second step of nucleotide binding (from loosely to tightly bound).
+Therefore we use the measured rates from this study to set this rate while
+keeping the same rates as previously published for HRAS.
 
-    def kras_binds_nucleotide():
+.. warning::
+
+    The hydrolysis rate of GTP->GDP affects the observed GTP exchange rate
+    because it allows the GTP exchange rate to be affected by GDP
+    dissociation after hydrolysis of GTP to GDP. What's not clear, however, is
+    if the published rates for intrinsic GTP hydrolysis apply to the exchange
+    experiment, which included only 10 mM Mg2+ rather than 40 mM Mg2+ as used
+    in the hydrolysis experiment. In this case it might be better to model the
+    exchange assay as having significantly diminished GTP hydrolysis.
+
+::
+
+    def kras_binds_nucleotides(model):
         KRAS = model.monomers['KRAS']
         GDP = model.monomers['GDP']
         GTP = model.monomers['GTP']
-        ras_binds_gxp(KRAS, GDP, ras_gdp_klist)
-        ras_binds_gxp(KRAS, GTP, ras_gtp_klist)
+        # Iterate over all of the mutants that we're considering
+        for mutant in KRAS.site_states['mutant']:
+            kras = KRAS(mutant=mutant)
+            # Set a different rate for G13D vs. WT and all other mutants
+            if mutant == 'G13D':
+                mutant_gdp_diss_rate = 0.020
+                mutant_gtp_diss_rate = 0.015
+            else:
+                mutant_gdp_diss_rate = 0.0015
+                mutant_gtp_diss_rate = 0.0015
+            # Re-use the rates from [PMID2200519] for the initial association
+            # and forward isomerization, but use the rates from
+            # [PMID26037647] to set the slow reverse rate:
+            kras_gdp_klist = [ras_gdp_klist[0], ras_gdp_klist[1],
+                              ras_gdp_klist[2], mutant_gdp_diss_rate]
+            kras_gtp_klist = [ras_gtp_klist[0], ras_gtp_klist[1],
+                              ras_gtp_klist[2], mutant_gtp_diss_rate]
+            # Call the binding macro
+            ras_binds_gxp(kras, GDP, kras_gdp_klist)
+            ras_binds_gxp(kras, GTP, kras_gtp_klist)
 
-    def nras_binds_nucleotide():
+In the absence of new information, we use the same rates for NRAS and were
+published in [PMID2200519]_ for HRAS::
+
+    def nras_binds_nucleotides(model):
         NRAS = model.monomers['NRAS']
         GDP = model.monomers['GDP']
         GTP = model.monomers['GTP']
         ras_binds_gxp(NRAS, GDP, ras_gdp_klist)
         ras_binds_gxp(NRAS, GTP, ras_gtp_klist)
-
 
 Ras converts GTP to GDP
 -----------------------
@@ -214,15 +265,25 @@ not bound to a GEF::
         GTP = model.monomers['GTP']
         GDP = model.monomers['GDP']
         Pi = model.monomers['Pi']
-        k = Parameter('k_{0}_gtpase'.format(ras.name), 1.)
+        ras = ras()
+        ras_name = ras.monomer.name
+
+        # If the Ras monomer we've got doesn't have any information for
+        # mutants, explicitly name it as the wild-type allele
+        try:
+            ras_mutant = ras.site_conditions['mutant']
+        except KeyError:
+            ras_mutant = 'WT'
+
+        k = Parameter('k_%s_%s_gtpase' % (ras_name, ras_mutant), kcat)
         # Instantiate the rule for both labeled and unlabeled GTP/GDP
-        Rule('{0}_converts_GTP_GDP'.format(ras.name),
-             ras(gef=None, gtp=1, s1s2='open') % GTP(p=1, label='n') >>
-             ras(gef=None, gtp=1, s1s2='open') % GDP(p=1, label='n') + Pi(),
+        Rule('%s_%s_converts_GTP_GDP' % (ras_name, ras_mutant),
+             ras(gef=None, gtp=1, s1s2='closed') % GTP(p=1, label='n') >>
+             ras(gef=None, gtp=1, s1s2='closed') % GDP(p=1, label='n') + Pi(),
              k)
-        Rule('{0}_converts_mGTP_mGDP'.format(ras.name),
-             ras(gef=None, gtp=1, s1s2='open') % GTP(p=1, label='y') >>
-             ras(gef=None, gtp=1, s1s2='open') % GDP(p=1, label='y') + Pi(),
+        Rule('%s_%s_converts_mGTP_mGDP' % (ras_name, ras_mutant),
+             ras(gef=None, gtp=1, s1s2='closed') % GTP(p=1, label='y') >>
+             ras(gef=None, gtp=1, s1s2='closed') % GDP(p=1, label='y') + Pi(),
              k)
 
 Rates
@@ -237,13 +298,41 @@ GTP hydrolysis by wild-type Ras is slow in the absence of RasGAPs.
 
 ::
 
-    # Convert 2.8e-2 min^-1 to units of s^-1
-    wt_ras_hydrolysis_rate = 2.8e-2 * 60
+    def hras_hydrolyzes_gtp(model):
+        # Convert 2.8e-2 min^-1 to units of s^-1
+        wt_ras_hydrolysis_rate = 2.8e-2 / 60.
 
-    def hras_hydrolizes_gtp(model):
         HRAS = model.monomers['HRAS']
         ras_converts_gtp_to_gdp(model, HRAS, wt_ras_hydrolysis_rate)
 
+    def kras_hydrolyzes_gtp(model):
+        kras_wt_hydrolysis_rate = 0
+        KRAS = model.monomers['KRAS']
+
+        hydrolysis_rates = {'WT': 68e-5,
+                            'G12A': 1.3e-6,
+                            'G12C': 49e-5,
+                            'G12D': 19e-5,
+                            'G12R': 1.8e-5,
+                            'G12V': 4.2e-5,
+                            'G13D': 9.6e-5,
+                            'Q61L': 0.8e-5,
+                            'Q61H': 1.3e-5,}
+        # Iterate over all of the mutants that we're considering
+        for mutant in KRAS.site_states['mutant']:
+            kras = KRAS(mutant=mutant)
+            if mutant in hydrolysis_rates:
+                mutant_rate = hydrolysis_rates[mutant]
+            else:
+                mutant_rate = hydrolysis_rates['WT']
+            ras_converts_gtp_to_gdp(model, kras, mutant_rate)
+
+    def nras_hydrolyzes_gtp(model):
+        # Convert 2.8e-2 min^-1 to units of s^-1
+        wt_ras_hydrolysis_rate = 2.8e-2 / 60.
+
+        NRAS = model.monomers['NRAS']
+        ras_converts_gtp_to_gdp(model, NRAS, wt_ras_hydrolysis_rate)
 
 Recycling of GTP from GDP
 ~~~~~~~~~~~~~~~~~~~~~~~~~

@@ -77,3 +77,4 @@ References
 
 .. [PMID8702787] Simon I, Zerial M, Goody RS.  **Kinetics of interaction of Rab5 and Rab7 with nucleotides and magnesium ions.** J Biol Chem. 1996 Aug 23;271(34):20470-8. :pmid:`8702787` :download:`PDF </pdf/8702787.pdf>`
 
+.. [PMID26037647] Hunter, J. C., Manandhar, A., Carrasco, M. A., Gurbani, D., Gondi, S., & Westover, K. D. (2015). **Biochemical and Structural Analysis of Common Cancer-Associated KRAS Mutations.** Molecular Cancer Research : MCR, 13(9), 1325–1335. :pmid:`26037647` :download:`PDF </pdf/26037647.pdf>`

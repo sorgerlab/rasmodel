@@ -16,11 +16,12 @@ Then we pull in the components for Ras::
     ras.rasgap_monomers()
     ras.nucleotide_monomers()
 
-We only include the elements involving HRAS, not NRAS or KRAS::
+We include binding and hydrolkysis for HRAS, NRAS, and KRAS::
 
-    ras.hras_binds_nucleotide(model)
-    ras.hras_hydrolizes_gtp(model)
+    ras.hras_binds_nucleotides(model)
+    ras.hras_hydrolyzes_gtp(model)
+    ras.kras_binds_nucleotides(model)
+    ras.kras_hydrolyzes_gtp(model)
+    ras.nras_binds_nucleotides(model)
+    ras.nras_hydrolyzes_gtp(model)
 
-Ensure GTP/GDP levels are maintained::
-
-    ras.recycle_gtp_from_gdp(model)
