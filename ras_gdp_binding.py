@@ -16,13 +16,13 @@ model.parameters['HRAS_0'].value = 500.
 
 # We use this expression because we still get fluorescence even if GTP
 # is hydrolyzed to GDP:
-Expression('HRAS_mGXP_', model.observables['HRAS_mGTP_open_'] +
-                   model.observables['HRAS_mGDP_open_'])
+Expression('HRAS_mGXP_', model.observables['HRAS_mGTP_closed_'] +
+                   model.observables['HRAS_mGDP_closed_'])
 # We use the parameters calculated for experiments with mGTP at 5C
-model.parameters['bind_HRASclosed_GTP_kf'].value = 1e-2 # nM^-1 s^-1
-model.parameters['bind_HRASclosed_GTP_kr'].value = 1e-2 / (6.1e4 * 1e-9) # s^-1
-model.parameters['equilibrate_HRASclosedGTP_to_HRASopenGTP_kf'].value = 4.5 #s^-1
-model.parameters['equilibrate_HRASclosedGTP_to_HRASopenGTP_kr'].value = 0 #s^-1
+model.parameters['bind_HRASopen_GTP_kf'].value = 1e-2 # nM^-1 s^-1
+model.parameters['bind_HRASopen_GTP_kr'].value = 1e-2 / (6.1e4 * 1e-9) # s^-1
+model.parameters['equilibrate_HRASopenGTP_to_HRASclosedGTP_kf'].value = 4.5 #s^-1
+model.parameters['equilibrate_HRASopenGTP_to_HRASclosedGTP_kr'].value = 0 #s^-1
 
 plt.ion()
 
@@ -61,10 +61,10 @@ plt.ylim(bottom=0)
 model.parameters['mGDP_0'].value = 2.5 * 1000 # nM
 model.parameters['mGTP_0'].value = 0
 
-model.parameters['bind_HRASclosed_GDP_kf'].value = 1e-2 # nM^-1 s^-1
-model.parameters['bind_HRASclosed_GDP_kr'].value = 1e-2 / (5.7e4 * 1e-9) # s^-1
-model.parameters['equilibrate_HRASclosedGDP_to_HRASopenGDP_kf'].value = 3.2 #s^-1
-model.parameters['equilibrate_HRASclosedGDP_to_HRASopenGDP_kr'].value = 5e-7 #s^-1
+model.parameters['bind_HRASopen_GDP_kf'].value = 1e-2 # nM^-1 s^-1
+model.parameters['bind_HRASopen_GDP_kr'].value = 1e-2 / (5.7e4 * 1e-9) # s^-1
+model.parameters['equilibrate_HRASopenGDP_to_HRASclosedGDP_kf'].value = 3.2 #s^-1
+model.parameters['equilibrate_HRASopenGDP_to_HRASclosedGDP_kr'].value = 5e-7 #s^-1
 
 k_list = []
 plt.figure()
