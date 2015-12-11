@@ -32,7 +32,7 @@ http://www.ncbi.nlm.nih.gov/pmc/articles/PMC3915522/figure/F1/).
         for ras_name in ['KRAS', 'NRAS', 'HRAS']:
             Monomer(ras_name,
                     ['gtp', 'gef', 'gap', 'p_loop', 's1s2', 'CAAX', 'mutant'],
-                    {'s1s2': ['closed', 'open'],
+                    {'s1s2': ['open', 'closed'],
                      'mutant': ['WT', 'G12A', 'G12C', 'G12S', 'G12D',
                                 'G12R', 'G12V', 'G13D', 'Q61L', 'Q61H']})
 
@@ -108,14 +108,14 @@ reaction scheme, from [PMID2200519]_:
 
 We formulate a binding mechanism based on this two-step scheme. We denote the
 change in conformation that Ras undergoes by changing the state of the
-switch1/switch2 domains (s1s2) from 'closed' to 'open'.
+switch1/switch2 domains (s1s2) from 'open' to 'closed'.
 
 ::
 
     def ras_binds_gxp(ras, gxp, klist):
         # Alias for Ras bound to GXP. Note that these equilibria are for
         # Ras that is NOT bound to a Ras-GEF.
-        rasgxp = ras(gef=None, gtp=99) % gxp(p=99)
+        rasgxp = ras(gap=None, gef=None, gtp=99) % gxp(p=99)
         # Get the rates from the list:
         (kf1, kr1, kf2, kr2) = klist
 
@@ -123,7 +123,7 @@ The initial binding step:
 
 .. code-block:: python
 
-        bind(ras(gtp=None, s1s2='closed'), 'gtp', gxp(), 'p', [kf1, kr1])
+        bind(ras(gtp=None, s1s2='open'), 'gtp', gxp(), 'p', [kf1, kr1])
     #
 
 Isomerization/conformational change of Ras resulting from nucleotide binding;
@@ -132,7 +132,7 @@ tightly bound:
 
 .. code-block:: python
 
-        equilibrate(rasgxp(s1s2='closed'), rasgxp(s1s2='open'), [kf2, kr2])
+        equilibrate(rasgxp(s1s2='open'), rasgxp(s1s2='closed'), [kf2, kr2])
     #
 
 Rates
@@ -267,16 +267,23 @@ not bound to a GEF::
         Pi = model.monomers['Pi']
         ras = ras()
         ras_name = ras.monomer.name
-        ras_mutant = ras.site_conditions['mutant']
+
+        # If the Ras monomer we've got doesn't have any information for
+        # mutants, explicitly name it as the wild-type allele
+        try:
+            ras_mutant = ras.site_conditions['mutant']
+        except KeyError:
+            ras_mutant = 'WT'
+
         k = Parameter('k_%s_%s_gtpase' % (ras_name, ras_mutant), kcat)
         # Instantiate the rule for both labeled and unlabeled GTP/GDP
         Rule('%s_%s_converts_GTP_GDP' % (ras_name, ras_mutant),
-             ras(gef=None, gtp=1, s1s2='open') % GTP(p=1, label='n') >>
-             ras(gef=None, gtp=1, s1s2='open') % GDP(p=1, label='n') + Pi(),
+             ras(gef=None, gtp=1, s1s2='closed') % GTP(p=1, label='n') >>
+             ras(gef=None, gtp=1, s1s2='closed') % GDP(p=1, label='n') + Pi(),
              k)
         Rule('%s_%s_converts_mGTP_mGDP' % (ras_name, ras_mutant),
-             ras(gef=None, gtp=1, s1s2='open') % GTP(p=1, label='y') >>
-             ras(gef=None, gtp=1, s1s2='open') % GDP(p=1, label='y') + Pi(),
+             ras(gef=None, gtp=1, s1s2='closed') % GTP(p=1, label='y') >>
+             ras(gef=None, gtp=1, s1s2='closed') % GDP(p=1, label='y') + Pi(),
              k)
 
 Rates
