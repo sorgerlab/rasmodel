@@ -16,7 +16,7 @@ http://www.ncbi.nlm.nih.gov/pmc/articles/PMC3915522/figure/F1/).
 
     # Preliminaries
     from pysb import *
-    from pysb.macros import bind, bind_table, equilibrate
+    from pysb.macros import bind, bind_table, equilibrate, _macro_rule
 
     def ras_monomers():
         # Define the site structure for various Ras family members. All of the
@@ -33,7 +33,7 @@ http://www.ncbi.nlm.nih.gov/pmc/articles/PMC3915522/figure/F1/).
             Monomer(ras_name,
                     ['gtp', 'gef', 'gap', 'p_loop', 's1s2', 'CAAX', 'mutant'],
                     {'s1s2': ['open', 'closed'],
-                     'mutant': ['WT', 'G12A', 'G12C', 'G12S', 'G12D',
+                     'mutant': ['WT', 'G12A', 'G12C', 'G12D',
                                 'G12R', 'G12V', 'G13D', 'Q61L', 'Q61H']})
 
     def nucleotide_monomers():
@@ -123,7 +123,7 @@ The initial binding step:
 
 .. code-block:: python
 
-        bind(ras(gtp=None, s1s2='open'), 'gtp', gxp(), 'p', [kf1, kr1])
+        bind(ras(gap=None, gef=None, s1s2='open'), 'gtp', gxp(), 'p', [kf1, kr1])
     #
 
 Isomerization/conformational change of Ras resulting from nucleotide binding;
@@ -276,14 +276,21 @@ not bound to a GEF::
             ras_mutant = 'WT'
 
         k = Parameter('k_%s_%s_gtpase' % (ras_name, ras_mutant), kcat)
+        # The intrinsic hydrolysis reaction only occurs when a RasGAP
+        # is not bound, since the RasGAP intervenes directly in the
+        # active site.
         # Instantiate the rule for both labeled and unlabeled GTP/GDP
         Rule('%s_%s_converts_GTP_GDP' % (ras_name, ras_mutant),
-             ras(gef=None, gtp=1, s1s2='closed') % GTP(p=1, label='n') >>
-             ras(gef=None, gtp=1, s1s2='closed') % GDP(p=1, label='n') + Pi(),
+             ras(gap=None, gef=None, gtp=1, s1s2='closed') %
+             GTP(p=1, label='n') >>
+             ras(gap=None, gef=None, gtp=1, s1s2='closed') %
+             GDP(p=1, label='n') + Pi(),
              k)
         Rule('%s_%s_converts_mGTP_mGDP' % (ras_name, ras_mutant),
-             ras(gef=None, gtp=1, s1s2='closed') % GTP(p=1, label='y') >>
-             ras(gef=None, gtp=1, s1s2='closed') % GDP(p=1, label='y') + Pi(),
+             ras(gap=None, gef=None, gtp=1, s1s2='closed') %
+             GTP(p=1, label='y') >>
+             ras(gap=None, gef=None, gtp=1, s1s2='closed') %
+             GDP(p=1, label='y') + Pi(),
              k)
 
 Rates
