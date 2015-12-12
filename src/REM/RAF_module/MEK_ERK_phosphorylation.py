@@ -77,7 +77,7 @@ def MEK_phosphorylates_ERK():
 
     Parameter('k_mef', 1)
     Parameter('k_mer', 0.1)
-    Parameter('k_mee', 1)
+    Parameter('k_mee', 10)
 
     alias_model_components()
 
@@ -89,7 +89,7 @@ def PP2A_phosphatase():
 
     Parameter('k_pp2f', 1)
     Parameter('k_pp2r', 0.001)
-    Parameter('k_pp2e', 50)
+    Parameter('k_pp2e', 10)
 
     alias_model_components()
 
@@ -101,7 +101,7 @@ def DUSP_phospatase():
 
     Parameter('k_dspf', 1)
     Parameter('k_dspr', 0.001)
-    Parameter('k_dspe', 50)
+    Parameter('k_dspe', 10)
 
     alias_model_components()
 
