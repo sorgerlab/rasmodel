@@ -7,4 +7,5 @@ Model scenarios
    :maxdepth: 1
 
    default/index.rst
+   kras_mapk/index.rst
    vemurafenib_resistance.rst
