@@ -16,7 +16,7 @@ Then we pull in the components for Ras::
     ras.rasgap_monomers()
     ras.nucleotide_monomers()
 
-We include binding and hydrolkysis for HRAS, NRAS, and KRAS::
+We include binding and hydrolysis for HRAS, NRAS, and KRAS::
 
     ras.hras_binds_nucleotides(model)
     ras.hras_hydrolyzes_gtp(model)
@@ -25,3 +25,7 @@ We include binding and hydrolkysis for HRAS, NRAS, and KRAS::
     ras.nras_binds_nucleotides(model)
     ras.nras_hydrolyzes_gtp(model)
 
+Because some in vitro experiments also contain RasGAPs (e.g., to measure
+hydrolysis rates), we include these as well::
+
+    ras.kras_rasgaps(model)
