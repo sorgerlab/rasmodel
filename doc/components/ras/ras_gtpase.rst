@@ -317,7 +317,7 @@ GTP hydrolysis by wild-type Ras is slow in the absence of RasGAPs.
         KRAS = model.monomers['KRAS']
 
         hydrolysis_rates = {'WT': 68e-5,
-                            'G12A': 1.3e-6,
+                            'G12A': 1.3e-5,
                             'G12C': 49e-5,
                             'G12D': 19e-5,
                             'G12R': 1.8e-5,
