@@ -5,8 +5,8 @@ RAF (minimal)
 
 This passage was processed and assembled automatically by INDRA:
 
-  RAF binds to the RAS-GTP complex.
-	The RAF-RAS complex binds another RAF-RAS complex.
+    RAF binds to the RAS-GTP complex.
+    The RAF-RAS complex binds another RAF-RAS complex.
 
 
 INDRA-assembled model components
@@ -17,10 +17,11 @@ INDRA-assembled model components
     from pysb import Monomer, Parameter, Rule, Annotation, ANY
     from pysb.util import alias_model_components
 
-    def raf_minimal():
-        Monomer('RAF', ['ras', 'raf'])
-        Monomer('GTP', ['ras'])
-        Monomer('RAS', ['gtp', 'raf'])
+    def raf_monomers():
+        Monomer('RAF', ['raf', 'ras', 'map2k1'])
+
+    def raf_minimal(model):
+        RAF = model.monomers['RAF']
 
         Parameter('kf_rr_bind_1', 1e-06)
         Parameter('kr_rr_bind_1', 1e-06)
@@ -29,7 +30,7 @@ INDRA-assembled model components
 
         alias_model_components()
 
-        Rule('RAF_RAS_GTP_bind', RAF(ras=None) + RAS(gtp=ANY, raf=None) >> 
+        Rule('RAF_RAS_GTP_bind', RAF(ras=None) + RAS(gtp=ANY, raf=None) >>
             RAF(ras=1) % RAS(gtp=ANY, raf=1), kf_rr_bind_1)
 
         Rule('RAF_RAS_GTP_dissociate', RAF(ras=1) % RAS(raf=1) >>

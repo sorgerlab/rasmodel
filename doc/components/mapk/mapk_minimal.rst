@@ -17,7 +17,7 @@ INDRA-assembled model components
 
 ::
 
-    from pysb import Monomer, Parameter, Rule, Annotation
+    from pysb import Monomer, Parameter, Rule, Annotation, ANY
     from pysb.util import alias_model_components
 
     def mapk_minimal():
@@ -35,23 +35,23 @@ INDRA-assembled model components
         alias_model_components()
 
         Rule(u'RAF_phospho_bind_MAP2K1_S218_1',
-            RAF(raf1=ANY, map2k1=None) + MAP2K1(S218='u', raf=None) <>
-	        RAF(raf1=ANY, map2k1=1) % MAP2K1(S218='u', raf=1),
+            RAF(raf=ANY, map2k1=None) + MAP2K1(S218='u', raf=None) <>
+	        RAF(raf=ANY, map2k1=1) % MAP2K1(S218='u', raf=1),
 	        kf_rm_bind_1, kr_rm_bind_1)
 
         Rule(u'RAF_phospho_MAP2K1_S218_1',
-	        RAF(raf1=ANY, map2k1=1) % MAP2K1(S218='u', raf=1) >>
-	        RAF(raf1=ANY, map2k1=None) + MAP2K1(S218='p', raf=None),
+	        RAF(raf=ANY, map2k1=1) % MAP2K1(S218='u', raf=1) >>
+	        RAF(raf=ANY, map2k1=None) + MAP2K1(S218='p', raf=None),
 	        kc_rm_phos_1)
 
         Rule(u'RAF_phospho_bind_MAP2K1_S222_1',
-            RAF(raf1=ANY, map2k1=None) + MAP2K1(raf=None, S222='u') <>
-            RAF(raf1=ANY, map2k1=1) % MAP2K1(raf=1, S222='u'),
+            RAF(raf=ANY, map2k1=None) + MAP2K1(raf=None, S222='u') <>
+            RAF(raf=ANY, map2k1=1) % MAP2K1(raf=1, S222='u'),
             kf_rm_bind_2, kr_rm_bind_2)
 
         Rule(u'RAF_phospho_MAP2K1_S222_1',
-            RAF(raf1=ANY, map2k1=1) % MAP2K1(raf=1, S222='u') >>
-            RAF(raf1=ANY, map2k1=None) + MAP2K1(raf=None, S222='p'),
+            RAF(raf=ANY, map2k1=1) % MAP2K1(raf=1, S222='u') >>
+            RAF(raf=ANY, map2k1=None) + MAP2K1(raf=None, S222='p'),
             kc_rm_phos_2)
 
     def erk_dynamics():
