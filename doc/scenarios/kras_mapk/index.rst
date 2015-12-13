@@ -31,6 +31,7 @@ We only include the elements involving KRAS, not HRAS or NRAS::
 
     ras.kras_binds_nucleotides(model)
     ras.kras_hydrolyzes_gtp(model)
+    ras.kras_rasgaps(model)
 
 Ensure GTP/GDP levels are maintained::
 
@@ -71,7 +72,7 @@ Initial conditions
 We first set placeholders for initial conditions and then set the specific values. ::
 
     #init_nonzero = [RAS, RAF, MAP2K1, MAPK1, PPP2CA, DUSP6, GTP]
-    init_nonzero = [RAS, RAF, GTP, MAP2K1]
+    init_nonzero = [RAS, RASA1, GTP, RAF, MAP2K1]
     # Iterate over every monomer
     for m in init_nonzero:
         states_dict = {}
@@ -100,11 +101,12 @@ The volume of a HeLA cell is around 2425 um^3 [PMID17461436]_. N_A_nm denotes th
 
     model.parameters['GTP_0'].value = 1e9 * init_scale
     model.parameters['RAS_0'].value = 50000 * init_scale
+    model.parameters['RASA1_0'].value = 30000 * init_scale
     model.parameters['RAF_0'].value = 35000 * init_scale
     model.parameters['MAP2K1_0'].value = 80000 * init_scale
-    #model.parameters['MAPK1_0'].value = 100000 * init_scale
-    #model.parameters['PPP2CA_0'].value = 10000 * init_scale
-    #model.parameters['DUSP6_0'].value = 5000 * init_scale
+    ##model.parameters['MAPK1_0'].value = 100000 * init_scale
+    ##model.parameters['PPP2CA_0'].value = 10000 * init_scale
+    ##model.parameters['DUSP6_0'].value = 5000 * init_scale
 
 Observables
 -----------
@@ -112,7 +114,8 @@ Observables
 Our main readout is the amount of dobule-phosphorylated MAP2K1::
 
     Observable('RAS_GTP', RAS(gtp=1) % GTP(p=1))
-    Observable('RAS_RAF', RAS(raf=1) % RAF(ras=1))
+    Observable('RAS_RASGAP', RAS(gap=1) % RASA1(rasgap=1))
+    Observable('RAS_RAF', RAS(s1s2=1) % RAF(ras=1))
     Observable('RAFd', RAF(raf=1) % RAF(raf=1))
     Observable('MEKpp', MAP2K1(S218='p', S222='p'))
 
@@ -132,9 +135,10 @@ Plotting
 --------
 
 ::
+
     import matplotlib.pyplot as plt
     for obs in model.observables:
-        plt.plot(ts, model.yobs[obs.name], label=obs.name)
+        plt.plot(ts, solver.yobs[obs.name], label=obs.name)
     plt.xlabel('Time (s)')
     plt.ylabel('Concentration (nM)')
     plt.legend()

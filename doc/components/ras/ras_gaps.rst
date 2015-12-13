@@ -149,7 +149,7 @@ mediated by RASA1 (P120GAP)::
                             'G12V': 24e-5,
                             'G13D': 20e-5,
                             'Q61L': 12e-5,
-                            'Q61H': 5e-5,}
+                            'Q61H': 5e-5}
         # Iterate over all of the mutants that we're considering
         for mutant in KRAS.site_states['mutant']:
             kras = KRAS(mutant=mutant)
@@ -158,5 +158,3 @@ mediated by RASA1 (P120GAP)::
             else:
                 mutant_kcat = hydrolysis_rates['WT']
             rasgap_mediated_hydrolysis(model, kras, RASA1, kf, kr, mutant_kcat)
-
-

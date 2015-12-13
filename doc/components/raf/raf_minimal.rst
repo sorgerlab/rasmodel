@@ -30,11 +30,11 @@ INDRA-assembled model components
 
         alias_model_components()
 
-        Rule('RAF_RAS_GTP_bind', RAF(ras=None) + RAS(gtp=ANY, raf=None) >>
-            RAF(ras=1) % RAS(gtp=ANY, raf=1), kf_rr_bind_1)
+        Rule('RAF_RAS_GTP_bind', RAF(ras=None) + RAS(gtp=ANY, s1s2=None) >>
+            RAF(ras=1) % RAS(gtp=ANY, s1s2=1), kf_rr_bind_1)
 
-        Rule('RAF_RAS_GTP_dissociate', RAF(ras=1) % RAS(raf=1) >>
-            RAF(ras=None) + RAS(raf=None), kr_rr_bind_1)
+        Rule('RAF_RAS_GTP_dissociate', RAF(ras=1) % RAS(s1s2=1) >>
+            RAF(ras=None) + RAS(s1s2=None), kr_rr_bind_1)
 
         Rule('RAF_RAS_RAF_RAS_bind', RAF(ras=ANY, raf=None) +\
             RAF(ras=ANY, raf=None) >> RAF(ras=ANY, raf=1) %\
