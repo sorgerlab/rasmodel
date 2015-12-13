@@ -13,13 +13,15 @@ from sphinx.util.osutil import ensuredir
 from sphinx.locale import _
 from docutils.parsers.rst import Directive
 from docutils.parsers.rst.directives import unchanged_required
-from docutils.nodes import note, paragraph, literal, Text, GenericNodeVisitor
+from docutils.nodes import note, paragraph, literal, literal_block, Text, \
+    GenericNodeVisitor
 from docutils.transforms import Transform
 from docutils.writers import Writer
 
 def setup(app):
     app.add_directive('component', ComponentDirective)
     app.add_transform(LineNumberKeeper)
+    app.add_transform(StripTrailingEmptyComments)
     app.add_builder(TangleBuilder)
 
 
@@ -72,6 +74,26 @@ class LineNumberKeeper(Transform):
         for node in self.document.traverse():
             if node.line is not None:
                 node['orig_line'] = node.line
+
+
+class StripTrailingEmptyComments(Transform):
+    """Delete trailing empty Python comments in literal_blocks.
+
+    When we need to continue an indented section of code across multiple
+    literate_blocks, the second and subsequent blocks must have some content at
+    the outermost, unindented level in order to prevent the docutils
+    literal_block parser from auto-stripping too much indentation. This
+    transform deletes those comments to help make the final output prettier."""
+
+    default_priority = 1
+
+    def apply(self):
+        for node in self.document.traverse(literal_block):
+            if node[0].endswith('\n#'):
+                new_source = node.rawsource[:-2]
+                new_text_node = Text(new_source)
+                node.replace(node[0], new_text_node)
+                node.rawsource = new_source
 
 
 class TangleBuilder(Builder):

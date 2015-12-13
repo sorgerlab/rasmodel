@@ -119,18 +119,14 @@ switch1/switch2 domains (s1s2) from 'open' to 'closed'.
         # Get the rates from the list:
         (kf1, kr1, kf2, kr2) = klist
 
-The initial binding step:
-
-.. code-block:: python
+The initial binding step::
 
         bind(ras(gap=None, gef=None, s1s2='open'), 'gtp', gxp(), 'p', [kf1, kr1])
     #
 
 Isomerization/conformational change of Ras resulting from nucleotide binding;
 also described as the conversion of the nucleotide from loosely bound to
-tightly bound:
-
-.. code-block:: python
+tightly bound::
 
         equilibrate(rasgxp(s1s2='open'), rasgxp(s1s2='closed'), [kf2, kr2])
     #
