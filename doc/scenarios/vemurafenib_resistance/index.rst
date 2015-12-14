@@ -9,3 +9,4 @@ Vemurafenib resistance model
    setup
    initial_conditions
    observables
+   model_reduction
