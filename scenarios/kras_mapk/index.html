@@ -1,0 +1,329 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>MAPK signaling initiated by mutant KRAS &mdash; Ras model 0.1 documentation</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+    <link rel="top" title="Ras model 0.1 documentation" href="../../index.html"/>
+        <link rel="up" title="Model scenarios" href="../index.html"/>
+        <link rel="next" title="Vemurafenib resistance model" href="../vemurafenib_resistance/index.html"/>
+        <link rel="prev" title="Observables" href="../default/observables.html"/> 
+
+  
+  <script src="../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> Ras model
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.1
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../intro.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../components/index.html">The RAS Executable Model</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">Model scenarios</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../default/index.html">Default model</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="">MAPK signaling initiated by mutant KRAS</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#introduction">Introduction</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#setup">Setup</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#setting-up-parameters">Setting up parameters</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#initial-conditions">Initial conditions</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../vemurafenib_resistance/index.html">Vemurafenib resistance model</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../experiments/index.html">Model analysis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../references.html">References</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../../index.html">Ras model</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="../index.html">Model scenarios</a> &raquo;</li>
+      
+    <li>MAPK signaling initiated by mutant KRAS</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../../_sources/scenarios/kras_mapk/index.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">This section defines the component <code class="docutils literal"><span class="pre">rasmodel.scenarios.kras_mapk</span></code>.</p>
+</div>
+<div class="section" id="mapk-signaling-initiated-by-mutant-kras">
+<h1>MAPK signaling initiated by mutant KRAS<a class="headerlink" href="#mapk-signaling-initiated-by-mutant-kras" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="introduction">
+<h2>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h2>
+<p>Mutations at the G12 and Q61 positions are known to affect KRAS GTP
+hydrolysis rates as well as affinity to downstream effectors like
+RAF proteins. This model scenario aims to explain differences in the
+dynamics of the MAP kinase cascade resulting from KRAS mutations.</p>
+</div>
+<div class="section" id="setup">
+<h2>Setup<a class="headerlink" href="#setup" title="Permalink to this headline">¶</a></h2>
+<p>We construct the model out of existing components:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">pysb</span> <span class="kn">import</span> <span class="n">Model</span><span class="p">,</span> <span class="n">Initial</span><span class="p">,</span> <span class="n">Parameter</span><span class="p">,</span> <span class="n">Observable</span>
+<span class="kn">from</span> <span class="nn">rasmodel.components</span> <span class="kn">import</span> <span class="n">ras</span><span class="p">,</span> <span class="n">raf</span><span class="p">,</span> <span class="n">mapk</span>
+
+<span class="n">Model</span><span class="p">()</span>
+
+<span class="n">ras</span><span class="o">.</span><span class="n">ras_monomers</span><span class="p">()</span>
+<span class="n">ras</span><span class="o">.</span><span class="n">rasgef_monomers</span><span class="p">()</span>
+<span class="n">ras</span><span class="o">.</span><span class="n">rasgap_monomers</span><span class="p">()</span>
+<span class="n">ras</span><span class="o">.</span><span class="n">nucleotide_monomers</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>We only include the elements involving KRAS, not HRAS or NRAS:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">ras</span><span class="o">.</span><span class="n">kras_binds_nucleotides</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
+<span class="n">ras</span><span class="o">.</span><span class="n">kras_hydrolyzes_gtp</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
+<span class="n">ras</span><span class="o">.</span><span class="n">kras_rasgaps</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Ensure GTP/GDP levels are maintained:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">ras</span><span class="o">.</span><span class="n">recycle_gtp_from_gdp</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Next we include the module for RAF activation. We assume that all isoforms
+of RAF are present as wild-type and we model them jointy as RAF:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">raf</span><span class="o">.</span><span class="n">raf_monomers</span><span class="p">()</span>
+<span class="n">RAS</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">monomers</span><span class="p">[</span><span class="s">&#39;KRAS&#39;</span><span class="p">]</span>
+<span class="n">RAS</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="s">&#39;RAS&#39;</span><span class="p">)</span>
+<span class="n">RAS</span><span class="o">.</span><span class="n">sites</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s">&#39;raf&#39;</span><span class="p">)</span>
+<span class="n">raf</span><span class="o">.</span><span class="n">raf_minimal</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Finally, we instantiate the MAP kinase cascade:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">mapk</span><span class="o">.</span><span class="n">mapk_minimal</span><span class="p">()</span>
+<span class="c">#mapk.erk_dynamics()</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="setting-up-parameters">
+<h2>Setting up parameters<a class="headerlink" href="#setting-up-parameters" title="Permalink to this headline">¶</a></h2>
+<p>These parameters were automatically generated. Here we set them to plausible values:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">model</span><span class="o">.</span><span class="n">parameters</span><span class="p">[</span><span class="s">&#39;kf_rr_bind_1&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="mf">1e-2</span> <span class="c"># nMol^-1 s^-1</span>
+<span class="n">model</span><span class="o">.</span><span class="n">parameters</span><span class="p">[</span><span class="s">&#39;kr_rr_bind_1&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="mf">0.56</span> <span class="c"># s^-1</span>
+<span class="n">model</span><span class="o">.</span><span class="n">parameters</span><span class="p">[</span><span class="s">&#39;kf_rr_bind_2&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="mf">1e-2</span> <span class="c"># nMol^-1 s^-1</span>
+<span class="n">model</span><span class="o">.</span><span class="n">parameters</span><span class="p">[</span><span class="s">&#39;kr_rr_bind_2&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="mf">1e-3</span> <span class="c"># s^-1</span>
+<span class="n">model</span><span class="o">.</span><span class="n">parameters</span><span class="p">[</span><span class="s">&#39;kf_rm_bind_1&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="mf">1e-2</span>
+<span class="n">model</span><span class="o">.</span><span class="n">parameters</span><span class="p">[</span><span class="s">&#39;kr_rm_bind_1&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="mf">1e-2</span>
+<span class="n">model</span><span class="o">.</span><span class="n">parameters</span><span class="p">[</span><span class="s">&#39;kc_rm_phos_1&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="mf">1e-2</span>
+<span class="n">model</span><span class="o">.</span><span class="n">parameters</span><span class="p">[</span><span class="s">&#39;kf_rm_bind_2&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="mf">1e-2</span>
+<span class="n">model</span><span class="o">.</span><span class="n">parameters</span><span class="p">[</span><span class="s">&#39;kr_rm_bind_2&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="mf">1e-2</span>
+<span class="n">model</span><span class="o">.</span><span class="n">parameters</span><span class="p">[</span><span class="s">&#39;kc_rm_phos_2&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="mf">1e-2</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="initial-conditions">
+<h2>Initial conditions<a class="headerlink" href="#initial-conditions" title="Permalink to this headline">¶</a></h2>
+<p>We first set placeholders for initial conditions and then set the specific values.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="c">#init_nonzero = [RAS, RAF, MAP2K1, MAPK1, PPP2CA, DUSP6, GTP]</span>
+<span class="n">init_nonzero</span> <span class="o">=</span> <span class="p">[</span><span class="n">RAS</span><span class="p">,</span> <span class="n">RASA1</span><span class="p">,</span> <span class="n">GTP</span><span class="p">,</span> <span class="n">RAF</span><span class="p">,</span> <span class="n">MAP2K1</span><span class="p">]</span>
+<span class="c"># Iterate over every monomer</span>
+<span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="n">init_nonzero</span><span class="p">:</span>
+    <span class="n">states_dict</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="c"># Iterate over every site in the monomer</span>
+    <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">m</span><span class="o">.</span><span class="n">sites</span><span class="p">:</span>
+        <span class="c"># If it&#39;s in the site states dict, assign it the first of the</span>
+        <span class="c"># listed states</span>
+        <span class="k">if</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">m</span><span class="o">.</span><span class="n">site_states</span><span class="p">:</span>
+            <span class="n">states_dict</span><span class="p">[</span><span class="n">s</span><span class="p">]</span> <span class="o">=</span> <span class="n">m</span><span class="o">.</span><span class="n">site_states</span><span class="p">[</span><span class="n">s</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+        <span class="c"># Otherwise (e.g., the site is used only for binding) assign it</span>
+        <span class="c"># a state None, meaning unbound:</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">states_dict</span><span class="p">[</span><span class="n">s</span><span class="p">]</span> <span class="o">=</span> <span class="bp">None</span>
+
+    <span class="c"># Create the initial condition parameter based on the protein name</span>
+    <span class="n">initial_value</span> <span class="o">=</span> <span class="n">Parameter</span><span class="p">(</span><span class="s">&#39;{0}_0&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">name</span><span class="p">),</span> <span class="mi">0</span><span class="p">)</span>
+
+    <span class="c"># Create the initial condition</span>
+    <span class="n">Initial</span><span class="p">(</span><span class="n">m</span><span class="p">(</span><span class="o">**</span><span class="n">states_dict</span><span class="p">),</span> <span class="n">initial_value</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The volume of a HeLA cell is around 2425 um^3 [PMID17461436]. N_A_nm denotes the number of molecules in one nanomol:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">V</span> <span class="o">=</span> <span class="mf">2425e-15</span>
+<span class="n">N_A_nm</span> <span class="o">=</span> <span class="mf">6.022e14</span>
+<span class="n">init_scale</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">/</span> <span class="p">(</span><span class="n">N_A_nm</span> <span class="o">*</span> <span class="n">V</span><span class="p">)</span>
+
+<span class="n">model</span><span class="o">.</span><span class="n">parameters</span><span class="p">[</span><span class="s">&#39;GTP_0&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="mf">1e9</span> <span class="o">*</span> <span class="n">init_scale</span>
+<span class="n">model</span><span class="o">.</span><span class="n">parameters</span><span class="p">[</span><span class="s">&#39;RAS_0&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="mi">50000</span> <span class="o">*</span> <span class="n">init_scale</span>
+<span class="n">model</span><span class="o">.</span><span class="n">parameters</span><span class="p">[</span><span class="s">&#39;RASA1_0&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="mi">30000</span> <span class="o">*</span> <span class="n">init_scale</span>
+<span class="n">model</span><span class="o">.</span><span class="n">parameters</span><span class="p">[</span><span class="s">&#39;RAF_0&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="mi">35000</span> <span class="o">*</span> <span class="n">init_scale</span>
+<span class="n">model</span><span class="o">.</span><span class="n">parameters</span><span class="p">[</span><span class="s">&#39;MAP2K1_0&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="mi">80000</span> <span class="o">*</span> <span class="n">init_scale</span>
+<span class="c">##model.parameters[&#39;MAPK1_0&#39;].value = 100000 * init_scale</span>
+<span class="c">##model.parameters[&#39;PPP2CA_0&#39;].value = 10000 * init_scale</span>
+<span class="c">##model.parameters[&#39;DUSP6_0&#39;].value = 5000 * init_scale</span>
+</pre></div>
+</div>
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../vemurafenib_resistance/index.html" class="btn btn-neutral float-right" title="Vemurafenib resistance model" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="../default/observables.html" class="btn btn-neutral" title="Observables" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2015, Sorger Lab.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../',
+            VERSION:'0.1',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

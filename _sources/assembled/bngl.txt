@@ -1,6 +1,6 @@
 BNGL format
 ===========
 
-:download:`Download the model in BNGL </../output/ras_model.bngl>`
+:download:`Download the model in BNGL </../output/rasmodel.bngl>`
 
-.. literalinclude:: /../output/ras_model.bngl
+.. literalinclude:: /../output/rasmodel.bngl

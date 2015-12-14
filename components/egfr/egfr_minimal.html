@@ -1,0 +1,298 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>EGFR (minimal) &mdash; Ras model 0.1 documentation</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+    <link rel="top" title="Ras model 0.1 documentation" href="../../index.html"/>
+        <link rel="up" title="EGFR" href="index.html"/>
+        <link rel="next" title="Ras" href="../ras/index.html"/>
+        <link rel="prev" title="EGFR" href="index.html"/> 
+
+  
+  <script src="../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> Ras model
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.1
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../intro.html">Overview</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">The RAS Executable Model</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">EGFR</a><ul class="current">
+<li class="toctree-l3 current"><a class="current reference internal" href="">EGFR (minimal)</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#indra-assembled-model-components">INDRA-assembled model components</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../ras/index.html">Ras</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../raf/index.html">Raf</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../mapk/index.html">MAPK</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../scenarios/index.html">Model scenarios</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../experiments/index.html">Model analysis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../references.html">References</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../../index.html">Ras model</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="../index.html">The RAS Executable Model (REM)</a> &raquo;</li>
+      
+          <li><a href="index.html">EGFR</a> &raquo;</li>
+      
+    <li>EGFR (minimal)</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../../_sources/components/egfr/egfr_minimal.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="egfr-minimal">
+<span id="id1"></span><h1>EGFR (minimal)<a class="headerlink" href="#egfr-minimal" title="Permalink to this headline">¶</a></h1>
+<p>This passage was processed and assembled automatically by INDRA:</p>
+<blockquote>
+<div><p>The receptor tyrosine kinase EGFR binds the growth factor ligand EGF.
+The EGFR-EGF complex binds another EGFR-EGF complex.
+EGFR, bound to EGFR, transphosphorylates itself on a tyrosine residue.
+The adaptor protein GRB2 can bind EGFR that is phosphorylated on tyrosine.
+EGFR-bound GRB2 binds SOS1.</p>
+</div></blockquote>
+<div class="section" id="indra-assembled-model-components">
+<h2>INDRA-assembled model components<a class="headerlink" href="#indra-assembled-model-components" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">pysb</span> <span class="kn">import</span> <span class="n">Monomer</span><span class="p">,</span> <span class="n">Parameter</span><span class="p">,</span> <span class="n">Rule</span><span class="p">,</span> <span class="n">Annotation</span><span class="p">,</span> <span class="n">ANY</span>
+<span class="kn">from</span> <span class="nn">pysb.util</span> <span class="kn">import</span> <span class="n">alias_model_components</span>
+
+<span class="k">def</span> <span class="nf">egfr_minimal</span><span class="p">():</span>
+    <span class="n">Monomer</span><span class="p">(</span><span class="s">u&#39;GRB2&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s">u&#39;egfr&#39;</span><span class="p">,</span> <span class="s">u&#39;sos1&#39;</span><span class="p">])</span>
+    <span class="n">Monomer</span><span class="p">(</span><span class="s">u&#39;EGFR&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s">u&#39;egf&#39;</span><span class="p">,</span> <span class="s">u&#39;egfr&#39;</span><span class="p">,</span> <span class="s">&#39;Y&#39;</span><span class="p">,</span> <span class="s">u&#39;grb2&#39;</span><span class="p">],</span> <span class="p">{</span><span class="s">&#39;Y&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s">&#39;u&#39;</span><span class="p">,</span> <span class="s">&#39;p&#39;</span><span class="p">]})</span>
+    <span class="n">Monomer</span><span class="p">(</span><span class="s">u&#39;EGF&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s">u&#39;egfr&#39;</span><span class="p">])</span>
+    <span class="n">Monomer</span><span class="p">(</span><span class="s">u&#39;SOS1&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s">u&#39;grb2&#39;</span><span class="p">,</span> <span class="s">&#39;ras&#39;</span><span class="p">])</span>
+
+    <span class="n">Parameter</span><span class="p">(</span><span class="s">u&#39;kf_ee_bind_1&#39;</span><span class="p">,</span> <span class="mf">1e-06</span><span class="p">)</span>
+    <span class="n">Parameter</span><span class="p">(</span><span class="s">u&#39;kr_ee_bind_1&#39;</span><span class="p">,</span> <span class="mf">1e-06</span><span class="p">)</span>
+    <span class="n">Parameter</span><span class="p">(</span><span class="s">u&#39;kf_ee_bind_2&#39;</span><span class="p">,</span> <span class="mf">1e-06</span><span class="p">)</span>
+    <span class="n">Parameter</span><span class="p">(</span><span class="s">u&#39;kr_ee_bind_2&#39;</span><span class="p">,</span> <span class="mf">1e-06</span><span class="p">)</span>
+    <span class="n">Parameter</span><span class="p">(</span><span class="s">u&#39;kf_ge_bind_1&#39;</span><span class="p">,</span> <span class="mf">1e-06</span><span class="p">)</span>
+    <span class="n">Parameter</span><span class="p">(</span><span class="s">u&#39;kr_ge_bind_1&#39;</span><span class="p">,</span> <span class="mf">1e-06</span><span class="p">)</span>
+    <span class="n">Parameter</span><span class="p">(</span><span class="s">u&#39;kf_gs_bind_1&#39;</span><span class="p">,</span> <span class="mf">1e-06</span><span class="p">)</span>
+    <span class="n">Parameter</span><span class="p">(</span><span class="s">u&#39;kr_gs_bind_1&#39;</span><span class="p">,</span> <span class="mf">1e-06</span><span class="p">)</span>
+    <span class="n">Parameter</span><span class="p">(</span><span class="s">u&#39;kf_ee_transphos_1&#39;</span><span class="p">,</span> <span class="mf">0.001</span><span class="p">)</span>
+
+    <span class="n">alias_model_components</span><span class="p">()</span>
+
+    <span class="n">Rule</span><span class="p">(</span><span class="s">u&#39;EGFR_EGF_bind&#39;</span><span class="p">,</span> <span class="n">EGFR</span><span class="p">(</span><span class="n">egf</span><span class="o">=</span><span class="bp">None</span><span class="p">)</span> <span class="o">+</span> <span class="n">EGF</span><span class="p">(</span><span class="n">egfr</span><span class="o">=</span><span class="bp">None</span><span class="p">)</span> <span class="o">&gt;&gt;</span>
+        <span class="n">EGFR</span><span class="p">(</span><span class="n">egf</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span> <span class="o">%</span> <span class="n">EGF</span><span class="p">(</span><span class="n">egfr</span><span class="o">=</span><span class="mi">1</span><span class="p">),</span> <span class="n">kf_ee_bind_1</span><span class="p">)</span>
+
+    <span class="n">Rule</span><span class="p">(</span><span class="s">u&#39;EGFR_EGF_dissociate&#39;</span><span class="p">,</span> <span class="n">EGFR</span><span class="p">(</span><span class="n">egf</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span> <span class="o">%</span> <span class="n">EGF</span><span class="p">(</span><span class="n">egfr</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span> <span class="o">&gt;&gt;</span>
+        <span class="n">EGFR</span><span class="p">(</span><span class="n">egf</span><span class="o">=</span><span class="bp">None</span><span class="p">)</span> <span class="o">+</span> <span class="n">EGF</span><span class="p">(</span><span class="n">egfr</span><span class="o">=</span><span class="bp">None</span><span class="p">),</span> <span class="n">kr_ee_bind_1</span><span class="p">)</span>
+
+    <span class="n">Rule</span><span class="p">(</span><span class="s">u&#39;EGFR_EGF_EGFR_EGF_bind&#39;</span><span class="p">,</span> <span class="n">EGFR</span><span class="p">(</span><span class="n">egf</span><span class="o">=</span><span class="n">ANY</span><span class="p">,</span> <span class="n">egfr</span><span class="o">=</span><span class="bp">None</span><span class="p">)</span> <span class="o">+</span>
+        <span class="n">EGFR</span><span class="p">(</span><span class="n">egf</span><span class="o">=</span><span class="n">ANY</span><span class="p">,</span> <span class="n">egfr</span><span class="o">=</span><span class="bp">None</span><span class="p">)</span> <span class="o">&gt;&gt;</span> <span class="n">EGFR</span><span class="p">(</span><span class="n">egf</span><span class="o">=</span><span class="n">ANY</span><span class="p">,</span> <span class="n">egfr</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span> <span class="o">%</span>\
+        <span class="n">EGFR</span><span class="p">(</span><span class="n">egf</span><span class="o">=</span><span class="n">ANY</span><span class="p">,</span> <span class="n">egfr</span><span class="o">=</span><span class="mi">1</span><span class="p">),</span> <span class="n">kf_ee_bind_2</span><span class="p">)</span>
+
+    <span class="n">Rule</span><span class="p">(</span><span class="s">u&#39;EGFR_EGF_EGFR_EGF_dissociate&#39;</span><span class="p">,</span> <span class="n">EGFR</span><span class="p">(</span><span class="n">egfr</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span> <span class="o">%</span> <span class="n">EGFR</span><span class="p">(</span><span class="n">egfr</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span> <span class="o">&gt;&gt;</span>
+        <span class="n">EGFR</span><span class="p">(</span><span class="n">egfr</span><span class="o">=</span><span class="bp">None</span><span class="p">)</span> <span class="o">+</span> <span class="n">EGFR</span><span class="p">(</span><span class="n">egfr</span><span class="o">=</span><span class="bp">None</span><span class="p">),</span> <span class="n">kr_ee_bind_2</span><span class="p">)</span>
+
+    <span class="n">Rule</span><span class="p">(</span><span class="s">u&#39;GRB2_EGFR_bind&#39;</span><span class="p">,</span> <span class="n">GRB2</span><span class="p">(</span><span class="n">egfr</span><span class="o">=</span><span class="bp">None</span><span class="p">)</span> <span class="o">+</span> <span class="n">EGFR</span><span class="p">(</span><span class="n">grb2</span><span class="o">=</span><span class="bp">None</span><span class="p">)</span> <span class="o">&gt;&gt;</span>
+        <span class="n">GRB2</span><span class="p">(</span><span class="n">egfr</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span> <span class="o">%</span> <span class="n">EGFR</span><span class="p">(</span><span class="n">grb2</span><span class="o">=</span><span class="mi">1</span><span class="p">),</span> <span class="n">kf_ge_bind_1</span><span class="p">)</span>
+
+    <span class="n">Rule</span><span class="p">(</span><span class="s">u&#39;GRB2_EGFR_dissociate&#39;</span><span class="p">,</span> <span class="n">GRB2</span><span class="p">(</span><span class="n">egfr</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span> <span class="o">%</span> <span class="n">EGFR</span><span class="p">(</span><span class="n">grb2</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span> <span class="o">&gt;&gt;</span>
+        <span class="n">GRB2</span><span class="p">(</span><span class="n">egfr</span><span class="o">=</span><span class="bp">None</span><span class="p">)</span> <span class="o">+</span> <span class="n">EGFR</span><span class="p">(</span><span class="n">grb2</span><span class="o">=</span><span class="bp">None</span><span class="p">),</span> <span class="n">kr_ge_bind_1</span><span class="p">)</span>
+
+    <span class="n">Rule</span><span class="p">(</span><span class="s">u&#39;GRB2_EGFR_SOS1_bind&#39;</span><span class="p">,</span> <span class="n">GRB2</span><span class="p">(</span><span class="n">egfr</span><span class="o">=</span><span class="n">ANY</span><span class="p">,</span> <span class="n">sos1</span><span class="o">=</span><span class="bp">None</span><span class="p">)</span> <span class="o">+</span>\
+        <span class="n">SOS1</span><span class="p">(</span><span class="n">grb2</span><span class="o">=</span><span class="bp">None</span><span class="p">)</span> <span class="o">&gt;&gt;</span> <span class="n">GRB2</span><span class="p">(</span><span class="n">egfr</span><span class="o">=</span><span class="n">ANY</span><span class="p">,</span> <span class="n">sos1</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span> <span class="o">%</span> <span class="n">SOS1</span><span class="p">(</span><span class="n">grb2</span><span class="o">=</span><span class="mi">1</span><span class="p">),</span>
+        <span class="n">kf_gs_bind_1</span><span class="p">)</span>
+
+    <span class="n">Rule</span><span class="p">(</span><span class="s">u&#39;GRB2_EGFR_SOS1_dissociate&#39;</span><span class="p">,</span> <span class="n">GRB2</span><span class="p">(</span><span class="n">sos1</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span> <span class="o">%</span> <span class="n">SOS1</span><span class="p">(</span><span class="n">grb2</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span> <span class="o">&gt;&gt;</span>
+        <span class="n">GRB2</span><span class="p">(</span><span class="n">sos1</span><span class="o">=</span><span class="bp">None</span><span class="p">)</span> <span class="o">+</span> <span class="n">SOS1</span><span class="p">(</span><span class="n">grb2</span><span class="o">=</span><span class="bp">None</span><span class="p">),</span> <span class="n">kr_gs_bind_1</span><span class="p">)</span>
+
+    <span class="n">Rule</span><span class="p">(</span><span class="s">u&#39;EGFR_transphospho_EGFR_Y&#39;</span><span class="p">,</span>
+        <span class="n">EGFR</span><span class="p">(</span><span class="n">egfr</span><span class="o">=</span><span class="n">ANY</span><span class="p">)</span> <span class="o">%</span> <span class="n">EGFR</span><span class="p">(</span><span class="n">Y</span><span class="o">=</span><span class="s">&#39;u&#39;</span><span class="p">)</span> <span class="o">&gt;&gt;</span> <span class="n">EGFR</span><span class="p">(</span><span class="n">egfr</span><span class="o">=</span><span class="n">ANY</span><span class="p">)</span> <span class="o">%</span> <span class="n">EGFR</span><span class="p">(</span><span class="n">Y</span><span class="o">=</span><span class="s">&#39;p&#39;</span><span class="p">),</span>
+        <span class="n">kf_ee_transphos_1</span><span class="p">)</span>
+
+
+    <span class="n">Annotation</span><span class="p">(</span><span class="n">GRB2</span><span class="p">,</span> <span class="s">&#39;http://identifiers.org/uniprot/P62993&#39;</span><span class="p">,</span> <span class="s">&#39;is&#39;</span><span class="p">)</span>
+    <span class="n">Annotation</span><span class="p">(</span><span class="n">GRB2</span><span class="p">,</span> <span class="s">&#39;http://identifiers.org/hgnc/HGNC:4566&#39;</span><span class="p">,</span> <span class="s">&#39;is&#39;</span><span class="p">)</span>
+    <span class="n">Annotation</span><span class="p">(</span><span class="n">EGFR</span><span class="p">,</span> <span class="s">&#39;http://identifiers.org/uniprot/P00533&#39;</span><span class="p">,</span> <span class="s">&#39;is&#39;</span><span class="p">)</span>
+    <span class="n">Annotation</span><span class="p">(</span><span class="n">EGFR</span><span class="p">,</span> <span class="s">&#39;http://identifiers.org/hgnc/HGNC:3236&#39;</span><span class="p">,</span> <span class="s">&#39;is&#39;</span><span class="p">)</span>
+    <span class="n">Annotation</span><span class="p">(</span><span class="n">EGF</span><span class="p">,</span> <span class="s">&#39;http://identifiers.org/uniprot/P01133&#39;</span><span class="p">,</span> <span class="s">&#39;is&#39;</span><span class="p">)</span>
+    <span class="n">Annotation</span><span class="p">(</span><span class="n">EGF</span><span class="p">,</span> <span class="s">&#39;http://identifiers.org/hgnc/HGNC:3229&#39;</span><span class="p">,</span> <span class="s">&#39;is&#39;</span><span class="p">)</span>
+    <span class="n">Annotation</span><span class="p">(</span><span class="n">SOS1</span><span class="p">,</span> <span class="s">&#39;http://identifiers.org/pfam/PF00617&#39;</span><span class="p">,</span> <span class="s">&#39;is&#39;</span><span class="p">)</span>
+    <span class="n">Annotation</span><span class="p">(</span><span class="n">SOS1</span><span class="p">,</span> <span class="s">&#39;http://identifiers.org/uniprot/Q62245&#39;</span><span class="p">,</span> <span class="s">&#39;is&#39;</span><span class="p">)</span>
+    <span class="n">Annotation</span><span class="p">(</span><span class="n">SOS1</span><span class="p">,</span> <span class="s">&#39;http://identifiers.org/hgnc/HGNC:11187&#39;</span><span class="p">,</span> <span class="s">&#39;is&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../ras/index.html" class="btn btn-neutral float-right" title="Ras" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="index.html" class="btn btn-neutral" title="EGFR" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2015, Sorger Lab.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../',
+            VERSION:'0.1',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

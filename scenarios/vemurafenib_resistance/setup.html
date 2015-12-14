@@ -1,0 +1,299 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Setup for Vemurafenib resistance scenario &mdash; Ras model 0.1 documentation</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+    <link rel="top" title="Ras model 0.1 documentation" href="../../index.html"/>
+        <link rel="up" title="Vemurafenib resistance model" href="index.html"/>
+        <link rel="next" title="Model reduction" href="model_reduction.html"/>
+        <link rel="prev" title="Vemurafenib resistance model" href="index.html"/> 
+
+  
+  <script src="../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> Ras model
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.1
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../intro.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../components/index.html">The RAS Executable Model</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">Model scenarios</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../default/index.html">Default model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../kras_mapk/index.html">MAPK signaling initiated by mutant KRAS</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">Vemurafenib resistance model</a><ul class="current">
+<li class="toctree-l3 current"><a class="current reference internal" href="">Setup for Vemurafenib resistance scenario</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#initial-conditions">Initial conditions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#parameters">Parameters</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="model_reduction.html">Model reduction</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../experiments/index.html">Model analysis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../references.html">References</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../../index.html">Ras model</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="../index.html">Model scenarios</a> &raquo;</li>
+      
+          <li><a href="index.html">Vemurafenib resistance model</a> &raquo;</li>
+      
+    <li>Setup for Vemurafenib resistance scenario</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../../_sources/scenarios/vemurafenib_resistance/setup.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="setup-for-vemurafenib-resistance-scenario">
+<h1>Setup for Vemurafenib resistance scenario<a class="headerlink" href="#setup-for-vemurafenib-resistance-scenario" title="Permalink to this headline">¶</a></h1>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">pysb</span> <span class="kn">import</span> <span class="o">*</span>
+
+<span class="n">Model</span><span class="p">()</span>
+
+<span class="kn">import</span> <span class="nn">rasmodel.components.egfr</span> <span class="kn">as</span> <span class="nn">egfr</span>
+<span class="n">egfr</span><span class="o">.</span><span class="n">egfr_minimal</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>A phosphorylation state is added to SOS1</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">a</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">monomers</span><span class="p">[</span><span class="s">&#39;SOS1&#39;</span><span class="p">]</span>
+<span class="n">a</span><span class="o">.</span><span class="n">sites</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s">&#39;mapk1&#39;</span><span class="p">)</span>
+<span class="n">a</span><span class="o">.</span><span class="n">sites</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s">&#39;state&#39;</span><span class="p">)</span>
+<span class="n">a</span><span class="o">.</span><span class="n">sites</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s">&#39;phos&#39;</span><span class="p">)</span>
+<span class="n">a</span><span class="o">.</span><span class="n">site_states</span><span class="p">[</span><span class="s">&#39;state&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="s">&#39;up&#39;</span><span class="p">,</span> <span class="s">&#39;p&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>Minimal model of RAS activation</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">rasmodel.components.ras</span> <span class="kn">as</span> <span class="nn">ras</span>
+<span class="n">ras</span><span class="o">.</span><span class="n">ras_minimal</span><span class="p">()</span>
+
+<span class="kn">import</span> <span class="nn">rasmodel.components.raf</span> <span class="kn">as</span> <span class="nn">raf</span>
+<span class="n">raf</span><span class="o">.</span><span class="n">RAF_monomers</span><span class="p">()</span>
+
+<span class="n">raf</span><span class="o">.</span><span class="n">RAF_dynamics</span><span class="p">()</span>
+
+<span class="n">raf</span><span class="o">.</span><span class="n">SOS1_dephosphorylation</span><span class="p">()</span>
+
+<span class="kn">import</span> <span class="nn">rasmodel.components.mapk</span> <span class="kn">as</span> <span class="nn">mapk</span>
+<span class="n">mapk</span><span class="o">.</span><span class="n">mapk_monomers</span><span class="p">()</span>
+
+<span class="n">mapk</span><span class="o">.</span><span class="n">RAF_activates_MEK</span><span class="p">()</span>
+
+<span class="n">mapk</span><span class="o">.</span><span class="n">MEK_phosphorylates_ERK</span><span class="p">()</span>
+
+<span class="n">mapk</span><span class="o">.</span><span class="n">PP2A_phosphatase</span><span class="p">()</span>
+
+<span class="n">mapk</span><span class="o">.</span><span class="n">DUSP_phosphatase</span><span class="p">()</span>
+
+<span class="n">mapk</span><span class="o">.</span><span class="n">ERK_feedback</span><span class="p">()</span>
+<span class="n">mapk</span><span class="o">.</span><span class="n">MEK_inhibitor</span><span class="p">()</span>
+
+<span class="n">mapk</span><span class="o">.</span><span class="n">observables</span><span class="p">()</span>
+</pre></div>
+</div>
+<div class="section" id="initial-conditions">
+<h2>Initial conditions<a class="headerlink" href="#initial-conditions" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">Initial</span><span class="p">(</span><span class="n">EGF</span><span class="p">(</span><span class="n">egfr</span><span class="o">=</span><span class="bp">None</span><span class="p">),</span> <span class="n">Parameter</span><span class="p">(</span><span class="s">&#39;EGF_0&#39;</span><span class="p">,</span> <span class="mf">1e3</span><span class="p">))</span>
+<span class="n">Initial</span><span class="p">(</span><span class="n">EGFR</span><span class="p">(</span><span class="n">egf</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">egfr</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">grb2</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">Y</span><span class="o">=</span><span class="s">&#39;u&#39;</span><span class="p">),</span> <span class="n">Parameter</span><span class="p">(</span><span class="s">&#39;EGFR_0&#39;</span><span class="p">,</span> <span class="mf">1e5</span><span class="p">))</span>
+<span class="n">Initial</span><span class="p">(</span><span class="n">GRB2</span><span class="p">(</span><span class="n">egfr</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">sos1</span><span class="o">=</span><span class="bp">None</span><span class="p">),</span> <span class="n">Parameter</span><span class="p">(</span><span class="s">&#39;GRB2_0&#39;</span><span class="p">,</span> <span class="mf">1e5</span><span class="p">))</span>
+<span class="n">Initial</span><span class="p">(</span><span class="n">SOS1</span><span class="p">(</span><span class="n">grb2</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">ras</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">mapk1</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">phos</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">state</span><span class="o">=</span><span class="s">&#39;up&#39;</span><span class="p">),</span> <span class="n">Parameter</span><span class="p">(</span><span class="s">&#39;SOS1_0&#39;</span><span class="p">,</span> <span class="mf">1e3</span><span class="p">))</span>
+<span class="n">Initial</span><span class="p">(</span><span class="n">GTP</span><span class="p">(</span><span class="n">ras</span><span class="o">=</span><span class="bp">None</span><span class="p">),</span> <span class="n">Parameter</span><span class="p">(</span><span class="s">&#39;GTP_0&#39;</span><span class="p">,</span> <span class="mf">1e9</span><span class="p">))</span>
+<span class="n">Initial</span><span class="p">(</span><span class="n">RAS</span><span class="p">(</span><span class="n">sos1</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">gtp</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">raf</span><span class="o">=</span><span class="bp">None</span><span class="p">),</span> <span class="n">Parameter</span><span class="p">(</span><span class="s">&#39;RAS_0&#39;</span><span class="p">,</span> <span class="mf">1e5</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="parameters">
+<h2>Parameters<a class="headerlink" href="#parameters" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">kf_ee_bind_1</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span>  <span class="mi">1</span>  <span class="c"># EGF bind EGFR</span>
+<span class="n">kr_ee_bind_1</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span>  <span class="mf">0.1</span>  <span class="c"># EGF: EGFR dissociate</span>
+<span class="n">kf_ee_bind_2</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span>  <span class="mi">1</span>  <span class="c"># EGFR binds EGFR</span>
+<span class="n">kr_ee_bind_2</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span>  <span class="mf">0.1</span>  <span class="c"># EGFR:EGFR dissociate</span>
+<span class="n">kf_ge_bind_1</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="mi">1</span>   <span class="c"># Grb2 binds EGFR</span>
+<span class="n">kr_ge_bind_1</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="mf">0.1</span>   <span class="c"># GRb2:EGFR dissociate</span>
+<span class="n">kf_gs_bind_1</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span>  <span class="mi">1</span>  <span class="c">#  Grb2 binds SOS1</span>
+<span class="n">kr_gs_bind_1</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span>  <span class="mf">0.1</span>  <span class="c"># Grb2:SOS1 complex dissociates</span>
+<span class="n">kf_ee_transphos_1</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span>  <span class="mi">1</span> <span class="c"># transphosphorylation of EGFR in dimer</span>
+
+<span class="n">kf_sr_bind_1</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="n">kr_sr_bind_1</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="mf">1e-3</span>
+<span class="n">kf_rg_bind_1</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="n">kr_rg_bind_1</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="mf">0.5</span>
+</pre></div>
+</div>
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="model_reduction.html" class="btn btn-neutral float-right" title="Model reduction" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="index.html" class="btn btn-neutral" title="Vemurafenib resistance model" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2015, Sorger Lab.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../',
+            VERSION:'0.1',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

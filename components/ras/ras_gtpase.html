@@ -1,0 +1,673 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Ras proteins are GTPases &mdash; Ras model 0.1 documentation</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+    <link rel="top" title="Ras model 0.1 documentation" href="../../index.html"/>
+        <link rel="up" title="Ras" href="index.html"/>
+        <link rel="next" title="Ras regulation by GEFs" href="ras_gefs.html"/>
+        <link rel="prev" title="Ras" href="index.html"/> 
+
+  
+  <script src="../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> Ras model
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.1
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../intro.html">Overview</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">The RAS Executable Model</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../egfr/index.html">EGFR</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">Ras</a><ul class="current">
+<li class="toctree-l3 current"><a class="current reference internal" href="">Ras proteins are GTPases</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#anatomy-of-ras">Anatomy of Ras</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#ras-binds-gtp-and-gdp">Ras binds GTP and GDP</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#ras-converts-gtp-to-gdp">Ras converts GTP to GDP</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#oncogenic-ras-mutants-have-reduced-gtp-binding-and-gtpase-activity">Oncogenic Ras mutants have reduced GTP binding and GTPase activity</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#post-translational-modifications-of-the-c-terminus">Post-translational modifications of the C-terminus</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="ras_gefs.html">Ras regulation by GEFs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ras_gaps.html">Ras regulation by RasGAPs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ras_minimal.html">Ras (minimal)</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../raf/index.html">Raf</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../mapk/index.html">MAPK</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../scenarios/index.html">Model scenarios</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../experiments/index.html">Model analysis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../references.html">References</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../../index.html">Ras model</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="../index.html">The RAS Executable Model (REM)</a> &raquo;</li>
+      
+          <li><a href="index.html">Ras</a> &raquo;</li>
+      
+    <li>Ras proteins are GTPases</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../../_sources/components/ras/ras_gtpase.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="ras-proteins-are-gtpases">
+<span id="ras-gtpase"></span><h1>Ras proteins are GTPases<a class="headerlink" href="#ras-proteins-are-gtpases" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="anatomy-of-ras">
+<h2>Anatomy of Ras<a class="headerlink" href="#anatomy-of-ras" title="Permalink to this headline">¶</a></h2>
+<p>For a diagram of the primary structure of Ras, see
+<a class="reference external" href="http://www.ncbi.nlm.nih.gov/pmc/articles/PMC3915522/figure/F1/">http://www.ncbi.nlm.nih.gov/pmc/articles/PMC3915522/figure/F1/</a>).</p>
+<a class="reference internal image-reference" href="../../_images/18568040_ras_anatomy.jpg"><img alt="../../_images/18568040_ras_anatomy.jpg" src="../../_images/18568040_ras_anatomy.jpg" style="height: 100px;" /></a>
+<div class="highlight-python"><div class="highlight"><pre><span class="c"># Preliminaries</span>
+<span class="kn">from</span> <span class="nn">pysb</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">pysb.macros</span> <span class="kn">import</span> <span class="n">bind</span><span class="p">,</span> <span class="n">bind_table</span><span class="p">,</span> <span class="n">equilibrate</span><span class="p">,</span> <span class="n">_macro_rule</span>
+
+<span class="k">def</span> <span class="nf">ras_monomers</span><span class="p">():</span>
+    <span class="c"># Define the site structure for various Ras family members. All of the</span>
+    <span class="c"># Ras proteins have the following structural/regulatory features:</span>
+    <span class="c"># The sites are as follows:</span>
+    <span class="c"># gtp: binding site for GTP/GDP</span>
+    <span class="c"># gef: binding site for Ras-GEFs</span>
+    <span class="c"># gap: binding site for Ras-GAPs</span>
+    <span class="c"># p_loop: p_loop</span>
+    <span class="c"># s1s2: Switch 1 and Switch 2 regions</span>
+    <span class="c"># CAAX: C-terminal region responsible for membrane binding</span>
+    <span class="c"># mutant: Specific point mutation of Ras</span>
+    <span class="k">for</span> <span class="n">ras_name</span> <span class="ow">in</span> <span class="p">[</span><span class="s">&#39;KRAS&#39;</span><span class="p">,</span> <span class="s">&#39;NRAS&#39;</span><span class="p">,</span> <span class="s">&#39;HRAS&#39;</span><span class="p">]:</span>
+        <span class="n">Monomer</span><span class="p">(</span><span class="n">ras_name</span><span class="p">,</span>
+                <span class="p">[</span><span class="s">&#39;gtp&#39;</span><span class="p">,</span> <span class="s">&#39;gef&#39;</span><span class="p">,</span> <span class="s">&#39;gap&#39;</span><span class="p">,</span> <span class="s">&#39;p_loop&#39;</span><span class="p">,</span> <span class="s">&#39;s1s2&#39;</span><span class="p">,</span> <span class="s">&#39;CAAX&#39;</span><span class="p">,</span> <span class="s">&#39;mutant&#39;</span><span class="p">],</span>
+                <span class="p">{</span><span class="s">&#39;s1s2&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s">&#39;open&#39;</span><span class="p">,</span> <span class="s">&#39;closed&#39;</span><span class="p">],</span>
+                 <span class="s">&#39;mutant&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s">&#39;WT&#39;</span><span class="p">,</span> <span class="s">&#39;G12A&#39;</span><span class="p">,</span> <span class="s">&#39;G12C&#39;</span><span class="p">,</span> <span class="s">&#39;G12D&#39;</span><span class="p">,</span>
+                            <span class="s">&#39;G12R&#39;</span><span class="p">,</span> <span class="s">&#39;G12V&#39;</span><span class="p">,</span> <span class="s">&#39;G13D&#39;</span><span class="p">,</span> <span class="s">&#39;Q61L&#39;</span><span class="p">,</span> <span class="s">&#39;Q61H&#39;</span><span class="p">]})</span>
+
+<span class="k">def</span> <span class="nf">nucleotide_monomers</span><span class="p">():</span>
+    <span class="c"># Guanine nucleotides</span>
+    <span class="c"># p: Binding site for binding Ras (&#39;p&#39; for phosphate)</span>
+    <span class="c"># label: Fluorescent label used in some experiments (mant-GTP/GDP)</span>
+    <span class="n">Monomer</span><span class="p">(</span><span class="s">&#39;GTP&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;p&#39;</span><span class="p">,</span> <span class="s">&#39;label&#39;</span><span class="p">],</span> <span class="p">{</span><span class="s">&#39;label&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s">&#39;n&#39;</span><span class="p">,</span> <span class="s">&#39;y&#39;</span><span class="p">]})</span>
+    <span class="n">Monomer</span><span class="p">(</span><span class="s">&#39;GDP&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;p&#39;</span><span class="p">,</span> <span class="s">&#39;label&#39;</span><span class="p">],</span> <span class="p">{</span><span class="s">&#39;label&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s">&#39;n&#39;</span><span class="p">,</span> <span class="s">&#39;y&#39;</span><span class="p">]})</span>
+    <span class="n">Monomer</span><span class="p">(</span><span class="s">&#39;Pi&#39;</span><span class="p">,</span> <span class="p">[])</span> <span class="c"># inorganic phosphate, used for GDP/GTP recycling</span>
+</pre></div>
+</div>
+<p>Switch 1 and Switch 2 change conformation upon binding of GTP:</p>
+<blockquote>
+<div><p><a class="reference internal" href="../../references.html#pmid18568040" id="id1">[PMID18568040]</a>: The structural differences between the RasGDP and the
+RasGTP conformations reside mainly in two highly dynamic regions, termed
+switch i (residues 30–40) and switch ii (residues 60–76). Both regions are
+required for the interactions of Ras with upstream as well as downstream
+partners (see also FIG. 2a). The binding of GTP alters the conformation of
+switch i, primarily through the inward reorientation of the side chain of
+Thr35, thereby enabling its interactions with the GTP γ-phosphate as well
+as the Mg2+ ion. Similarly, the γ-phosphate induces significant changes in
+the orientation of the switch ii region through interactions it establishes
+with Gly60 (FIG. 4b).</p>
+</div></blockquote>
+<p>A side note on alternative splice variants:</p>
+<blockquote>
+<div><p><a class="reference internal" href="../../references.html#pmid3304147" id="id2">[PMID3304147]</a>: The three functional ras genes code for highly related
+proteins generically known as p21 (71). The p21 coding sequences of each of
+these genes are equally distributed in four exons except for the K-ras-2
+gene, which possesses two alternative fourth coding exons (exons IVA and
+IVB) that allow the synthesis of two isomorphic p21 proteins of 188 and 189
+residues that differ in their carboxy terminal domains (54, 60, 72).</p>
+</div></blockquote>
+</div>
+<div class="section" id="ras-binds-gtp-and-gdp">
+<h2>Ras binds GTP and GDP<a class="headerlink" href="#ras-binds-gtp-and-gdp" title="Permalink to this headline">¶</a></h2>
+<p>A general statement of Ras GTP binding and catalytic activity, found in a
+review:</p>
+<blockquote>
+<div><p><a class="reference internal" href="../../references.html#pmid3304147" id="id3">[PMID3304147]</a>: ras proteins, independently of their phylogenetic origin,
+have been shown to bind guanine nucleotides (GTP and GDP)
+(<a class="reference internal" href="../../references.html#pmid3304147-22" id="id4">[PMID3304147_22]</a> <a class="reference internal" href="../../references.html#pmid3304147-23" id="id5">[PMID3304147_23]</a> <a class="reference internal" href="../../references.html#pmid3304147-24" id="id6">[PMID3304147_24]</a> <a class="reference internal" href="../../references.html#pmid3304147-25" id="id7">[PMID3304147_25]</a>)
+and possess intrinsic GTPase activity (<a class="reference internal" href="../../references.html#pmid3304147-25" id="id8">[PMID3304147_25]</a> <a class="reference internal" href="../../references.html#pmid3304147-26" id="id9">[PMID3304147_26]</a>
+<a class="reference internal" href="../../references.html#pmid6147754" id="id10">[PMID6147754]</a> <a class="reference internal" href="../../references.html#pmid6148703" id="id11">[PMID6148703]</a> <a class="reference internal" href="../../references.html#pmid3304147-29" id="id12">[PMID3304147_29]</a>)</p>
+</div></blockquote>
+<div class="section" id="mechanism">
+<h3>Mechanism<a class="headerlink" href="#mechanism" title="Permalink to this headline">¶</a></h3>
+<p>The binding of Ras to GTP and GDP goes through an intermediate state, in which
+the nucleotide is at first loosely and then tightly bound:</p>
+<blockquote>
+<div><p><a class="reference internal" href="../../references.html#pmid9585556" id="id13">[PMID9585556]</a>: It has been shown before that guanine nucleotide binding to
+Ras involves (at least) two steps, with a fast initial binding reaction
+where nucleotide is bound loosely and a slow isomerization reaction to a
+tight-binding conformation (Scheme 2). In our reaction schemes, we have
+indicated the loosely and tightly bound complexes by Ras-GXP_L and
+Ras-GXP_T, respectively. The change of fluorescence signal occurs during
+the second step (<a class="reference internal" href="../../references.html#pmid2200519" id="id14">[PMID2200519]</a>, <a class="reference internal" href="../../references.html#pmid8552403" id="id15">[PMID8552403]</a>, <a class="reference internal" href="../../references.html#pmid8702787" id="id16">[PMID8702787]</a>).</p>
+</div></blockquote>
+<p>As background, these types of two-step binding equilibria are common in enzyme
+kinetics:</p>
+<blockquote>
+<div><p><a class="reference internal" href="../../references.html#pmid2200519" id="id17">[PMID2200519]</a>: There are numerous examples of two-step binding mechanisms
+in enzyme kinetics. A well-documented case is that of myosin ATPase, which
+displays a relatively weak but rapid initial binding of nucleotides
+followed by a quasi-irreversible isomerization step, which has been
+interpreted as a protein conformational change (Bagshaw et al., 1974).</p>
+</div></blockquote>
+<p>Using fluorescent nucleotides incubated with HRAS, the two steps in the binding reaction were measured and interpreted according to the following
+reaction scheme, from <a class="reference internal" href="../../references.html#pmid2200519" id="id18">[PMID2200519]</a>:</p>
+<img alt="../../_images/2200519_scheme2.png" src="../../_images/2200519_scheme2.png" />
+<p>We formulate a binding mechanism based on this two-step scheme. We denote the
+change in conformation that Ras undergoes by changing the state of the
+switch1/switch2 domains (s1s2) from &#8216;open&#8217; to &#8216;closed&#8217;.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">def</span> <span class="nf">ras_binds_gxp</span><span class="p">(</span><span class="n">ras</span><span class="p">,</span> <span class="n">gxp</span><span class="p">,</span> <span class="n">klist</span><span class="p">):</span>
+    <span class="c"># Alias for Ras bound to GXP. Note that these equilibria are for</span>
+    <span class="c"># Ras that is NOT bound to a Ras-GEF.</span>
+    <span class="n">rasgxp</span> <span class="o">=</span> <span class="n">ras</span><span class="p">(</span><span class="n">gap</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">gef</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">gtp</span><span class="o">=</span><span class="mi">99</span><span class="p">)</span> <span class="o">%</span> <span class="n">gxp</span><span class="p">(</span><span class="n">p</span><span class="o">=</span><span class="mi">99</span><span class="p">)</span>
+    <span class="c"># Get the rates from the list:</span>
+    <span class="p">(</span><span class="n">kf1</span><span class="p">,</span> <span class="n">kr1</span><span class="p">,</span> <span class="n">kf2</span><span class="p">,</span> <span class="n">kr2</span><span class="p">)</span> <span class="o">=</span> <span class="n">klist</span>
+</pre></div>
+</div>
+<p>The initial binding step:</p>
+<div class="highlight-python"><div class="highlight"><pre>    <span class="n">bind</span><span class="p">(</span><span class="n">ras</span><span class="p">(</span><span class="n">gap</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">gef</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">s1s2</span><span class="o">=</span><span class="s">&#39;open&#39;</span><span class="p">),</span> <span class="s">&#39;gtp&#39;</span><span class="p">,</span> <span class="n">gxp</span><span class="p">(),</span> <span class="s">&#39;p&#39;</span><span class="p">,</span> <span class="p">[</span><span class="n">kf1</span><span class="p">,</span> <span class="n">kr1</span><span class="p">])</span>
+</pre></div>
+</div>
+<p>Isomerization/conformational change of Ras resulting from nucleotide binding;
+also described as the conversion of the nucleotide from loosely bound to
+tightly bound:</p>
+<div class="highlight-python"><div class="highlight"><pre>    <span class="n">equilibrate</span><span class="p">(</span><span class="n">rasgxp</span><span class="p">(</span><span class="n">s1s2</span><span class="o">=</span><span class="s">&#39;open&#39;</span><span class="p">),</span> <span class="n">rasgxp</span><span class="p">(</span><span class="n">s1s2</span><span class="o">=</span><span class="s">&#39;closed&#39;</span><span class="p">),</span> <span class="p">[</span><span class="n">kf2</span><span class="p">,</span> <span class="n">kr2</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="rates">
+<h3>Rates<a class="headerlink" href="#rates" title="Permalink to this headline">¶</a></h3>
+<p>The rates for HRAS + GDP binding were measured at 25C (Table 1,
+<a class="reference internal" href="../../references.html#pmid2200519" id="id19">[PMID2200519]</a>). Since only the equilibrium constant K1 was given for the first
+step, we assume a diffusion-limited on-rate of <span class="math">\(10^7\ M^-1\ s^-1\)</span> for
+kf1:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">ras_gdp_kf1</span> <span class="o">=</span> <span class="mf">1e7</span> <span class="o">*</span> <span class="mf">1e-9</span>   <span class="c"># M^-1 s^-1 to nM^-1 s^-1</span>
+<span class="n">ras_gdp_K1</span> <span class="o">=</span> <span class="mf">5.7e4</span> <span class="o">*</span> <span class="mf">1e-9</span>  <span class="c"># M^-1 to nM^-1 s^-1</span>
+<span class="n">ras_gdp_kr1</span> <span class="o">=</span> <span class="n">ras_gdp_kf1</span> <span class="o">/</span> <span class="n">ras_gdp_K1</span>  <span class="c"># s^-1</span>
+</pre></div>
+</div>
+<p>For the second step, the rates were given explicitly as (Table 1,
+<a class="reference internal" href="../../references.html#pmid2200519" id="id20">[PMID2200519]</a>):</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">ras_gdp_kf2</span> <span class="o">=</span> <span class="mf">14.8</span>   <span class="c"># s^-1</span>
+<span class="n">ras_gdp_kr2</span> <span class="o">=</span> <span class="mf">1.8e-5</span> <span class="c"># s^-1</span>
+</pre></div>
+</div>
+<p>The rates given for HRAS + GTP at 25C were similar, though the off-rate for the
+second state was for some reason not given. As before, we choose a
+diffusion-limited on-rate of <span class="math">\(10^7\ M^-1\ s^-1\)</span> for kf1:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">ras_gtp_kf1</span> <span class="o">=</span> <span class="mf">1e7</span> <span class="o">*</span> <span class="mf">1e-9</span>   <span class="c"># M^-1 s^-1 to nM^-1 s^-1</span>
+<span class="n">ras_gtp_K1</span> <span class="o">=</span> <span class="mf">1.25e5</span> <span class="o">*</span> <span class="mf">1e-9</span> <span class="c"># M^-1 to nM^-1 s^-1</span>
+<span class="n">ras_gtp_kr1</span> <span class="o">=</span> <span class="n">ras_gtp_kf1</span> <span class="o">/</span> <span class="n">ras_gtp_K1</span>  <span class="c"># s^-1</span>
+
+<span class="n">ras_gtp_kf2</span> <span class="o">=</span> <span class="mf">16.7</span>   <span class="c"># s^-1</span>
+</pre></div>
+</div>
+<p>Now we construct a list of these four key rates for HRAS/GTP and HRAS/GDP
+binding. Note that the HRAS/GTP list uses the kr2 rate for HRAS/GDP since
+the rate was not reported for GTP.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">ras_gtp_klist</span> <span class="o">=</span> <span class="p">[</span><span class="n">ras_gtp_kf1</span><span class="p">,</span> <span class="n">ras_gtp_kr1</span><span class="p">,</span> <span class="n">ras_gtp_kf2</span><span class="p">,</span> <span class="n">ras_gdp_kr2</span><span class="p">]</span>
+<span class="n">ras_gdp_klist</span> <span class="o">=</span> <span class="p">[</span><span class="n">ras_gdp_kf1</span><span class="p">,</span> <span class="n">ras_gdp_kr1</span><span class="p">,</span> <span class="n">ras_gdp_kf2</span><span class="p">,</span> <span class="n">ras_gdp_kr2</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>We specify the binding of HRAS to GDP and GTP according to the measured rates:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">def</span> <span class="nf">hras_binds_nucleotides</span><span class="p">(</span><span class="n">model</span><span class="p">):</span>
+    <span class="n">HRAS</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">monomers</span><span class="p">[</span><span class="s">&#39;HRAS&#39;</span><span class="p">]</span>
+    <span class="n">GDP</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">monomers</span><span class="p">[</span><span class="s">&#39;GDP&#39;</span><span class="p">]</span>
+    <span class="n">GTP</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">monomers</span><span class="p">[</span><span class="s">&#39;GTP&#39;</span><span class="p">]</span>
+    <span class="n">ras_binds_gxp</span><span class="p">(</span><span class="n">HRAS</span><span class="p">,</span> <span class="n">GDP</span><span class="p">,</span> <span class="n">ras_gdp_klist</span><span class="p">)</span>
+    <span class="n">ras_binds_gxp</span><span class="p">(</span><span class="n">HRAS</span><span class="p">,</span> <span class="n">GTP</span><span class="p">,</span> <span class="n">ras_gtp_klist</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Nucleotide exchange experiments on a number of KRAS mutants were published in
+Hunter et al. <a class="reference internal" href="../../references.html#pmid26037647" id="id21">[PMID26037647]</a>. These experiments found that the exchange rates
+among a number of mutants were indistinguishable from wild-type KRAS, at 0.002
+<span class="math">\(sec^{-1}\)</span>, with the exception of G13D, which was considerably faster
+(0.027 <span class="math">\(sec^{-1}\)</span> for GDP and 0.018 <span class="math">\(sec^{-1}\)</span> for GTP).  If we use
+the mechanism for nucleotide binding described by Wittinghofer in
+<a class="reference internal" href="../../references.html#pmid2200519" id="id22">[PMID2200519]</a>, the exchange rate for GDP is dominated by the reverse rate of
+the second step of nucleotide binding (from loosely to tightly bound).
+Therefore we use the measured rates from this study to set this rate while
+keeping the same rates as previously published for HRAS.</p>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">The hydrolysis rate of GTP-&gt;GDP affects the observed GTP exchange rate
+because it allows the GTP exchange rate to be affected by GDP
+dissociation after hydrolysis of GTP to GDP. What&#8217;s not clear, however, is
+if the published rates for intrinsic GTP hydrolysis apply to the exchange
+experiment, which included only 10 mM Mg2+ rather than 40 mM Mg2+ as used
+in the hydrolysis experiment. In this case it might be better to model the
+exchange assay as having significantly diminished GTP hydrolysis.</p>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">def</span> <span class="nf">kras_binds_nucleotides</span><span class="p">(</span><span class="n">model</span><span class="p">):</span>
+    <span class="n">KRAS</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">monomers</span><span class="p">[</span><span class="s">&#39;KRAS&#39;</span><span class="p">]</span>
+    <span class="n">GDP</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">monomers</span><span class="p">[</span><span class="s">&#39;GDP&#39;</span><span class="p">]</span>
+    <span class="n">GTP</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">monomers</span><span class="p">[</span><span class="s">&#39;GTP&#39;</span><span class="p">]</span>
+    <span class="c"># Iterate over all of the mutants that we&#39;re considering</span>
+    <span class="k">for</span> <span class="n">mutant</span> <span class="ow">in</span> <span class="n">KRAS</span><span class="o">.</span><span class="n">site_states</span><span class="p">[</span><span class="s">&#39;mutant&#39;</span><span class="p">]:</span>
+        <span class="n">kras</span> <span class="o">=</span> <span class="n">KRAS</span><span class="p">(</span><span class="n">mutant</span><span class="o">=</span><span class="n">mutant</span><span class="p">)</span>
+        <span class="c"># Set a different rate for G13D vs. WT and all other mutants</span>
+        <span class="k">if</span> <span class="n">mutant</span> <span class="o">==</span> <span class="s">&#39;G13D&#39;</span><span class="p">:</span>
+            <span class="n">mutant_gdp_diss_rate</span> <span class="o">=</span> <span class="mf">0.020</span>
+            <span class="n">mutant_gtp_diss_rate</span> <span class="o">=</span> <span class="mf">0.015</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">mutant_gdp_diss_rate</span> <span class="o">=</span> <span class="mf">0.0015</span>
+            <span class="n">mutant_gtp_diss_rate</span> <span class="o">=</span> <span class="mf">0.0015</span>
+        <span class="c"># Re-use the rates from [PMID2200519] for the initial association</span>
+        <span class="c"># and forward isomerization, but use the rates from</span>
+        <span class="c"># [PMID26037647] to set the slow reverse rate:</span>
+        <span class="n">kras_gdp_klist</span> <span class="o">=</span> <span class="p">[</span><span class="n">ras_gdp_klist</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">ras_gdp_klist</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
+                          <span class="n">ras_gdp_klist</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">mutant_gdp_diss_rate</span><span class="p">]</span>
+        <span class="n">kras_gtp_klist</span> <span class="o">=</span> <span class="p">[</span><span class="n">ras_gtp_klist</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">ras_gtp_klist</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
+                          <span class="n">ras_gtp_klist</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">mutant_gtp_diss_rate</span><span class="p">]</span>
+        <span class="c"># Call the binding macro</span>
+        <span class="n">ras_binds_gxp</span><span class="p">(</span><span class="n">kras</span><span class="p">,</span> <span class="n">GDP</span><span class="p">,</span> <span class="n">kras_gdp_klist</span><span class="p">)</span>
+        <span class="n">ras_binds_gxp</span><span class="p">(</span><span class="n">kras</span><span class="p">,</span> <span class="n">GTP</span><span class="p">,</span> <span class="n">kras_gtp_klist</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>In the absence of new information, we use the same rates for NRAS and were
+published in <a class="reference internal" href="../../references.html#pmid2200519" id="id23">[PMID2200519]</a> for HRAS:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">def</span> <span class="nf">nras_binds_nucleotides</span><span class="p">(</span><span class="n">model</span><span class="p">):</span>
+    <span class="n">NRAS</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">monomers</span><span class="p">[</span><span class="s">&#39;NRAS&#39;</span><span class="p">]</span>
+    <span class="n">GDP</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">monomers</span><span class="p">[</span><span class="s">&#39;GDP&#39;</span><span class="p">]</span>
+    <span class="n">GTP</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">monomers</span><span class="p">[</span><span class="s">&#39;GTP&#39;</span><span class="p">]</span>
+    <span class="n">ras_binds_gxp</span><span class="p">(</span><span class="n">NRAS</span><span class="p">,</span> <span class="n">GDP</span><span class="p">,</span> <span class="n">ras_gdp_klist</span><span class="p">)</span>
+    <span class="n">ras_binds_gxp</span><span class="p">(</span><span class="n">NRAS</span><span class="p">,</span> <span class="n">GTP</span><span class="p">,</span> <span class="n">ras_gtp_klist</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="ras-converts-gtp-to-gdp">
+<h2>Ras converts GTP to GDP<a class="headerlink" href="#ras-converts-gtp-to-gdp" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id24">
+<h3>Mechanism<a class="headerlink" href="#id24" title="Permalink to this headline">¶</a></h3>
+<p>The mechanism for hydrolysis of GTP to GDP by Ras is fairly straightforward to
+implement, but we note that we model this reaction as only taking place once
+the nucleotide has been established in the &#8220;tightly bound&#8221; state. We also note
+that the conversion involves replacing one molecule of GTP for a molecule of
+GDP and Pi (inorganic phosphate).</p>
+<p>One additional consideration is whether this reaction can take place while a
+Ras-GEF, e.g., Sos, is bound. Though there is a short-lived intermediate in
+which a GEF and a tightly-bound nucleotide are both bound to Ras (see
+<a class="reference internal" href="ras_gefs.html#ras-gefs"><span>Ras regulation by GEFs</span></a>), it seems sensible to assume that this state cannot hydrolyze
+GTP due to the conformational instability of the protein in this state. More to
+the point, the hydrolysis reaction is relatively slow compared to the lifetime
+of this intermediate, thus there is likely to be very little flux occurring via
+this intermediate. Thus we specify that the reaction occurs only when Ras is
+not bound to a GEF:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">def</span> <span class="nf">ras_converts_gtp_to_gdp</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">ras</span><span class="p">,</span> <span class="n">kcat</span><span class="p">):</span>
+    <span class="n">GTP</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">monomers</span><span class="p">[</span><span class="s">&#39;GTP&#39;</span><span class="p">]</span>
+    <span class="n">GDP</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">monomers</span><span class="p">[</span><span class="s">&#39;GDP&#39;</span><span class="p">]</span>
+    <span class="n">Pi</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">monomers</span><span class="p">[</span><span class="s">&#39;Pi&#39;</span><span class="p">]</span>
+    <span class="n">ras</span> <span class="o">=</span> <span class="n">ras</span><span class="p">()</span>
+    <span class="n">ras_name</span> <span class="o">=</span> <span class="n">ras</span><span class="o">.</span><span class="n">monomer</span><span class="o">.</span><span class="n">name</span>
+
+    <span class="c"># If the Ras monomer we&#39;ve got doesn&#39;t have any information for</span>
+    <span class="c"># mutants, explicitly name it as the wild-type allele</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">ras_mutant</span> <span class="o">=</span> <span class="n">ras</span><span class="o">.</span><span class="n">site_conditions</span><span class="p">[</span><span class="s">&#39;mutant&#39;</span><span class="p">]</span>
+    <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+        <span class="n">ras_mutant</span> <span class="o">=</span> <span class="s">&#39;WT&#39;</span>
+
+    <span class="n">k</span> <span class="o">=</span> <span class="n">Parameter</span><span class="p">(</span><span class="s">&#39;k_</span><span class="si">%s</span><span class="s">_</span><span class="si">%s</span><span class="s">_gtpase&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">ras_name</span><span class="p">,</span> <span class="n">ras_mutant</span><span class="p">),</span> <span class="n">kcat</span><span class="p">)</span>
+    <span class="c"># The intrinsic hydrolysis reaction only occurs when a RasGAP</span>
+    <span class="c"># is not bound, since the RasGAP intervenes directly in the</span>
+    <span class="c"># active site.</span>
+    <span class="c"># Instantiate the rule for both labeled and unlabeled GTP/GDP</span>
+    <span class="n">Rule</span><span class="p">(</span><span class="s">&#39;</span><span class="si">%s</span><span class="s">_</span><span class="si">%s</span><span class="s">_converts_GTP_GDP&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">ras_name</span><span class="p">,</span> <span class="n">ras_mutant</span><span class="p">),</span>
+         <span class="n">ras</span><span class="p">(</span><span class="n">gap</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">gef</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">gtp</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">s1s2</span><span class="o">=</span><span class="s">&#39;closed&#39;</span><span class="p">)</span> <span class="o">%</span>
+         <span class="n">GTP</span><span class="p">(</span><span class="n">p</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s">&#39;n&#39;</span><span class="p">)</span> <span class="o">&gt;&gt;</span>
+         <span class="n">ras</span><span class="p">(</span><span class="n">gap</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">gef</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">gtp</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">s1s2</span><span class="o">=</span><span class="s">&#39;closed&#39;</span><span class="p">)</span> <span class="o">%</span>
+         <span class="n">GDP</span><span class="p">(</span><span class="n">p</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s">&#39;n&#39;</span><span class="p">)</span> <span class="o">+</span> <span class="n">Pi</span><span class="p">(),</span>
+         <span class="n">k</span><span class="p">)</span>
+    <span class="n">Rule</span><span class="p">(</span><span class="s">&#39;</span><span class="si">%s</span><span class="s">_</span><span class="si">%s</span><span class="s">_converts_mGTP_mGDP&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">ras_name</span><span class="p">,</span> <span class="n">ras_mutant</span><span class="p">),</span>
+         <span class="n">ras</span><span class="p">(</span><span class="n">gap</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">gef</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">gtp</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">s1s2</span><span class="o">=</span><span class="s">&#39;closed&#39;</span><span class="p">)</span> <span class="o">%</span>
+         <span class="n">GTP</span><span class="p">(</span><span class="n">p</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s">&#39;y&#39;</span><span class="p">)</span> <span class="o">&gt;&gt;</span>
+         <span class="n">ras</span><span class="p">(</span><span class="n">gap</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">gef</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">gtp</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">s1s2</span><span class="o">=</span><span class="s">&#39;closed&#39;</span><span class="p">)</span> <span class="o">%</span>
+         <span class="n">GDP</span><span class="p">(</span><span class="n">p</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s">&#39;y&#39;</span><span class="p">)</span> <span class="o">+</span> <span class="n">Pi</span><span class="p">(),</span>
+         <span class="n">k</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="id25">
+<h3>Rates<a class="headerlink" href="#id25" title="Permalink to this headline">¶</a></h3>
+<p>GTP hydrolysis by wild-type Ras is slow in the absence of RasGAPs.</p>
+<blockquote>
+<div><p><a class="reference internal" href="../../references.html#pmid1569940" id="id26">[PMID1569940]</a>: It has been reported that the in vitro GTPase activity of
+wild-type p21, which proceeds at a rate of 0.028 min^-1 at 37°C
+(<a class="reference internal" href="../../references.html#pmid2502546" id="id27">[PMID2502546]</a>), is accelerated 100- to 200-fold by GAP, as measured under
+nonsaturating conditions.</p>
+</div></blockquote>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">def</span> <span class="nf">hras_hydrolyzes_gtp</span><span class="p">(</span><span class="n">model</span><span class="p">):</span>
+    <span class="c"># Convert 2.8e-2 min^-1 to units of s^-1</span>
+    <span class="n">wt_ras_hydrolysis_rate</span> <span class="o">=</span> <span class="mf">2.8e-2</span> <span class="o">/</span> <span class="mf">60.</span>
+
+    <span class="n">HRAS</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">monomers</span><span class="p">[</span><span class="s">&#39;HRAS&#39;</span><span class="p">]</span>
+    <span class="n">ras_converts_gtp_to_gdp</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">HRAS</span><span class="p">,</span> <span class="n">wt_ras_hydrolysis_rate</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">kras_hydrolyzes_gtp</span><span class="p">(</span><span class="n">model</span><span class="p">):</span>
+    <span class="n">kras_wt_hydrolysis_rate</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">KRAS</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">monomers</span><span class="p">[</span><span class="s">&#39;KRAS&#39;</span><span class="p">]</span>
+
+    <span class="n">hydrolysis_rates</span> <span class="o">=</span> <span class="p">{</span><span class="s">&#39;WT&#39;</span><span class="p">:</span> <span class="mf">68e-5</span><span class="p">,</span>
+                        <span class="s">&#39;G12A&#39;</span><span class="p">:</span> <span class="mf">1.3e-5</span><span class="p">,</span>
+                        <span class="s">&#39;G12C&#39;</span><span class="p">:</span> <span class="mf">49e-5</span><span class="p">,</span>
+                        <span class="s">&#39;G12D&#39;</span><span class="p">:</span> <span class="mf">19e-5</span><span class="p">,</span>
+                        <span class="s">&#39;G12R&#39;</span><span class="p">:</span> <span class="mf">1.8e-5</span><span class="p">,</span>
+                        <span class="s">&#39;G12V&#39;</span><span class="p">:</span> <span class="mf">4.2e-5</span><span class="p">,</span>
+                        <span class="s">&#39;G13D&#39;</span><span class="p">:</span> <span class="mf">9.6e-5</span><span class="p">,</span>
+                        <span class="s">&#39;Q61L&#39;</span><span class="p">:</span> <span class="mf">0.8e-5</span><span class="p">,</span>
+                        <span class="s">&#39;Q61H&#39;</span><span class="p">:</span> <span class="mf">1.3e-5</span><span class="p">,}</span>
+    <span class="c"># Iterate over all of the mutants that we&#39;re considering</span>
+    <span class="k">for</span> <span class="n">mutant</span> <span class="ow">in</span> <span class="n">KRAS</span><span class="o">.</span><span class="n">site_states</span><span class="p">[</span><span class="s">&#39;mutant&#39;</span><span class="p">]:</span>
+        <span class="n">kras</span> <span class="o">=</span> <span class="n">KRAS</span><span class="p">(</span><span class="n">mutant</span><span class="o">=</span><span class="n">mutant</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">mutant</span> <span class="ow">in</span> <span class="n">hydrolysis_rates</span><span class="p">:</span>
+            <span class="n">mutant_rate</span> <span class="o">=</span> <span class="n">hydrolysis_rates</span><span class="p">[</span><span class="n">mutant</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">mutant_rate</span> <span class="o">=</span> <span class="n">hydrolysis_rates</span><span class="p">[</span><span class="s">&#39;WT&#39;</span><span class="p">]</span>
+        <span class="n">ras_converts_gtp_to_gdp</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">kras</span><span class="p">,</span> <span class="n">mutant_rate</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">nras_hydrolyzes_gtp</span><span class="p">(</span><span class="n">model</span><span class="p">):</span>
+    <span class="c"># Convert 2.8e-2 min^-1 to units of s^-1</span>
+    <span class="n">wt_ras_hydrolysis_rate</span> <span class="o">=</span> <span class="mf">2.8e-2</span> <span class="o">/</span> <span class="mf">60.</span>
+
+    <span class="n">NRAS</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">monomers</span><span class="p">[</span><span class="s">&#39;NRAS&#39;</span><span class="p">]</span>
+    <span class="n">ras_converts_gtp_to_gdp</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">NRAS</span><span class="p">,</span> <span class="n">wt_ras_hydrolysis_rate</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="recycling-of-gtp-from-gdp">
+<h3>Recycling of GTP from GDP<a class="headerlink" href="#recycling-of-gtp-from-gdp" title="Permalink to this headline">¶</a></h3>
+<p>In the cell, GTP levels are buffered to remain fairly constant. To prevent GTP
+levels from being depleted by GTPase activity in our simulations, we
+reconstitute GTP from unbound GDP and inorganic phosphate at a very high rate.
+Since we only create inorganic phosphate (Pi) from the GTP hydrolysis step,
+this ensures that GTP/GDP levels and ratios will be held constant over time.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">def</span> <span class="nf">recycle_gtp_from_gdp</span><span class="p">(</span><span class="n">model</span><span class="p">):</span>
+    <span class="n">GDP</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">monomers</span><span class="p">[</span><span class="s">&#39;GDP&#39;</span><span class="p">]</span>
+    <span class="n">GTP</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">monomers</span><span class="p">[</span><span class="s">&#39;GTP&#39;</span><span class="p">]</span>
+    <span class="n">Pi</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">monomers</span><span class="p">[</span><span class="s">&#39;Pi&#39;</span><span class="p">]</span>
+    <span class="n">k</span> <span class="o">=</span> <span class="n">Parameter</span><span class="p">(</span><span class="s">&#39;k_recycle_gtp_from_gdp&#39;</span><span class="p">,</span> <span class="mf">1e7</span><span class="p">)</span>
+    <span class="c"># Note that only unbound GDP can be recycled!</span>
+    <span class="n">Rule</span><span class="p">(</span><span class="s">&#39;recycle_gtp_from_gdp_rule&#39;</span><span class="p">,</span>
+         <span class="n">GDP</span><span class="p">(</span><span class="n">p</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s">&#39;n&#39;</span><span class="p">)</span> <span class="o">+</span> <span class="n">Pi</span><span class="p">()</span> <span class="o">&gt;&gt;</span> <span class="n">GTP</span><span class="p">(</span><span class="n">p</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s">&#39;n&#39;</span><span class="p">),</span> <span class="n">k</span><span class="p">)</span>
+    <span class="n">Rule</span><span class="p">(</span><span class="s">&#39;recycle_mgtp_from_mgdp_rule&#39;</span><span class="p">,</span>
+         <span class="n">GDP</span><span class="p">(</span><span class="n">p</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s">&#39;y&#39;</span><span class="p">)</span> <span class="o">+</span> <span class="n">Pi</span><span class="p">()</span> <span class="o">&gt;&gt;</span> <span class="n">GTP</span><span class="p">(</span><span class="n">p</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s">&#39;y&#39;</span><span class="p">),</span> <span class="n">k</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="oncogenic-ras-mutants-have-reduced-gtp-binding-and-gtpase-activity">
+<h2>Oncogenic Ras mutants have reduced GTP binding and GTPase activity<a class="headerlink" href="#oncogenic-ras-mutants-have-reduced-gtp-binding-and-gtpase-activity" title="Permalink to this headline">¶</a></h2>
+<p><a class="reference internal" href="../../references.html#pmid18568040" id="id28">[PMID18568040]</a>: In 1984, three groups reported that mutated Ras oncoproteins
+differ functionally from their normal counterparts <a class="reference internal" href="../../references.html#pmid6147754" id="id29">[PMID6147754]</a>
+<a class="reference internal" href="../../references.html#pmid18568040-42" id="id30">[PMID18568040_42]</a> <a class="reference internal" href="../../references.html#pmid6148703" id="id31">[PMID6148703]</a>. The oncogenic forms of Ras exhibited
+impaired GTPase activity, which suggested that the hydrolysis of GTP somehow
+terminates the activated state of the protein, which is consistent with the
+presumed analogy to the behaviour of G proteins...Furthermore, the link between
+the much-studied Gly-to-Val substitution of residue 12 of H-Ras and GTP
+hydrolysis was made the following year by Frank McCormick’s group, which noted
+that antibodies that are specific to that region blocked GTP binding
+<a class="reference internal" href="../../references.html#pmid18568040-44" id="id32">[PMID18568040_44]</a>.</p>
+<p><a class="reference internal" href="../../references.html#pmid3304147" id="id33">[PMID3304147]</a>: Early studies have predicted that replacement of Gly12 by any
+other amino acid residue (except proline) would disrupt the a-helical structure
+of the amino terminal domain of ras proteins, causing a conformational change
+that would prevent its proper folding (112-114). Thus, replacement or
+elimination of Gly12 may create a rigid domain that cannot efficiently interact
+with the phosphoryl region of the GTP molecule, reducing the GTPase activity of
+ras proteins. Two additional residues in this domain, Glyl5 and Lysl6, are
+present in other guanine nucleotide-bindingproteins(109, 111). Substitution of
+Lys16 by Asn16 significantly reduces GTP/GDP affinity without affecting base
+specificity, an observation consistent with the idea that these residues are
+also part of the phosphoryl group (95):</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="c"># A key thing to note here is that the mutations in G12, G15, and K16 appear</span>
+<span class="c"># to affect the affinity of Ras for GTP and GDP, not the catalytic rate.</span>
+</pre></div>
+</div>
+<p><a class="reference internal" href="../../references.html#pmid18568040" id="id34">[PMID18568040]</a>: Other oncogenic mutations (such as Gln61leu in H-Ras) were
+also shown to impair GTP hydrolysis <a class="reference internal" href="../../references.html#pmid18568040-45" id="id35">[PMID18568040_45]</a> and other oncogenic
+forms of Ras were later determined to be impaired in GTP hydrolysis (for
+example, REF.  <a class="reference internal" href="../../references.html#pmid18568040-46" id="id36">[PMID18568040_46]</a>).</p>
+<p><a class="reference internal" href="../../references.html#pmid3304147" id="id37">[PMID3304147]</a>: Substitution of Gln61 by 17 different amino acid residues
+invariably results in decreased GTPase activity (<a class="reference internal" href="../../references.html#pmid3304147-25" id="id38">[PMID3304147_25]</a>, 117).</p>
+<p><a class="reference internal" href="../../references.html#pmid18568040" id="id39">[PMID18568040]</a>: The overall Ras structure was shown to consist of a
+hydrophobic core of six stranded β-sheets and five α-helices that are
+interconnected by a series of ten loops (<a class="reference external" href="http://www.ncbi.nlm.nih.gov/pmc/articles/PMC3915522/figure/F4/">FIG4a</a>). Five of these loops are
+situated on one facet of the protein and have crucial roles in determining the
+high affinity nucleotide interactions of Ras and in regulating GTP hydrolysis.
+In particular, the GTP γ-phosphate is stabilized by interactions that are
+established with the residues of loops 1, 2 and 4 (for example, lys16, Tyr32,
+Thr35, Gly60 and Gln61; see <a class="reference external" href="http://www.ncbi.nlm.nih.gov/pmc/articles/PMC3915522/figure/F4/">FIG4b</a>). A prominent role is attributed to Gln61,
+which stabilizes the transition state of GTP hydrolysis to GDP, in addition to
+participating in the orientation of the nucleophilic attack that is necessary
+for this reaction. As such, oncogenic mutations of Gln61 reduce the intrinsic
+GTP hydrolysis rate, thereby placing the Ras protein in a constitutively active
+state.:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="c"># Unlike the mutations in G12 and its neighbors, which seem to affect</span>
+<span class="c"># activity by affecting GTP/GDP binding, the reduced activity resulting</span>
+<span class="c"># from mutations in Q61 appear to be attributed to an affect on the</span>
+<span class="c"># catalytic rate.</span>
+
+<span class="c"># As an implementation detail, note that the mutant rate should be</span>
+<span class="c"># constrained to be less than the wild type rate through the use of an</span>
+<span class="c"># Expression incorporating a scaling parameter between [0, 1].</span>
+</pre></div>
+</div>
+<div class="section" id="autophosphorylation-of-ras-a59t">
+<h3>Autophosphorylation of Ras A59T<a class="headerlink" href="#autophosphorylation-of-ras-a59t" title="Permalink to this headline">¶</a></h3>
+<p><a class="reference internal" href="../../references.html#pmid3304147" id="id40">[PMID3304147]</a>: In addition to GTP/GDP binding and GTPase activity, ras
+proteins carrying an Ala59 -&gt; Thr59 mutation exhibit an autophosphorylating
+activity of an, as yet, unknown biological significance <a class="reference internal" href="../../references.html#pmid3304147-23" id="id41">[PMID3304147_23]</a>. In
+all cases, Thr59 has been found to be the phosphate receptor site (106). No
+transphosphorylating activity has been detected with any ras protein, including
+those carrying Thr59 mutations:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="c"># Add autophosphorylation of Ras A59T if it later turns out to be</span>
+<span class="c"># significant.</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="post-translational-modifications-of-the-c-terminus">
+<h2>Post-translational modifications of the C-terminus<a class="headerlink" href="#post-translational-modifications-of-the-c-terminus" title="Permalink to this headline">¶</a></h2>
+<p>An initial study in this area, published in 1982, showed that the mature form
+of viral H-Ras localized to the cell membrane47. Several months later it was
+demonstrated that viral H-Ras is palmitoylated at the C terminus; the resulting
+attached lipid moiety facilitated its association with the membrane48. The
+functional connection between this lipid modification and Ras function was made
+by Douglas Lowy’s group in 1984, which showed that lipid binding and membrane
+association were actually required for the transforming activity of the viral
+H-Ras oncoprotein49,50.</p>
+<p>working with cellular H-Ras, Stuart Aaronson’s group proceeded to demonstrate
+that this C-terminal processing and membrane recruitment of Ras is a
+prerequisite to its biochemical activation51.</p>
+<p>The molecular mechanisms of Ras lipid processing were laid out over the
+subsequent 5 years through a series of observations using yeast genetics,
+protein biochemistry and in vitro cellular systems52–57 (FIGS 2,3).3).</p>
+<p>Indeed, the C-terminal CAAX motif, previously found to be important for Ras
+function, was found to be the target of a post-translational modification that
+involved the addition of a farnesyl isoprenoid lipid, catalysed by the enzyme
+farnesyl transferase (FTase).</p>
+<p>Subsequent studies determined that this prenylation reaction is followed by the
+proteolytic cleavage of the AAX sequence, catalysed by Ras-converting enzyme-1
+(RCE1) and the carboxymethylation of the now terminal Cys residue by the
+isoprenylcysteine carboxymethyltransferase-1 (ICMT1) enzyme.</p>
+<p>Although these CAAX-signal modifications appeared to be essential for the
+association of Ras with the plasma membrane, other studies identified the
+requirement for a second C-terminal signal that facilitates full membrane
+recruitment and hence full Ras function (for example, see REF. 57). For
+K-Ras-4B, this second signal is a string of positively-charged lys residues
+upstream of the C terminus that are sufficient to anchor the protein to the
+membrane. However, prenylated H-Ras, N-Ras and K-Ras-4A require a further
+palmitoylation step in which a palmitoyl moiety is attached to upstream
+C-terminal Cys residues before their anchoring in the membrane is stabilized.</p>
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="ras_gefs.html" class="btn btn-neutral float-right" title="Ras regulation by GEFs" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="index.html" class="btn btn-neutral" title="Ras" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2015, Sorger Lab.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../',
+            VERSION:'0.1',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

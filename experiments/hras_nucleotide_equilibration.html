@@ -1,0 +1,327 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Ras binding to GTP and GDP &mdash; Ras model 0.1 documentation</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+    <link rel="top" title="Ras model 0.1 documentation" href="../index.html"/>
+        <link rel="up" title="Model analysis" href="index.html"/>
+        <link rel="next" title="References" href="../references.html"/>
+        <link rel="prev" title="Model analysis" href="index.html"/> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> Ras model
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.1
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../intro.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../components/index.html">The RAS Executable Model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../scenarios/index.html">Model scenarios</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Model analysis</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="">Ras binding to GTP and GDP</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#dissociation-of-ras-from-gtp-and-gdp">Dissociation of Ras from GTP and GDP</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../references.html">References</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../index.html">Ras model</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="index.html">Model analysis</a> &raquo;</li>
+      
+    <li>Ras binding to GTP and GDP</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../_sources/experiments/hras_nucleotide_equilibration.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">This section defines the component <code class="docutils literal"><span class="pre">rasmodel.experiments.hras_nucleotide_equilibration</span></code>.</p>
+</div>
+<div class="section" id="ras-binding-to-gtp-and-gdp">
+<h1>Ras binding to GTP and GDP<a class="headerlink" href="#ras-binding-to-gtp-and-gdp" title="Permalink to this headline">¶</a></h1>
+<p>As a simple test to make sure everything is working, we run a simulation of a
+subset of the default model showing the binding of HRAS to GTP and GDP coming to
+steady state.</p>
+<p>First we import the default model:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">rasmodel.scenarios.default</span> <span class="kn">import</span> <span class="n">model</span>
+</pre></div>
+</div>
+<p>Then we take care of some preliminaries:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">matplotlib</span> <span class="kn">import</span> <span class="n">pyplot</span> <span class="k">as</span> <span class="n">plt</span>
+<span class="kn">from</span> <span class="nn">pysb.integrate</span> <span class="kn">import</span> <span class="n">Solver</span>
+<span class="kn">from</span> <span class="nn">pysb</span> <span class="kn">import</span> <span class="o">*</span>
+</pre></div>
+</div>
+<p>Now we reset all initial conditions, other than the ones we&#8217;re interested in,
+to 0:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">ics_to_keep</span> <span class="o">=</span> <span class="p">[</span><span class="s">&#39;GTP_0&#39;</span><span class="p">,</span> <span class="s">&#39;GDP_0&#39;</span><span class="p">,</span> <span class="s">&#39;HRAS_0&#39;</span><span class="p">]</span>
+<span class="k">for</span> <span class="n">ic</span> <span class="ow">in</span> <span class="n">model</span><span class="o">.</span><span class="n">initial_conditions</span><span class="p">:</span>
+    <span class="n">ic_param</span> <span class="o">=</span> <span class="n">ic</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">ic_param</span><span class="o">.</span><span class="n">name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">ics_to_keep</span><span class="p">:</span>
+        <span class="n">ic_param</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="mi">0</span>
+</pre></div>
+</div>
+<p>Set the timepoints of our simulation, in seconds:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">t</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">logspace</span><span class="p">(</span><span class="o">-</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">1000</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Initialize the solver object and run the simulation:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">sol</span> <span class="o">=</span> <span class="n">Solver</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">t</span><span class="p">)</span>
+<span class="n">sol</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Plot the fraction of HRAS-GTP vs. HRAS-GDP over time:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
+<span class="n">HRAS_0</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">parameters</span><span class="p">[</span><span class="s">&#39;HRAS_0&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">value</span>
+<span class="k">for</span> <span class="n">obs_name</span> <span class="ow">in</span> <span class="p">[</span><span class="s">&#39;HRAS_GTP_closed_&#39;</span><span class="p">,</span> <span class="s">&#39;HRAS_GTP_open_&#39;</span><span class="p">,</span>
+                 <span class="s">&#39;HRAS_GDP_closed_&#39;</span><span class="p">,</span> <span class="s">&#39;HRAS_GDP_open_&#39;</span><span class="p">,</span> <span class="s">&#39;HRAS_nf_&#39;</span><span class="p">]:</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">sol</span><span class="o">.</span><span class="n">yobs</span><span class="p">[</span><span class="n">obs_name</span><span class="p">]</span> <span class="o">/</span> <span class="n">HRAS_0</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="n">obs_name</span><span class="p">)</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">gca</span><span class="p">()</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xscale</span><span class="p">(</span><span class="s">&#39;log&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s">&#39;right&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s">&#39;Time (sec)&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s">&#39;Fraction of HRAS&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="s">&#39;output/simulation_1.png&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<img alt="../_images/simulation_1.png" src="../_images/simulation_1.png" />
+<div class="section" id="dissociation-of-ras-from-gtp-and-gdp">
+<h2>Dissociation of Ras from GTP and GDP<a class="headerlink" href="#dissociation-of-ras-from-gtp-and-gdp" title="Permalink to this headline">¶</a></h2>
+<p>To show the intrinsic rate of dissociation of GTP from GDP, we start the simulation
+with HRAS tightly bound to GTP (i.e., in the &#8216;open&#8217; state) and monitor the fraction of
+HRAS bound over time.</p>
+<p>First we reset all initial conditions:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">for</span> <span class="n">ic</span> <span class="ow">in</span> <span class="n">model</span><span class="o">.</span><span class="n">initial_conditions</span><span class="p">:</span>
+    <span class="n">ic_param</span> <span class="o">=</span> <span class="n">ic</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">ic_param</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="mi">0</span>
+</pre></div>
+</div>
+<p>Now we create a new initial condition for HRAS-GTP:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">HRAS</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">monomers</span><span class="p">[</span><span class="s">&#39;HRAS&#39;</span><span class="p">]</span>
+<span class="n">GTP</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">monomers</span><span class="p">[</span><span class="s">&#39;GTP&#39;</span><span class="p">]</span>
+<span class="n">HRAS_mGTP_0</span> <span class="o">=</span> <span class="n">Parameter</span><span class="p">(</span><span class="s">&#39;HRAS_mGTP_0&#39;</span><span class="p">,</span> <span class="mf">4e-6</span><span class="p">)</span>
+<span class="n">model</span><span class="o">.</span><span class="n">parameters</span><span class="p">[</span><span class="s">&#39;GTP_0&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="mf">10e-6</span> <span class="c"># Unlabeled competitor</span>
+<span class="n">model</span><span class="o">.</span><span class="n">initial</span><span class="p">(</span><span class="n">HRAS</span><span class="p">(</span><span class="n">gtp</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">s1s2</span><span class="o">=</span><span class="s">&#39;open&#39;</span><span class="p">,</span> <span class="n">gef</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">p_loop</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                   <span class="n">CAAX</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">oncogenic</span><span class="o">=</span><span class="s">&#39;n&#39;</span><span class="p">)</span> <span class="o">%</span> <span class="n">GTP</span><span class="p">(</span><span class="n">p</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s">&#39;y&#39;</span><span class="p">),</span>
+              <span class="n">HRAS_mGTP_0</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Now we run the simulation and plot:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">t</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">logspace</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">1000</span><span class="p">)</span>
+<span class="n">sol</span> <span class="o">=</span> <span class="n">Solver</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">t</span><span class="p">)</span>
+<span class="n">sol</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">sol</span><span class="o">.</span><span class="n">yobs</span><span class="p">[</span><span class="s">&#39;HRAS_mGTP_&#39;</span><span class="p">]</span> <span class="o">/</span> <span class="n">HRAS_mGTP_0</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mf">1.05</span><span class="p">)</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">gca</span><span class="p">()</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xscale</span><span class="p">(</span><span class="s">&#39;log&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Repeat the above for GDP:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">for</span> <span class="n">ic</span> <span class="ow">in</span> <span class="n">model</span><span class="o">.</span><span class="n">initial_conditions</span><span class="p">:</span>
+    <span class="n">ic_param</span> <span class="o">=</span> <span class="n">ic</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">ic_param</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="mi">0</span>
+
+<span class="n">GDP</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">monomers</span><span class="p">[</span><span class="s">&#39;GDP&#39;</span><span class="p">]</span>
+<span class="n">HRAS_mGDP_0</span> <span class="o">=</span> <span class="n">Parameter</span><span class="p">(</span><span class="s">&#39;HRAS_mGDP_0&#39;</span><span class="p">,</span> <span class="mf">4e-6</span><span class="p">)</span>
+<span class="n">model</span><span class="o">.</span><span class="n">parameters</span><span class="p">[</span><span class="s">&#39;GDP_0&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="mf">10e-6</span> <span class="c"># Unlabeled competitor</span>
+<span class="n">model</span><span class="o">.</span><span class="n">initial</span><span class="p">(</span><span class="n">HRAS</span><span class="p">(</span><span class="n">gtp</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">s1s2</span><span class="o">=</span><span class="s">&#39;open&#39;</span><span class="p">,</span> <span class="n">gef</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">p_loop</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                   <span class="n">CAAX</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">oncogenic</span><span class="o">=</span><span class="s">&#39;n&#39;</span><span class="p">)</span> <span class="o">%</span> <span class="n">GDP</span><span class="p">(</span><span class="n">p</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s">&#39;y&#39;</span><span class="p">),</span>
+              <span class="n">HRAS_mGDP_0</span><span class="p">)</span>
+
+<span class="n">sol</span> <span class="o">=</span> <span class="n">Solver</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">t</span><span class="p">)</span>
+<span class="n">sol</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Plot on the same plot:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">sol</span><span class="o">.</span><span class="n">yobs</span><span class="p">[</span><span class="s">&#39;HRAS_mGDP_&#39;</span><span class="p">]</span> <span class="o">/</span> <span class="n">HRAS_mGDP_0</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mf">1.05</span><span class="p">)</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">gca</span><span class="p">()</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xscale</span><span class="p">(</span><span class="s">&#39;log&#39;</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="s">&#39;output/simulation_2.png&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<img alt="../_images/simulation_2.png" src="../_images/simulation_2.png" />
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../references.html" class="btn btn-neutral float-right" title="References" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="index.html" class="btn btn-neutral" title="Model analysis" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2015, Sorger Lab.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'0.1',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

@@ -2,9 +2,9 @@ Contact map
 ===========
 
 Download the contact map
-:download:`PDF </../output/ras_model_cm.pdf>`
-:download:`PNG </../output/ras_model_cm.png>`
+:download:`PDF </../output/rasmodel_cm.pdf>`
+:download:`PNG </../output/rasmodel_cm.png>`
 
-.. image:: /../output/ras_model_cm.png
+.. image:: /../output/rasmodel_cm.png
     :width: 800px
 

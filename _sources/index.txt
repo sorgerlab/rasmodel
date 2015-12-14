@@ -7,7 +7,7 @@ Returning visitors can :ref:`jump right into the model <ras_gtpase>`.
 
 
 REM news
-========
+--------
 
 The RAS executable model (REM) will be rolled out publically at the National
 Cancer Institute’s first `RAS Initiative Symposium
@@ -25,37 +25,84 @@ updates to the model and these updates will be made in near real-time to test
 the performance of the modeling environment.
 
 Team members and contacts
-=========================
+-------------------------
 
-RAS Model (REM)
----------------
-* John Bachman
-* Benjamin Gyori
-* Jeremy Muhlich
-* Kartik Subramanian
+==============  ==================  ==================  ==============
+**Modelers**
+----------------------------------------------------------------------
+|john-hs|       |daniel-hs|         |will-hs|           |ben-hs|
+John Bachman    Daniel Carlin       William Chen        Benjamin Gyori
+|jeremy-hs|     |kartik-hs|         |liz-hs|
+Jeremy Muhlich  Kartik Subramanian  Elizabeth Williams
+==============  ==================  ==================  ==============
 
-Additional INDRA developers
----------------------------
-* Daniel Carlin
-* William Chen
+============  ============
+**Principal investigators**
+--------------------------
+|peter-hs|    |dexter-hs|
+Peter Sorger  Dexter Pratt
+============  ============
 
-Principal investigators
------------------------
-* Peter Sorger
-* Dexter Pratt
+If you have questions or would like to contribute, please contact
+`John Bachman <http://github.com/johnbachman>`_.
 
 Natural language parsers
 ------------------------
 * TRIPS - James Allen, IHMC / University of Rochester
 * REACH - Mihai Surdeanu, University of Arizona
 
-If you have questions or would like to contribute, please contact
-`John Bachman <http://github.com/johnbachman>`_.
+.. |john-hs|
+   image:: /images/headshots/john_bachman.jpg
+   :height: 150px
+   :width: 107px
+.. |ben-hs|
+   image:: /images/headshots/benjamin_gyori.jpg
+   :height: 150px
+   :width: 107px
+.. |jeremy-hs|
+   image:: /images/headshots/jeremy_muhlich.jpg
+   :height: 150px
+   :width: 107px
+.. |kartik-hs|
+   image:: /images/headshots/kartik_subramanian.jpg
+   :height: 150px
+   :width: 107px
+.. |daniel-hs|
+   image:: /images/headshots/daniel_carlin.jpg
+   :height: 150px
+   :width: 107px
+.. |will-hs|
+   image:: /images/headshots/william_chen.jpg
+   :height: 150px
+   :width: 107px
+.. |liz-hs|
+   image:: /images/headshots/elizabeth_williams.jpg
+   :height: 150px
+   :width: 107px
+.. |peter-hs|
+   image:: /images/headshots/peter_sorger.jpg
+   :height: 150px
+   :width: 107px
+.. |dexter-hs|
+   image:: /images/headshots/dexter_pratt.jpg
+   :height: 150px
+   :width: 107px
 
 License and funding
-===================
+-------------------
 
 REM is made available under the `MIT License
 <http://opensource.org/licenses/MIT>`_. Users are asked to acknowledge DARPA
 grant W911NF-14-1-0397, “Programmatic modelling for reasoning across complex
 mechanisms,” Peter Sorger, William Chen and Dexter Pratt PIs.
+
+
+.. toctree::
+    :hidden:
+    :maxdepth: 4
+
+    intro
+    The RAS Executable Model <components/index>
+    scenarios/index
+    experiments/index
+    references

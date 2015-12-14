@@ -1,0 +1,265 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Ras (minimal) &mdash; Ras model 0.1 documentation</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+    <link rel="top" title="Ras model 0.1 documentation" href="../../index.html"/>
+        <link rel="up" title="Ras" href="index.html"/>
+        <link rel="next" title="Raf" href="../raf/index.html"/>
+        <link rel="prev" title="Ras regulation by RasGAPs" href="ras_gaps.html"/> 
+
+  
+  <script src="../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> Ras model
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.1
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../intro.html">Overview</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">The RAS Executable Model</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../egfr/index.html">EGFR</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">Ras</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="ras_gtpase.html">Ras proteins are GTPases</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ras_gefs.html">Ras regulation by GEFs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ras_gaps.html">Ras regulation by RasGAPs</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="">Ras (minimal)</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#indra-assembled-model-components">INDRA-assembled model components</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../raf/index.html">Raf</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../mapk/index.html">MAPK</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../scenarios/index.html">Model scenarios</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../experiments/index.html">Model analysis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../references.html">References</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../../index.html">Ras model</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="../index.html">The RAS Executable Model (REM)</a> &raquo;</li>
+      
+          <li><a href="index.html">Ras</a> &raquo;</li>
+      
+    <li>Ras (minimal)</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../../_sources/components/ras/ras_minimal.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="ras-minimal">
+<span id="id1"></span><h1>Ras (minimal)<a class="headerlink" href="#ras-minimal" title="Permalink to this headline">¶</a></h1>
+<p>This passage was processed and assembled automatically by INDRA:</p>
+<blockquote>
+<div><p>SOS1, bound to GRB2 binds RAS. RAS, bound to SOS1, binds GTP.</p>
+</div></blockquote>
+<div class="section" id="indra-assembled-model-components">
+<h2>INDRA-assembled model components<a class="headerlink" href="#indra-assembled-model-components" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">pysb</span> <span class="kn">import</span> <span class="n">Monomer</span><span class="p">,</span> <span class="n">Parameter</span><span class="p">,</span> <span class="n">Rule</span><span class="p">,</span> <span class="n">Annotation</span><span class="p">,</span> <span class="n">ANY</span>
+<span class="kn">from</span> <span class="nn">pysb.util</span> <span class="kn">import</span> <span class="n">alias_model_components</span>
+
+<span class="k">def</span> <span class="nf">ras_minimal</span><span class="p">():</span>
+    <span class="n">Monomer</span><span class="p">(</span><span class="s">&#39;GTP&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;ras&#39;</span><span class="p">])</span>
+    <span class="n">Monomer</span><span class="p">(</span><span class="s">&#39;RAS&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s">u&#39;sos1&#39;</span><span class="p">,</span> <span class="s">&#39;gtp&#39;</span><span class="p">,</span> <span class="s">&#39;raf&#39;</span><span class="p">])</span>
+
+    <span class="n">Parameter</span><span class="p">(</span><span class="s">u&#39;kf_sr_bind_1&#39;</span><span class="p">,</span> <span class="mf">1e-06</span><span class="p">)</span>
+    <span class="n">Parameter</span><span class="p">(</span><span class="s">u&#39;kr_sr_bind_1&#39;</span><span class="p">,</span> <span class="mf">1e-06</span><span class="p">)</span>
+    <span class="n">Parameter</span><span class="p">(</span><span class="s">&#39;kf_rg_bind_1&#39;</span><span class="p">,</span> <span class="mf">1e-06</span><span class="p">)</span>
+    <span class="n">Parameter</span><span class="p">(</span><span class="s">&#39;kr_rg_bind_1&#39;</span><span class="p">,</span> <span class="mf">1e-06</span><span class="p">)</span>
+
+    <span class="n">alias_model_components</span><span class="p">()</span>
+
+    <span class="n">Rule</span><span class="p">(</span><span class="s">u&#39;SOS1_GRB2_RAS_bind&#39;</span><span class="p">,</span> <span class="n">SOS1</span><span class="p">(</span><span class="n">grb2</span><span class="o">=</span><span class="n">ANY</span><span class="p">,</span> <span class="n">ras</span><span class="o">=</span><span class="bp">None</span><span class="p">)</span> <span class="o">+</span> <span class="n">RAS</span><span class="p">(</span><span class="n">sos1</span><span class="o">=</span><span class="bp">None</span><span class="p">)</span> <span class="o">&gt;&gt;</span>
+        <span class="n">SOS1</span><span class="p">(</span><span class="n">grb2</span><span class="o">=</span><span class="n">ANY</span><span class="p">,</span> <span class="n">ras</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span> <span class="o">%</span> <span class="n">RAS</span><span class="p">(</span><span class="n">sos1</span><span class="o">=</span><span class="mi">1</span><span class="p">),</span> <span class="n">kf_sr_bind_1</span><span class="p">)</span>
+
+    <span class="n">Rule</span><span class="p">(</span><span class="s">u&#39;SOS1_GRB2_RAS_dissociate&#39;</span><span class="p">,</span> <span class="n">SOS1</span><span class="p">(</span><span class="n">ras</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span> <span class="o">%</span> <span class="n">RAS</span><span class="p">(</span><span class="n">sos1</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span> <span class="o">&gt;&gt;</span>
+        <span class="n">SOS1</span><span class="p">(</span><span class="n">ras</span><span class="o">=</span><span class="bp">None</span><span class="p">)</span> <span class="o">+</span> <span class="n">RAS</span><span class="p">(</span><span class="n">sos1</span><span class="o">=</span><span class="bp">None</span><span class="p">),</span> <span class="n">kr_sr_bind_1</span><span class="p">)</span>
+
+    <span class="n">Rule</span><span class="p">(</span><span class="s">u&#39;RAS_SOS1_GTP_bind&#39;</span><span class="p">,</span> <span class="n">RAS</span><span class="p">(</span><span class="n">sos1</span><span class="o">=</span><span class="n">ANY</span><span class="p">,</span> <span class="n">gtp</span><span class="o">=</span><span class="bp">None</span><span class="p">)</span> <span class="o">+</span> <span class="n">GTP</span><span class="p">(</span><span class="n">ras</span><span class="o">=</span><span class="bp">None</span><span class="p">)</span> <span class="o">&gt;&gt;</span>
+        <span class="n">RAS</span><span class="p">(</span><span class="n">sos1</span><span class="o">=</span><span class="n">ANY</span><span class="p">,</span> <span class="n">gtp</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span> <span class="o">%</span> <span class="n">GTP</span><span class="p">(</span><span class="n">ras</span><span class="o">=</span><span class="mi">1</span><span class="p">),</span> <span class="n">kf_rg_bind_1</span><span class="p">)</span>
+
+    <span class="n">Rule</span><span class="p">(</span><span class="s">u&#39;RAS_SOS1_GTP_dissociate&#39;</span><span class="p">,</span> <span class="n">RAS</span><span class="p">(</span><span class="n">gtp</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span> <span class="o">%</span> <span class="n">GTP</span><span class="p">(</span><span class="n">ras</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span> <span class="o">&gt;&gt;</span>
+        <span class="n">RAS</span><span class="p">(</span><span class="n">gtp</span><span class="o">=</span><span class="bp">None</span><span class="p">)</span> <span class="o">+</span> <span class="n">GTP</span><span class="p">(</span><span class="n">ras</span><span class="o">=</span><span class="bp">None</span><span class="p">),</span> <span class="n">kr_rg_bind_1</span><span class="p">)</span>
+
+    <span class="n">Annotation</span><span class="p">(</span><span class="n">GTP</span><span class="p">,</span> <span class="s">&#39;http://identifiers.org/chebi/CHEBI:37565&#39;</span><span class="p">,</span> <span class="s">&#39;is&#39;</span><span class="p">)</span>
+    <span class="n">Annotation</span><span class="p">(</span><span class="n">RAS</span><span class="p">,</span> <span class="s">&#39;http://identifiers.org/pfam/PF00071.18&#39;</span><span class="p">,</span> <span class="s">&#39;is&#39;</span><span class="p">)</span>
+    <span class="n">Annotation</span><span class="p">(</span><span class="n">RAS</span><span class="p">,</span> <span class="s">&#39;http://identifiers.org/chebi/CHEBI:63620&#39;</span><span class="p">,</span> <span class="s">&#39;is&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../raf/index.html" class="btn btn-neutral float-right" title="Raf" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="ras_gaps.html" class="btn btn-neutral" title="Ras regulation by RasGAPs" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2015, Sorger Lab.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../',
+            VERSION:'0.1',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

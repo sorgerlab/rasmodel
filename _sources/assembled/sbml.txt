@@ -1,6 +1,6 @@
 SBML format
 ===========
 
-:download:`Download the model in SBML </../output/ras_model.sbml>`
+:download:`Download the model in SBML </../output/rasmodel.sbml>`
 
-.. literalinclude:: /../output/ras_model.sbml
+.. literalinclude:: /../output/rasmodel.sbml

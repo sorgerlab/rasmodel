@@ -30,10 +30,7 @@
   
 
   
-    <link rel="top" title="Ras model 0.1 documentation" href="../index.html"/>
-        <link rel="up" title="Assembled model" href="index.html"/>
-        <link rel="next" title="Kappa format" href="kappa.html"/>
-        <link rel="prev" title="PySB format" href="pysb.html"/> 
+    <link rel="top" title="Ras model 0.1 documentation" href="../index.html"/> 
 
   
   <script src="../_static/js/modernizr.min.js"></script>
@@ -51,7 +48,7 @@
           
 
           
-            <a href="../home.html" class="icon icon-home"> Ras model
+            <a href="../index.html" class="icon icon-home"> Ras model
           
 
           
@@ -82,17 +79,12 @@
           
             
             
-                <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="../intro.html">Ras Executable Model Overview</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../doc_model/index.html">The RAS Executable Model (REM)</a></li>
-<li class="toctree-l1 current"><a class="reference internal" href="index.html">Assembled model</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="pysb.html">PySB format</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="">BNGL format</a></li>
-<li class="toctree-l2"><a class="reference internal" href="kappa.html">Kappa format</a></li>
-<li class="toctree-l2"><a class="reference internal" href="sbml.html">SBML format</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="../results/index.html">Model outputs</a></li>
+                <ul>
+<li class="toctree-l1"><a class="reference internal" href="../intro.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../components/index.html">The RAS Executable Model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../scenarios/index.html">Model scenarios</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../experiments/index.html">Model analysis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../references.html">References</a></li>
 </ul>
 
             
@@ -106,7 +98,7 @@
       
       <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
         <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-        <a href="../home.html">Ras model</a>
+        <a href="../index.html">Ras model</a>
       </nav>
 
 
@@ -121,9 +113,7 @@
 
 <div role="navigation" aria-label="breadcrumbs navigation">
   <ul class="wy-breadcrumbs">
-    <li><a href="../home.html">Docs</a> &raquo;</li>
-      
-          <li><a href="index.html">Assembled model</a> &raquo;</li>
+    <li><a href="../index.html">Docs</a> &raquo;</li>
       
     <li>BNGL format</li>
       <li class="wy-breadcrumbs-aside">
@@ -141,114 +131,13 @@
             
   <div class="section" id="bngl-format">
 <h1>BNGL format<a class="headerlink" href="#bngl-format" title="Permalink to this headline">¶</a></h1>
-<p><a class="reference download internal" href="../_downloads/ras_model.bngl"><code class="xref download docutils literal"><span class="pre">Download</span> <span class="pre">the</span> <span class="pre">model</span> <span class="pre">in</span> <span class="pre">BNGL</span></code></a></p>
-<div class="highlight-python"><div class="highlight"><pre>begin parameters
-  bind_HRASclosed_GDP_kf                        1.000000e+07
-  bind_HRASclosed_GDP_kr                        1.754386e+02
-  equilibrate_HRASclosedGDP_to_HRASopenGDP_kf   1.480000e+01
-  equilibrate_HRASclosedGDP_to_HRASopenGDP_kr   1.800000e-05
-  bind_HRASclosed_GTP_kf                        1.000000e+07
-  bind_HRASclosed_GTP_kr                        8.000000e+01
-  equilibrate_HRASclosedGTP_to_HRASopenGTP_kf   1.670000e+01
-  equilibrate_HRASclosedGTP_to_HRASopenGTP_kr   1.800000e-05
-  k_HRAS_gtpase                                 1.000000e+00
-  k_recycle_gtp_from_gdp                        1.000000e+07
-  KRAS_0                                        1.000000e-08
-  NRAS_0                                        1.000000e-08
-  HRAS_0                                        1.000000e-08
-  GTP_0                                         4.680000e-04
-  GDP_0                                         4.680000e-05
-  Pi_0                                          1.000000e-08
-  SOS1_0                                        1.000000e-08
-  SOS2_0                                        1.000000e-08
-  RASGRF1_0                                     1.000000e-08
-  RASGRF2_0                                     1.000000e-08
-  RASA1_0                                       1.000000e-08
-  NF1_0                                         1.000000e-08
-  RASA2_0                                       1.000000e-08
-  RASA3_0                                       1.000000e-08
-  mGTP_0                                        0.000000e+00
-  mGDP_0                                        0.000000e+00
-end parameters
-
-begin molecule types
-  KRAS(gtp,gef,p_loop,s1s2~closed~open,CAAX,oncogenic~n~y)
-  NRAS(gtp,gef,p_loop,s1s2~closed~open,CAAX,oncogenic~n~y)
-  HRAS(gtp,gef,p_loop,s1s2~closed~open,CAAX,oncogenic~n~y)
-  GTP(p,label~n~y)
-  GDP(p,label~n~y)
-  Pi()
-  SOS1(rasgef)
-  SOS2(rasgef)
-  RASGRF1(rasgef)
-  RASGRF2(rasgef)
-  RASA1(SH2_1,SH3,SH2_2,PH,C2,rasgap)
-  NF1(rasgap,CRALTRIO)
-  RASA2(C2_1,C2_2,rasgap,PH,BTK)
-  RASA3(C2_1,C2_2,rasgap,PH,BTK)
-end molecule types
-
-begin observables
-  Molecules HRAS_GTP_          HRAS(gtp!1).GTP(p!1)
-  Molecules HRAS_mGTP_         HRAS(gtp!1).GTP(p!1,label~y)
-  Molecules HRAS_GTP_closed_   HRAS(gtp!1,s1s2~closed).GTP(p!1)
-  Molecules HRAS_GTP_open_     HRAS(gtp!1,s1s2~open).GTP(p!1)
-  Molecules HRAS_GDP_          HRAS(gtp!1).GDP(p!1)
-  Molecules HRAS_mGDP_         HRAS(gtp!1).GDP(p!1,label~y)
-  Molecules HRAS_GDP_closed_   HRAS(gtp!1,s1s2~closed).GDP(p!1)
-  Molecules HRAS_GDP_open_     HRAS(gtp!1,s1s2~open).GDP(p!1)
-  Molecules HRAS_nf_           HRAS(gtp)
-  Molecules GTP_               GTP()
-  Molecules GDP_               GDP()
-  Molecules Pi_                Pi()
-end observables
-
-begin species
-  KRAS(gtp,gef,p_loop,s1s2~closed,CAAX,oncogenic~n)   KRAS_0
-  NRAS(gtp,gef,p_loop,s1s2~closed,CAAX,oncogenic~n)   NRAS_0
-  HRAS(gtp,gef,p_loop,s1s2~closed,CAAX,oncogenic~n)   HRAS_0
-  GTP(p,label~n)                                      GTP_0
-  GDP(p,label~n)                                      GDP_0
-  Pi()                                                Pi_0
-  SOS1(rasgef)                                        SOS1_0
-  SOS2(rasgef)                                        SOS2_0
-  RASGRF1(rasgef)                                     RASGRF1_0
-  RASGRF2(rasgef)                                     RASGRF2_0
-  RASA1(SH2_1,SH3,SH2_2,PH,C2,rasgap)                 RASA1_0
-  NF1(rasgap,CRALTRIO)                                NF1_0
-  RASA2(C2_1,C2_2,rasgap,PH,BTK)                      RASA2_0
-  RASA3(C2_1,C2_2,rasgap,PH,BTK)                      RASA3_0
-  GTP(p,label~y)                                      mGTP_0
-  GDP(p,label~y)                                      mGDP_0
-end species
-
-begin reaction rules
-  bind_HRASclosed_GDP:                       HRAS(gtp,s1s2~closed) + GDP(p) &lt;-&gt; HRAS(gtp!1,s1s2~closed).GDP(p!1)    bind_HRASclosed_GDP_kf, bind_HRASclosed_GDP_kr
-  equilibrate_HRASclosedGDP_to_HRASopenGDP:  HRAS(gtp!99,gef,s1s2~closed).GDP(p!99) &lt;-&gt; HRAS(gtp!99,gef,s1s2~open).GDP(p!99)    equilibrate_HRASclosedGDP_to_HRASopenGDP_kf, equilibrate_HRASclosedGDP_to_HRASopenGDP_kr
-  bind_HRASclosed_GTP:                       HRAS(gtp,s1s2~closed) + GTP(p) &lt;-&gt; HRAS(gtp!1,s1s2~closed).GTP(p!1)    bind_HRASclosed_GTP_kf, bind_HRASclosed_GTP_kr
-  equilibrate_HRASclosedGTP_to_HRASopenGTP:  HRAS(gtp!99,gef,s1s2~closed).GTP(p!99) &lt;-&gt; HRAS(gtp!99,gef,s1s2~open).GTP(p!99)    equilibrate_HRASclosedGTP_to_HRASopenGTP_kf, equilibrate_HRASclosedGTP_to_HRASopenGTP_kr
-  HRAS_converts_GTP_GDP:                     HRAS(gtp!1,gef,s1s2~open).GTP(p!1,label~n) -&gt; HRAS(gtp!1,gef,s1s2~open).GDP(p!1,label~n) + Pi()    k_HRAS_gtpase
-  HRAS_converts_mGTP_mGDP:                   HRAS(gtp!1,gef,s1s2~open).GTP(p!1,label~y) -&gt; HRAS(gtp!1,gef,s1s2~open).GDP(p!1,label~y) + Pi()    k_HRAS_gtpase
-  recycle_gtp_from_gdp_rule:                 GDP(p,label~n) + Pi() -&gt; GTP(p,label~n)    k_recycle_gtp_from_gdp
-  recycle_mgtp_from_mgdp_rule:               GDP(p,label~y) + Pi() -&gt; GTP(p,label~y)    k_recycle_gtp_from_gdp
-end reaction rules
-</pre></div>
-</div>
+<p><code class="xref download docutils literal"><span class="pre">Download</span> <span class="pre">the</span> <span class="pre">model</span> <span class="pre">in</span> <span class="pre">BNGL</span></code></p>
 </div>
 
 
            </div>
           </div>
           <footer>
-  
-    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-      
-        <a href="kappa.html" class="btn btn-neutral float-right" title="Kappa format" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
-      
-      
-        <a href="pysb.html" class="btn btn-neutral" title="PySB format" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
-      
-    </div>
   
 
   <hr/>

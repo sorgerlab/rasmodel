@@ -1,6 +1,6 @@
 Kappa format
 ============
 
-:download:`Download the model in Kappa </../output/ras_model.ka>`
+:download:`Download the model in Kappa </../output/rasmodel.ka>`
 
-.. literalinclude:: /../output/ras_model.ka
+.. literalinclude:: /../output/rasmodel.ka

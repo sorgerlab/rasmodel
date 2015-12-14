@@ -1,0 +1,420 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Raf activation by Ras &mdash; Ras model 0.1 documentation</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+    <link rel="top" title="Ras model 0.1 documentation" href="../../index.html"/>
+        <link rel="up" title="Raf" href="index.html"/>
+        <link rel="next" title="RAF (minimal)" href="raf_minimal.html"/>
+        <link rel="prev" title="Raf" href="index.html"/> 
+
+  
+  <script src="../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> Ras model
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.1
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../intro.html">Overview</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">The RAS Executable Model</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../egfr/index.html">EGFR</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ras/index.html">Ras</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">Raf</a><ul class="current">
+<li class="toctree-l3 current"><a class="current reference internal" href="">Raf activation by Ras</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#vemurafenib-inhibits-raf">Vemurafenib inhibits RAF</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#references">References</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="raf_minimal.html">RAF (minimal)</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../mapk/index.html">MAPK</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../scenarios/index.html">Model scenarios</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../experiments/index.html">Model analysis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../references.html">References</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../../index.html">Ras model</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="../index.html">The RAS Executable Model (REM)</a> &raquo;</li>
+      
+          <li><a href="index.html">Raf</a> &raquo;</li>
+      
+    <li>Raf activation by Ras</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../../_sources/components/raf/raf_activation_by_ras.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="raf-activation-by-ras">
+<h1>Raf activation by Ras<a class="headerlink" href="#raf-activation-by-ras" title="Permalink to this headline">¶</a></h1>
+<p>In its basal state, RAF is present in a &#8216;closed&#8217; conformation, wherein the N terminus of the RAF protein interacts with, and inhibits the C terminus. Ligand binding to receptor tyrosine kinase (RTK) results in activation of the RTK, leading to RAS actviation (RAS-GTP). It is not completely understood how RAS activates RAF. GTP bound RAS binds to the RAS binding domain (RBD) of  RAF, and prevents the inhibitory interaction between the C and N termini of RAF. This results in RAF assuming an &#8216;open&#8217; conformation. A further step in the activation of RAF is dimerization, which stabilizes its &#8216;open&#8217; conformation.</p>
+<div class="highlight-python"><div class="highlight"><pre>from pysb import Monomer, Rule, Parameter, Annotation, ANY
+from pysb.macros import bind, _macro_rule, catalyze_state
+from pysb.util import alias_model_components
+
+
+def RAF_monomers():
+    Monomer(&#39;RAF&#39;, [&#39;ras&#39;, &#39;d&#39;, &#39;vem&#39;, &#39;erk&#39;])
+    Monomer(&#39;Vem&#39;, [&#39;raf&#39;])
+
+    # IC values
+    # --------
+    Parameter(&#39;RAF_0&#39;, 1e5)
+    Parameter(&#39;Vem_0&#39;, 1000)
+
+    alias_model_components()
+
+    # Initial conditions
+    # ------------------
+    Initial(RAF(d=None, ras=None, erk=None, vem=None), RAF_0)
+    Initial(Vem(raf=None), Vem_0)
+
+
+   def RAF_dynamics():
+    # Parameters
+    # -----------
+    Parameter(&#39;kaf&#39;, 1e-6)
+    Parameter(&#39;kar&#39;, 1)
+    Parameter(&#39;kbf&#39;, 0.5)
+    Parameter(&#39;kbr&#39;, 1e-11)
+    Parameter(&#39;kcf&#39;, 1)
+    Parameter(&#39;kcr&#39;, 0.0001)
+    Parameter(&#39;kdf&#39;, 1)
+    Parameter(&#39;kdr&#39;, 0.1)
+    Parameter(&#39;kef&#39;, 1e-2)
+    Parameter(&#39;ker&#39;, 0.1)
+    Parameter(&#39;kff&#39;, 1e-5)
+    Parameter(&#39;kfr&#39;, 1)
+    Parameter(&#39;kgf&#39;, 1e-11)
+    Parameter(&#39;kgr&#39;, 1)
+    Parameter(&#39;khf&#39;, 1e-2)  # 100)
+    Parameter(&#39;khr&#39;, 1)  # 1)
+    Parameter(&#39;koff&#39;, 1)
+
+    alias_model_components()
+
+    # Rules
+    # -----
+
+    # RAF that is not bound to RAS binds RAF
+    Rule(&#39;RAF_dimerization&#39;,
+         RAF(d=None) + RAF(d=None, ras=None) &lt;&gt;
+         RAF(d=1) % RAF(d=1, ras=None), kaf, kar)
+
+    # RAS binds RAF
+    Rule(&#39;RAS_binding_RAF_monomers&#39;,
+         RAF(ras=None) + RAS(raf=None, sos1=None, gtp=ANY) &lt;&gt;
+         RAF(ras=1) % RAS(raf=1, sos1=None, gtp=ANY), kdf, kdr)
+
+
+    # RAF, bound to RAS, binds RAF bound to RAS
+    Rule(&#39;RASRAF_dimerization&#39;,
+         RAF(d=None, ras=ANY) + RAF(d=None, ras=ANY) &lt;&gt;
+         RAF(d=1, ras=ANY) % RAF(d=1, ras=ANY), kcf, kcr)
+</pre></div>
+</div>
+</div>
+<div class="section" id="vemurafenib-inhibits-raf">
+<h1>Vemurafenib inhibits RAF<a class="headerlink" href="#vemurafenib-inhibits-raf" title="Permalink to this headline">¶</a></h1>
+<p>Vemurfenib is considered to be a BRAF selective inhibitor. However, in vitro experiments show that Vemurafenib can bind BRAF V600E, BRAF WT, CRAF WT, and ARAF with similar affinity. Moreover, the IC50 values computed for each isoforms in vitro are comparable. In contrast, in vivo experiments indicate that Vemurafenib is effective only against BRAF V600E mutants, and cause paradoxial activation in WT BRAF and WT CRAF cell lines. hence, there is a disconnect between conclusions from in vitro and in vivo observations. The mechanims for paradoixal activation are obscure. Answering these questions require a molecular-level analysis and undestanding of interaction beteen RAF isoforms and Vemurafenib.</p>
+<p>Recent experiments have shown that Vemurafenib is iniffective in binding RAF dimers. ~30 fold higer concetration of Vemurafenib is required to inhibit constitiutuve BRAF dimers. Based on this knowledge the authors propose the following mechanism for the development of BRAF resistanse.</p>
+<ol class="arabic simple">
+<li><p class="first">BRAFV600E mutants increase level of phosphorylated ERK.</p>
+</li>
+<li><p class="first">Higher level of ERK translates to inhibition of RTK and SOS</p>
+</li>
+<li><p class="first">Therefore, active RAS is present at low level in BRAFV600E mutants, and mutant BRAF can continue signaling independent of RAS.</p>
+</li>
+<li><p class="first">Addition of Vemurafenib inhibits BRAFV600E, lowers ERK level and relieves feedback on RTK and SOS.</p>
+</li>
+<li><p class="first">RAS is activated, which induces dimerization of BRAF.</p>
+</li>
+<li><p class="first">Vemurafenib binds one protomer in the BRAF dimer effectively, but binds the second protomer in the dimer with significantly lower affinity.</p>
+</li>
+<li><p class="first">As a result, BRAF dimers can activate ERK via the promoter that is not bound to Vemurafenib, resulting in the partial restoration of ERK phosphorylation (imperfect adaptation)</p>
+</li>
+</ol>
+<div class="highlight-python"><div class="highlight"><pre><span class="c"># The RAF-RAF complex binds Vemurafenib (1st Vemurafenib binds)</span>
+<span class="n">Rule</span><span class="p">(</span><span class="s">&#39;First_binding_Vemurafenib&#39;</span><span class="p">,</span>
+     <span class="n">RAF</span><span class="p">(</span><span class="n">vem</span><span class="o">=</span><span class="bp">None</span><span class="p">)</span> <span class="o">%</span> <span class="n">RAF</span><span class="p">(</span><span class="n">vem</span><span class="o">=</span><span class="bp">None</span><span class="p">)</span> <span class="o">+</span> <span class="n">Vem</span><span class="p">(</span><span class="n">raf</span><span class="o">=</span><span class="bp">None</span><span class="p">)</span> <span class="o">&lt;&gt;</span>
+     <span class="n">RAF</span><span class="p">(</span><span class="n">vem</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span> <span class="o">%</span> <span class="n">RAF</span><span class="p">(</span><span class="n">vem</span><span class="o">=</span><span class="bp">None</span><span class="p">)</span> <span class="o">%</span> <span class="n">Vem</span><span class="p">(</span><span class="n">raf</span><span class="o">=</span><span class="mi">1</span><span class="p">),</span> <span class="n">kef</span><span class="p">,</span> <span class="n">ker</span><span class="p">)</span>
+
+<span class="c"># The RAF-RAF complex binds Vemurafenib (2nd Vemurafenib binding</span>
+<span class="n">Rule</span><span class="p">(</span><span class="s">&#39;Second_binding_vemurafenib&#39;</span><span class="p">,</span>
+     <span class="n">RAF</span><span class="p">(</span><span class="n">vem</span><span class="o">=</span><span class="bp">None</span><span class="p">)</span> <span class="o">%</span> <span class="n">RAF</span><span class="p">(</span><span class="n">vem</span><span class="o">=</span><span class="n">ANY</span><span class="p">)</span> <span class="o">+</span> <span class="n">Vem</span><span class="p">(</span><span class="n">raf</span><span class="o">=</span><span class="bp">None</span><span class="p">)</span> <span class="o">&lt;&gt;</span>
+     <span class="n">RAF</span><span class="p">(</span><span class="n">vem</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span> <span class="o">%</span> <span class="n">RAF</span><span class="p">(</span><span class="n">vem</span><span class="o">=</span><span class="n">ANY</span><span class="p">)</span> <span class="o">%</span> <span class="n">Vem</span><span class="p">(</span><span class="n">raf</span><span class="o">=</span><span class="mi">1</span><span class="p">),</span> <span class="n">kff</span><span class="p">,</span> <span class="n">kfr</span><span class="p">)</span>
+
+<span class="c"># RAF that is not bound to RAF binds Vemurafenib</span>
+<span class="n">Rule</span><span class="p">(</span><span class="s">&#39;Vemurafenib_binds_RAF_monomer&#39;</span><span class="p">,</span>
+     <span class="n">RAF</span><span class="p">(</span><span class="n">vem</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">d</span><span class="o">=</span><span class="bp">None</span><span class="p">)</span> <span class="o">+</span> <span class="n">Vem</span><span class="p">(</span><span class="n">raf</span><span class="o">=</span><span class="bp">None</span><span class="p">)</span> <span class="o">&lt;&gt;</span>
+     <span class="n">RAF</span><span class="p">(</span><span class="n">vem</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">d</span><span class="o">=</span><span class="bp">None</span><span class="p">)</span> <span class="o">%</span> <span class="n">Vem</span><span class="p">(</span><span class="n">raf</span><span class="o">=</span><span class="mi">1</span><span class="p">),</span> <span class="n">kef</span><span class="p">,</span> <span class="n">ker</span><span class="p">)</span>
+
+<span class="c"># Release RAS:GDP from RAF</span>
+<span class="n">Rule</span><span class="p">(</span><span class="s">&#39;RAS_GDP_dissoc_RAF&#39;</span><span class="p">,</span>
+     <span class="n">RAS</span><span class="p">(</span><span class="n">gtp</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">raf</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span> <span class="o">%</span> <span class="n">RAF</span><span class="p">(</span><span class="n">ras</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span> <span class="o">&gt;&gt;</span>
+     <span class="n">RAS</span><span class="p">(</span><span class="n">gtp</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">raf</span><span class="o">=</span><span class="bp">None</span><span class="p">)</span> <span class="o">+</span> <span class="n">RAF</span><span class="p">(</span><span class="n">ras</span><span class="o">=</span><span class="bp">None</span><span class="p">),</span> <span class="n">koff</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">observables</span><span class="p">():</span>
+    <span class="c"># Observables</span>
+    <span class="c"># ----------</span>
+    <span class="n">Observable</span><span class="p">(</span><span class="s">&#39;RAF_WT_active&#39;</span><span class="p">,</span>
+               <span class="n">RAF</span><span class="p">(</span><span class="n">d</span><span class="o">=</span><span class="n">ANY</span><span class="p">,</span> <span class="n">vem</span><span class="o">=</span><span class="bp">None</span><span class="p">))</span>
+
+    <span class="n">Observable</span><span class="p">(</span><span class="s">&#39;RAF_V600E_active&#39;</span><span class="p">,</span>
+               <span class="n">RAF</span><span class="p">(</span><span class="n">vem</span><span class="o">=</span><span class="bp">None</span><span class="p">))</span>
+    <span class="n">Observable</span><span class="p">(</span><span class="s">&#39;active_KRAS&#39;</span><span class="p">,</span> <span class="n">RAS</span><span class="p">(</span><span class="n">gtp</span><span class="o">=</span><span class="n">ANY</span><span class="p">))</span>
+    <span class="n">Observable</span><span class="p">(</span><span class="s">&#39;active_SOS1&#39;</span><span class="p">,</span> <span class="n">SOS1</span><span class="p">(</span><span class="n">state</span><span class="o">=</span><span class="s">&#39;up&#39;</span><span class="p">))</span>
+    <span class="n">Observable</span><span class="p">(</span><span class="s">&#39;ERK_P&#39;</span><span class="p">,</span> <span class="n">ERK</span><span class="p">(</span><span class="n">state</span><span class="o">=</span><span class="s">&#39;p&#39;</span><span class="p">))</span>
+    <span class="n">Observable</span><span class="p">(</span><span class="s">&#39;MEK_P&#39;</span><span class="p">,</span> <span class="n">MEK</span><span class="p">(</span><span class="n">state</span><span class="o">=</span><span class="s">&#39;p&#39;</span><span class="p">))</span>
+</pre></div>
+</div>
+<div class="section" id="references">
+<h2>References<a class="headerlink" href="#references" title="Permalink to this headline">¶</a></h2>
+<table class="docutils citation" frame="void" id="pmid11237210" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label">[PMID11237210]</td><td><p class="first last">Avruch J, Khokhlatchev A, Kyriakis JM, Luo Z, Tzivion G, Vavvas D, Zhang XF.  <strong>Ras activation of the Raf kinase: tyrosine kinase recruitment of the MAP kinase cascade.</strong> Recent Prog Horm Res. 2001;56:127-55. <span>PMID:</span><a class="reference external" href="http://www.ncbi.nlm.nih.gov/pubmed/11237210">11237210</a>. <a class="reference download internal" href="../../_downloads/11237210.pdf"><code class="xref download docutils literal"><span class="pre">PDF</span></code></a></p>
+</td></tr>
+</tbody>
+</table>
+<table class="docutils citation" frame="void" id="pmid21862573" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label">[PMID21862573]</td><td><p class="first last">Hibino K, Shibata T, Yanagida T, Sako Y. <strong>Activation kinetics of RAF protein in the ternary complex of RAF, RAS-GTP, and kinase on the plasma membrane of living cells: single-molecule imaging analysis.</strong> J Biol Chem. 2011 Oct 21;286(42):36460-8. <span>doi:</span><a class="reference external" href="http://dx.doi.org/10.1074/jbc.M111.262675.">10.1074/jbc.M111.262675.</a> <span>PMID:</span><a class="reference external" href="http://www.ncbi.nlm.nih.gov/pubmed/21862573">21862573</a> <a class="reference download internal" href="../../_downloads/21862573.pdf"><code class="xref download docutils literal"><span class="pre">PDF</span></code></a></p>
+</td></tr>
+</tbody>
+</table>
+<table class="docutils citation" frame="void" id="pmid11447113" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label">[PMID11447113]</td><td><p class="first last">Chong H, Lee J, Guan KL. <strong>Positive and negative regulation of Raf kinase activity and function by phosphorylation.</strong> EMBO J. 2001 Jul 16;20(14):3716-27. <span>PMID:</span><a class="reference external" href="http://www.ncbi.nlm.nih.gov/pubmed/11447113">11447113</a> <a class="reference download internal" href="../../_downloads/11447113.pdf"><code class="xref download docutils literal"><span class="pre">PDF</span></code></a></p>
+</td></tr>
+</tbody>
+</table>
+<table class="docutils citation" frame="void" id="pmid15664184" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label">[PMID15664184]</td><td><p class="first last">Dumaz N, Marais R. <strong>Raf phosphorylation: one step forward and two steps back.</strong> Mol Cell. 2005 Jan 21;17(2):164-6. <span>PMID:</span><a class="reference external" href="http://www.ncbi.nlm.nih.gov/pubmed/15664184">15664184</a> <a class="reference download internal" href="../../_downloads/15664184.pdf"><code class="xref download docutils literal"><span class="pre">PDF</span></code></a></p>
+</td></tr>
+</tbody>
+</table>
+<table class="docutils citation" frame="void" id="pmid15664191" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label">[PMID15664191]</td><td><p class="first last">Dougherty MK1, Müller J, Ritt DA, Zhou M, Zhou XZ, Copeland TD, Conrads TP, Veenstra TD, Lu KP, Morrison DK. <strong>Regulation of Raf-1 by direct feedback phosphorylation.</strong> Mol Cell. 2005 Jan 21;17(2):215-24. <span>PMID:</span><a class="reference external" href="http://www.ncbi.nlm.nih.gov/pubmed/15664191">15664191</a> <a class="reference download internal" href="../../_downloads/15664191.pdf"><code class="xref download docutils literal"><span class="pre">PDF</span></code></a></p>
+</td></tr>
+</tbody>
+</table>
+<table class="docutils citation" frame="void" id="lavoie" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label">[Lavoie]</td><td><p class="first last">Lavoie H, Therrien M. <strong>Regulation of RAF protein kinases in ERK signalling.</strong> <span>doi:</span><a class="reference external" href="http://dx.doi.org/10.1038/nrm3979">10.1038/nrm3979</a> <a class="reference download internal" href="../../_downloads/lavoie.pdf"><code class="xref download docutils literal"><span class="pre">PDF</span></code></a></p>
+</td></tr>
+</tbody>
+</table>
+<table class="docutils citation" frame="void" id="pmid2634358" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label">[PMID2634358]</td><td><p class="first last">Yao Z, Torres NM, Tao A, Gao Y, Luo L, Li Q, Stanchina E, Abdel-Wahab O, Solit DB, Poulikakos PI, Rosen N. <strong>BRAF mutants evade ERK-dependent feedback by different mechanisms that determine their sensitivity to pharmacological inhibition.</strong> Cancer Cell. 2015 Sept 1 15;28:270-83. <span>PMID:</span><a class="reference external" href="http://www.ncbi.nlm.nih.gov/pubmed/26343582">26343582</a></p>
+</td></tr>
+</tbody>
+</table>
+<table class="docutils citation" frame="void" id="pmid2420239" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label">[PMID2420239]</td><td><p class="first last">Lito P, Rosen N, Solit DB. ** Tumor adaptation and resistance to RAF inhibitors.** Nature MEdicine. 2013 Nov; 19(11):1401-9. <span>PMID:</span><a class="reference external" href="http://www.ncbi.nlm.nih.gov/pubmed/24202393">24202393</a></p>
+</td></tr>
+</tbody>
+</table>
+<table class="docutils citation" frame="void" id="pmid23153539" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label">[PMID23153539]</td><td><p class="first last">Lito P, Pratilas CA, Joseph EW, Tadi M, Halilovic E, Zubrowski M, Huan A, Wong WL, Callahan MK, Merghoun T, Wolchok JD, Stanchina E, Chandrarlapaty S, Paulikakos PI, Fagin JA, Rosen N, <strong>Relief of profound feedback inhibition of mitogenic signaling by RAF inhibitors attenuates their activity in BRAFV600E melanomas.</strong> Cancer Cell, 2012 Nov 12;22:668-82. pmid:<cite>23153539</cite></p>
+</td></tr>
+</tbody>
+</table>
+<table class="docutils citation" frame="void" id="pmid21107323" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label">[PMID21107323]</td><td><p class="first last">Nazarian R, Shi H, Wanf Q, Kon X, Koya RC, Lee H, Chen Z, Lee M-K, Attar N, Sazegar H, chodon T, Nelson SF, McArthur G, Sosman JA, Ribas A, Lo RS. ** Melanomas acquire resistance to B-RAF(V600E) inhibition by RTK or N-RAS upregulation.** Nature. 2010 DEc 16;468: 973-7. <span>PMID:</span><a class="reference external" href="http://www.ncbi.nlm.nih.gov/pubmed/2110732">2110732</a></p>
+</td></tr>
+</tbody>
+</table>
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="raf_minimal.html" class="btn btn-neutral float-right" title="RAF (minimal)" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="index.html" class="btn btn-neutral" title="Raf" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2015, Sorger Lab.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../',
+            VERSION:'0.1',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>
