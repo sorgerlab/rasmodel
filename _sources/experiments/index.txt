@@ -7,3 +7,4 @@ Model analysis
    :maxdepth: 1
 
    hras_nucleotide_equilibration
+   kras_mapk

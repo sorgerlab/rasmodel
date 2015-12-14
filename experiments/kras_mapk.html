@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Observables &mdash; Ras model 0.1 documentation</title>
+  <title>KRAS mutant MAPK signaling &mdash; Ras model 0.1 documentation</title>
   
 
   
@@ -30,7 +30,10 @@
   
 
   
-    <link rel="top" title="Ras model 0.1 documentation" href="../index.html"/> 
+    <link rel="top" title="Ras model 0.1 documentation" href="../index.html"/>
+        <link rel="up" title="Model analysis" href="index.html"/>
+        <link rel="next" title="References" href="../references.html"/>
+        <link rel="prev" title="Ras binding to GTP and GDP" href="hras_nucleotide_equilibration.html"/> 
 
   
   <script src="../_static/js/modernizr.min.js"></script>
@@ -79,11 +82,20 @@
           
             
             
-                <ul>
+                <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../intro.html">Overview</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../components/index.html">The RAS Executable Model</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../scenarios/index.html">Model scenarios</a></li>
-<li class="toctree-l1"><a class="reference internal" href="index.html">Model analysis</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Model analysis</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="hras_nucleotide_equilibration.html">Ras binding to GTP and GDP</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="">KRAS mutant MAPK signaling</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#observables">Observables</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#simulation">Simulation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#plotting">Plotting</a></li>
+</ul>
+</li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="../references.html">References</a></li>
 </ul>
 
@@ -115,7 +127,9 @@
   <ul class="wy-breadcrumbs">
     <li><a href="../index.html">Docs</a> &raquo;</li>
       
-    <li>Observables</li>
+          <li><a href="index.html">Model analysis</a> &raquo;</li>
+      
+    <li>KRAS mutant MAPK signaling</li>
       <li class="wy-breadcrumbs-aside">
         
           
@@ -133,8 +147,10 @@
 <p class="first admonition-title">Note</p>
 <p class="last">This section defines the component <code class="docutils literal"><span class="pre">rasmodel.experiments.kras_mapk</span></code>.</p>
 </div>
+<div class="section" id="kras-mutant-mapk-signaling">
+<h1>KRAS mutant MAPK signaling<a class="headerlink" href="#kras-mutant-mapk-signaling" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="observables">
-<h1>Observables<a class="headerlink" href="#observables" title="Permalink to this headline">¶</a></h1>
+<h2>Observables<a class="headerlink" href="#observables" title="Permalink to this headline">¶</a></h2>
 <p>Our main readout is the amount of dobule-phosphorylated MAP2K1:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="n">Observable</span><span class="p">(</span><span class="s">&#39;RAS_GTP&#39;</span><span class="p">,</span> <span class="n">RAS</span><span class="p">(</span><span class="n">gtp</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span> <span class="o">%</span> <span class="n">GTP</span><span class="p">(</span><span class="n">p</span><span class="o">=</span><span class="mi">1</span><span class="p">))</span>
 <span class="n">Observable</span><span class="p">(</span><span class="s">&#39;RAS_RASGAP&#39;</span><span class="p">,</span> <span class="n">RAS</span><span class="p">(</span><span class="n">gap</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span> <span class="o">%</span> <span class="n">RASA1</span><span class="p">(</span><span class="n">rasgap</span><span class="o">=</span><span class="mi">1</span><span class="p">))</span>
@@ -145,7 +161,7 @@
 </div>
 </div>
 <div class="section" id="simulation">
-<h1>Simulation<a class="headerlink" href="#simulation" title="Permalink to this headline">¶</a></h1>
+<h2>Simulation<a class="headerlink" href="#simulation" title="Permalink to this headline">¶</a></h2>
 <p>Set up the simulation conditions:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">pysb.integrate</span> <span class="kn">import</span> <span class="n">Solver</span>
 <span class="kn">import</span> <span class="nn">numpy</span>
@@ -157,7 +173,7 @@
 </div>
 </div>
 <div class="section" id="plotting">
-<h1>Plotting<a class="headerlink" href="#plotting" title="Permalink to this headline">¶</a></h1>
+<h2>Plotting<a class="headerlink" href="#plotting" title="Permalink to this headline">¶</a></h2>
 <div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
 <span class="k">for</span> <span class="n">obs</span> <span class="ow">in</span> <span class="n">model</span><span class="o">.</span><span class="n">observables</span><span class="p">:</span>
     <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ts</span><span class="p">,</span> <span class="n">solver</span><span class="o">.</span><span class="n">yobs</span><span class="p">[</span><span class="n">obs</span><span class="o">.</span><span class="n">name</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="n">obs</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
@@ -168,11 +184,21 @@
 </pre></div>
 </div>
 </div>
+</div>
 
 
            </div>
           </div>
           <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../references.html" class="btn btn-neutral float-right" title="References" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="hras_nucleotide_equilibration.html" class="btn btn-neutral" title="Ras binding to GTP and GDP" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
   
 
   <hr/>
