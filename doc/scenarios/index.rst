@@ -5,4 +5,5 @@ Modeling scenarios
    :maxdepth: 1
 
    default/index.rst
-   vemurafenib/vemurafenib_resistance.rst
+   vemurafenib_resistance/index.rst
+   test_vr/index.rst

@@ -2,9 +2,11 @@ t0 = 0;
 tf = 1e5;
 tspan = [t0 tf];
 
-m = run_timecourse_test();
+m = test_vr();
 % m = vemurafenib_resistance();
 m.parameters.Vem_0 = 0;
+m.parameters.kr_rg_bind_1 = 0.25;
+m.parameters.EGF_0 = 5e3;
 % m.parameters.kf_ee_transphos_1 = 1;
 
 % Simulate mutants
@@ -46,8 +48,8 @@ while t0 < tf
     end
     
     if ie == 1
-        initial_values(8) = 2e5;
-        %initial_values(13) = 0;%2e5;
+        initial_values(2) = 2e5;
+        %initial_values(8) = 2e5;
     end
     t0 = t(nt);
     

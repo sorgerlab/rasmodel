@@ -25,7 +25,7 @@ def BRAF_dynamics():
     # -----------
     Parameter('kaf', 1e-6)
     Parameter('kar', 1)
-    Parameter('kbf', 0.5) # 1)
+    Parameter('kbf', 0.5)  # 1)
     Parameter('kbr', 1e-11)
     Parameter('kcf', 1)
     Parameter('kcr', 0.0001)

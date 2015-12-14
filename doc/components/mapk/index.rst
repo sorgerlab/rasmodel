@@ -8,3 +8,5 @@ MAPK
     :maxdepth: 2
 
     mapk_minimal
+    mapk_manual
+    

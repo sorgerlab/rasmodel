@@ -8,3 +8,4 @@ The RAS Executable Model (REM)
     ras/index
     raf/index
     mapk/index
+    test/index
