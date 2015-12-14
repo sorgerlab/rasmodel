@@ -23,15 +23,6 @@ MEK_ERK_phosphorylation.ERK_feedback()
 MEK_ERK_phosphorylation.MEK_inhibitor()
 MEK_ERK_phosphorylation.declare_observables()
 
-# import CRAF_module
-# CRAF_module.monomers()
-# CRAF_module.CRAF_binds_KRAS()
-# CRAF_module.CRAF_binds_Vem()
-# CRAF_module.CRAF_phosphorylation()
-# CRAF_module.CRAF_dephosphorylation()
-# ERK_phosphorylation.by_CRAF()
-# CRAF_module.declare_observables()
-
 
 from pysb.export import export
 matlab_output = export(model, 'matlab')

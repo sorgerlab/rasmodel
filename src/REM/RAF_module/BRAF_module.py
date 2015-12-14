@@ -25,7 +25,7 @@ def BRAF_dynamics():
     # -----------
     Parameter('kaf', 1e-6)
     Parameter('kar', 1)
-    Parameter('kbf', 1)
+    Parameter('kbf', 0.5)  # 1)
     Parameter('kbr', 1e-11)
     Parameter('kcf', 1)
     Parameter('kcr', 0.0001)
@@ -58,10 +58,10 @@ def BRAF_dynamics():
 
     # KRAS binding BRAF dimers
     Rule('KRAS_binding_BRAF_dimers',
-         BRAF(ras=None, d=1) % BRAF(ras=None, d=1) +
-         KRAS(raf=None, state='gtp') + KRAS(raf=None, state='gtp') <>
-         BRAF(ras=2, d=1) % BRAF(ras=3, d=1) %
-         KRAS(raf=2, state='gtp') % KRAS(raf=3, state='gtp'), kbf, kbr)
+         BRAF(ras=None, d=1) % BRAF(d=1) +
+         KRAS(raf=None, state='gtp') <>
+         BRAF(ras=2, d=1) % BRAF(d=1) %
+         KRAS(raf=2, state='gtp'), kbf, kbr)
 
     # KRAS:BRAF dimerization
     Rule('KRASBRAF_dimerization',

@@ -8,4 +8,5 @@ Model scenarios
 
    default/index.rst
    kras_mapk/index.rst
-   vemurafenib_resistance.rst
+   vemurafenib_resistance/index.rst
+   test_vr/index.rst

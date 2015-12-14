@@ -1,18 +1,13 @@
 t0 = 0;
-tf = 4e4;
+tf = 1e5;
 tspan = [t0 tf];
 
-m = run_timecourse();
+m = test_vr();
+% m = vemurafenib_resistance();
 m.parameters.Vem_0 = 0;
-% Parameters to control negative feedback
-m.parameters.k_spe = 1e-4;  % k_spe = 1e-3 and k_dspe = 50 work well too
-m.parameters.k_dspe = 10;
-m.parameters.k_pp2e = 10;
-m.parameters.k_mer = 0.1;
-m.parameters.k_mee = 10;
-m.parameters.kf5 = 0.25; % Important parameter to control extent of adaptive response
-m.parameters.KRAS_0 = 1e5;
-m.parameters.BRAF_0 = 1e4;
+m.parameters.kr_rg_bind_1 = 0.25;
+m.parameters.EGF_0 = 5e3;
+% m.parameters.kf_ee_transphos_1 = 1;
 
 % Simulate mutants
 % ================
@@ -53,8 +48,8 @@ while t0 < tf
     end
     
     if ie == 1
-        initial_values(8) = 2e4;
-        initial_values(13) = 0;%2e5;
+        initial_values(2) = 2e5;
+        %initial_values(8) = 2e5;
     end
     t0 = t(nt);
     
@@ -65,8 +60,8 @@ end
     
 y_obs = m.get_observables(yout);
 
-plot(tout, y_obs.ERK_P/m.parameters.ERK_0, 'LineWidth', 4)
-axis([1.5e4 3e4 0 1])
+plot(tout, y_obs.ERK_P/m.parameters.MAPK1_0, 'LineWidth', 2)
+% axis([1.5e4 3e4 0 1])
 xlabel('time', 'Fontsize', 20)
 ylabel('ERK~P', 'Fontsize', 20)
 

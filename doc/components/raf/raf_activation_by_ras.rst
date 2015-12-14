@@ -10,56 +10,66 @@ In its basal state, RAF is present in a 'closed' conformation, wherein the N ter
    from pysb.util import alias_model_components
 
 
-   def raf_monomers():
-       Monomer('RAF', ['d', 'ras', 'map2k1', 'vem'])
+   def RAF_monomers():
+       Monomer('RAF', ['ras', 'd', 'vem', 'erk'])
+       Monomer('Vem', ['raf'])
+
+       # IC values
+       # --------
+       Parameter('RAF_0', 1e5)
+       Parameter('Vem_0', 1000)
 
        alias_model_components()
 
+       # Initial conditions
+       # ------------------
+       Initial(RAF(d=None, ras=None, erk=None, vem=None), RAF_0)
+       Initial(Vem(raf=None), Vem_0)
 
-   def ras_activates_raf():
 
+      def RAF_dynamics():
+       # Parameters
+       # -----------
        Parameter('kaf', 1e-6)
        Parameter('kar', 1)
-       Parameter('kbf', 1)
+       Parameter('kbf', 0.5)
        Parameter('kbr', 1e-11)
        Parameter('kcf', 1)
        Parameter('kcr', 0.0001)
        Parameter('kdf', 1)
        Parameter('kdr', 0.1)
+       Parameter('kef', 1e-2)
+       Parameter('ker', 0.1)
+       Parameter('kff', 1e-5)
+       Parameter('kfr', 1)
+       Parameter('kgf', 1e-11)
+       Parameter('kgr', 1)
+       Parameter('khf', 1e-2)  # 100)
+       Parameter('khr', 1)  # 1)
        Parameter('koff', 1)
-       Parameter('kf5', 0.5)
 
        alias_model_components()
 
-       # RAF dimerization
-       bind(RAF(ras=None), 'd', RAF(ras=None, vem=None), 'd', [kaf, kar])
+       # Rules
+       # -----
 
-       # RAS binding RAF monomers
-       bind(RAF(d=None), 'ras', RAS(gtp=ANY, sos1=None), 'raf', [kdf, kdr])
+       # RAF that is not bound to RAS binds RAF
+       Rule('RAF_dimerization',
+	    RAF(d=None) + RAF(d=None, ras=None) <>
+	    RAF(d=1) % RAF(d=1, ras=None), kaf, kar)
 
-       # RAS binding RAF dimers
-       Rule('RAS_binding_RAF_dimers',
-	    RAF(ras=None, d=1) % RAF(ras=None, d=1) +
-	    RAS(raf=None, gtp=ANY, sos1=None) + RAS(raf=None, gtp=ANY, sos1=None) <>
-	    RAF(ras=2, d=1) % RAF(ras=3, d=1) %
-	    RAS(raf=2, gtp=ANY, sos1=None) % RAS(raf=3, gtp=ANY, sos1=None), kbf, kbr)
-
-       # RAS:RAF dimerization
-       bind(RAF(ras=ANY), 'd', RAF(ras=ANY, vem=None), 'd', [kcf, kcr])
-
-       # KRAS deactivates itself
-       # Making this step reversible increased combinatorial complexity manifold
-       Rule('KRAS_inactivation',
-	    RAS(gtp=1, sos1=None) % GTP(ras=1) >>
-	    RAS(gtp=None, sos1=None) + GTP(ras=None),
-	    kf5)
-
-       # Release KRAS:GDP from RAF
-       Rule('RAS_GDP_dissoc_RAF',
-            RAS(gtp=None, raf=1) % RAF(ras=1) >>
-            RAS(gtp=None, raf=None) + RAF(ras=None), koff)
+       # RAS binds RAF
+       Rule('RAS_binding_RAF_monomers',
+	    RAF(ras=None) + RAS(raf=None, sos1=None, gtp=ANY) <>
+	    RAF(ras=1) % RAS(raf=1, sos1=None, gtp=ANY), kdf, kdr)
 
 
+       # RAF, bound to RAS, binds RAF bound to RAS
+       Rule('RASRAF_dimerization',
+	    RAF(d=None, ras=ANY) + RAF(d=None, ras=ANY) <>
+	    RAF(d=1, ras=ANY) % RAF(d=1, ras=ANY), kcf, kcr)
+
+      
 Vemurafenib inhibits RAF
 ========================
 
@@ -75,106 +85,43 @@ Recent experiments have shown that Vemurafenib is iniffective in binding RAF dim
 6. Vemurafenib binds one protomer in the BRAF dimer effectively, but binds the second protomer in the dimer with significantly lower affinity.
 7. As a result, BRAF dimers can activate ERK via the promoter that is not bound to Vemurafenib, resulting in the partial restoration of ERK phosphorylation (imperfect adaptation)
 
-
 ::
 
-    def vemurafenib_monomers():
-	Monomer('Vem', ['raf'])
+   # The RAF-RAF complex binds Vemurafenib (1st Vemurafenib binds)
+   Rule('First_binding_Vemurafenib',
+	RAF(vem=None) % RAF(vem=None) + Vem(raf=None) <>
+	RAF(vem=1) % RAF(vem=None) % Vem(raf=1), kef, ker)
 
-	alias_model_components()
+   # The RAF-RAF complex binds Vemurafenib (2nd Vemurafenib binding
+   Rule('Second_binding_vemurafenib',
+	RAF(vem=None) % RAF(vem=ANY) + Vem(raf=None) <>
+	RAF(vem=1) % RAF(vem=ANY) % Vem(raf=1), kff, kfr)
 
+   # RAF that is not bound to RAF binds Vemurafenib
+   Rule('Vemurafenib_binds_RAF_monomer',
+	RAF(vem=None, d=None) + Vem(raf=None) <>
+	RAF(vem=1, d=None) % Vem(raf=1), kef, ker)
 
-    def vemurafenib_binds_raf():
+   # Release RAS:GDP from RAF
+   Rule('RAS_GDP_dissoc_RAF',
+	RAS(gtp=None, raf=1) % RAF(ras=1) >>
+	RAS(gtp=None, raf=None) + RAF(ras=None), koff)
 
-        Parameter('kef', 1e-2)
-	Parameter('ker', 0.1)
-	Parameter('kff', 1e-5)
-	Parameter('kfr', 1)
-	Parameter('kgf', 1e-11)
-	Parameter('kgr', 1)
-	Parameter('khf', 1e-2)  # 100)
-	Parameter('khr', 1)  # 1)
+   def observables():    
+       # Observables
+       # ----------
+       Observable('RAF_WT_active',
+		  RAF(d=ANY, vem=None)) 
 
-	alias_model_components()
-
-	# RAF:Vem dimerization to give 2(RAF:Vem) g = a * f
-	Rule('RAF_Vem_dimerization',
-              RAF(d=None, ras=None, vem=ANY) + RAF(d=None, ras=None, vem=ANY) <>
-              RAF(d=1, ras=None, vem=ANY) % RAF(d=1, ras=None, vem=ANY), kgf, kgr)
-
-	# RAS:RAF:Vem dimerization to give 2(RAS:RAF:Vem) h = c * a
-	bind(RAF(ras=ANY, vem=ANY), 'd', RAF(ras=ANY, vem=ANY), 'd', [khf, khr])
-
-	# 1st Vemurafenib binds
-	_macro_rule('First_binding_Vemurafenib',
-	     RAF(vem=None) % RAF(vem=None) + Vem(raf=None) <>
-	     RAF(vem=1) % RAF(vem=None) % Vem(raf=1), [kef, ker], ('kf', 'kr'))
-
-	# 2nd Vemurafenib binding
-	_macro_rule('Second_binding_vemurafenib',
-	     RAF(vem=None) % RAF(vem=ANY) + Vem(raf=None) <>
-	     RAF(vem=1) % RAF(vem=ANY) % Vem(raf=1), [kff, kfr], ('kf', 'kr'))
-
-	# Vemurafenib binds RAF monomer
-	bind(RAF(d=None), 'vem', Vem(), 'raf', [kef, ker])
+       Observable('RAF_V600E_active',
+		  RAF(vem=None))
+       Observable('active_KRAS', RAS(gtp=ANY))
+       Observable('active_SOS1', SOS1(state='up'))
+       Observable('ERK_P', ERK(state='p'))    
+       Observable('MEK_P', MEK(state='p'))
 
 
-BRAFV600E mutants are active as RAS independent monomers. Hence, the rule for MEK phosphorylation is modified such
-that RAF can phosphorylate MAPK1 as long as Vemurafneib is not bound to it.
-
-::
-
-    def mek_phosphorylation():
-
-	Monomer(u'MAP2K1', ['S218', u'ppp2ca', 'raf', 'S222', u'mapk1'],
-	       {'S218': ['u', 'p'], 'S222': ['u', 'p']})
-
-	Parameter(u'kf_rm_bind_1', 1e-06)
-	Parameter(u'kr_rm_bind_1', 0.001)
-	Parameter(u'kc_rm_phos_1', 0.001)
-	Parameter(u'kf_rm_bind_2', 1e-06)
-	Parameter(u'kr_rm_bind_2', 0.001)
-	Parameter(u'kc_rm_phos_2', 0.001)
-
-	alias_model_components()
-
-	Rule(u'RAF_phospho_bind_MAP2K1_S218_1',
-	     RAF(vem=None, map2k1=None) +
-	     MAP2K1(S218='u', raf=None, ppp2ca=None) <>
-	     RAF(vem=None, map2k1=1) % MAP2K1(S218='u', raf=1, ppp2ca=None),
-	     kf_rm_bind_1, kr_rm_bind_1)
-
-	Rule(u'RAF_phospho_MAP2K1_S218_1',
-	     RAF(vem=None, map2k1=1) %
-	     MAP2K1(S218='u', raf=1, ppp2ca=None) >>
-	     RAF(vem=None, map2k1=None) + MAP2K1(S218='p', raf=None, ppp2ca=None),
-	     kc_rm_phos_1)
-
-	Rule(u'RAF_phospho_bind_MAP2K1_S222_1',
-	     RAF(vem=None, map2k1=None) + MAP2K1(raf=None, S222='u', ppp2ca=None) <>
-	     RAF(vem=None, map2k1=1) % MAP2K1(raf=1, S222='u', ppp2ca=None),
-	     kf_rm_bind_2, kr_rm_bind_2)
-
-	Rule(u'RAF_phospho_MAP2K1_S222_1',
-	     RAF(vem=None, map2k1=1) % MAP2K1(raf=1, S222='u', ppp2ca=None) >>
-	     RAF(vem=None, map2k1=None) + MAP2K1(raf=None, S222='p', ppp2ca=None),
-	     kc_rm_phos_2)
-	     
-ERK phosphorylates SOS and inactivates it
-::
-   def erk_feedback():
-
-       Parameter('k_epsf', 1e-4)
-       Parameter('k_epsr', 0.1)
-       Parameter('k_epse', 1)
-
-       alias_model_components()
-
-       catalyze_state(MAPK1(Y187='p', T185='p', dusp6=None), 'sos1', SOS1(ras=None),
-                   'mapk1', 'state', 'up', 'p', (k_epsf, k_epsr, k_epse))
-
-	     
-      
+     
 
 References
 ----------

@@ -1,6 +1,6 @@
 function [value, isterminal, direction] = add_vemurafenib(t, y)
 
-t_add = 2e4;
+t_add = 5e4;
 
 value = [sign(t - t_add)];
 isterminal = [1];

@@ -47,7 +47,7 @@ def KRAS_activation():
     Parameter('kf4', 1)
     Parameter('kr4', 0.001)
     Parameter('ke4', 50)
-    Parameter('kf5', 1)
+    Parameter('kf5', 0.5)
     Parameter('kr5', 1e-9)
     Parameter('k_dimf', 1)
     Parameter('k_dimr', 0.1)
@@ -97,7 +97,7 @@ def SOS_dephosphorylation():
     Parameter('SOS_phos_0', 100)
     Parameter('k_spf', 1)
     Parameter('k_spr', 0.1)
-    Parameter('k_spe', 1)
+    Parameter('k_spe', 1e-4)
 
     alias_model_components()
 
