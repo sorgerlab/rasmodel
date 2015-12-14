@@ -1,6 +1,9 @@
 .. component::
    :module: rasmodel.experiments.kras_mapk
 
+KRAS mutant MAPK signaling
+==========================
+
 Observables
 -----------
 
